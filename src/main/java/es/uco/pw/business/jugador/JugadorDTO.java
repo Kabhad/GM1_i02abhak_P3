@@ -44,6 +44,12 @@ public class JugadorDTO {
      * Por defecto, es true.
      */
     private boolean cuentaActiva = true; // Campo para indicar si la cuenta está activa
+    
+ // Nuevos atributos
+    private String tipoUsuario; // Cliente o Administrador
+    private int numeroReservasCompletadas; // Número de reservas completadas por el jugador
+    private String contrasena;
+    
     /**
      * Constructor vacío. Asigna un ID único y activa la cuenta por defecto.
      */
@@ -175,6 +181,36 @@ public class JugadorDTO {
         this.correoElectronico = correoElectronico;
     }
 
+    
+ // Getter y Setter para tipoUsuario
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    // Getter y Setter para numeroReservasCompletadas
+    public int getNumeroReservasCompletadas() {
+        return numeroReservasCompletadas;
+    }
+
+    public void setNumeroReservasCompletadas(int numeroReservasCompletadas) {
+        this.numeroReservasCompletadas = numeroReservasCompletadas;
+    }
+    
+    // Getter y Setter para contrasena
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+
+    
     /**
      * Proporciona una representación en formato de cadena de la información del jugador.
      *
@@ -183,13 +219,15 @@ public class JugadorDTO {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "ID: " + idJugador + 
+        return "ID: " + idJugador +
                "\nNombre: " + nombreApellidos +
                "\nFecha de Nacimiento: " + sdf.format(fechaNacimiento) +
                "\nFecha de Inscripción: " + (fechaInscripcion != null ? sdf.format(fechaInscripcion) : "No inscrito") +
-               "\nCorreo Electrónico: " + correoElectronico;
+               "\nCorreo Electrónico: " + correoElectronico +
+               "\nTipo de Usuario: " + tipoUsuario +
+               "\nNúmero de Reservas Completadas: " + numeroReservasCompletadas +
+               "\nCuenta Activa: " + (cuentaActiva ? "Sí" : "No");
     }
-
     /**
      * Calcula los años de antigüedad del jugador desde su fecha de inscripción.
      * 

@@ -5,23 +5,23 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	id="WebApp_ID" version="3.1">
 
-	<!-- Nombre amigable para la aplicación -->
-	<display-name>Mi Aplicación Practica 3</display-name>
+	<!-- Nombre para la aplicación -->
+	<display-name>GM1_i02abhak_P3</display-name>
 
 	<env-entry>
 		<env-entry-name>url</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>jdbc:mysql://oraclepr.uco.es:3306/i82carot</env-entry-value>
+		<env-entry-value>jdbc:mysql://oraclepr.uco.es:3306/i02abhak</env-entry-value>
 	</env-entry>
 	<env-entry>
 		<env-entry-name>password</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>i82carot</env-entry-value>
+		<env-entry-value>ishowspeed</env-entry-value>
 	</env-entry>
 	<env-entry>
 		<env-entry-name>user</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
-		<env-entry-value>i82carot</env-entry-value>
+		<env-entry-value>i02abhak</env-entry-value>
 	</env-entry>
 	<context-param>
 		<param-name>sqlproperties</param-name>
