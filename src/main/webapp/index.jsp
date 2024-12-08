@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +7,6 @@
 <title>Titulo pestaña</title>
 </head>
 <body>
-<p>Hola mundo!</p>
+	<p>Hola mundo!</p>
 </body>
 </html>
