@@ -137,18 +137,20 @@ public class JugadoresDAO {
      */
     public JugadorDTO autenticarJugador(String correo, String contrasena) {
         DBConnection connection = new DBConnection();
-        con = (Connection) connection.getConnection();
+        con = connection.getConnection(); // Intentar obtener conexión
         if (con == null) {
             System.err.println("Error: Conexión no inicializada.");
             return null;
         }
 
         try {
+            // Consulta SQL desde las propiedades
             PreparedStatement ps = con.prepareStatement(prop.getProperty("autenticarJugador"));
             ps.setString(1, correo);
             ps.setString(2, contrasena);
             ResultSet rs = ps.executeQuery();
 
+            // Si encuentra un jugador, construir el objeto JugadorDTO
             if (rs.next()) {
                 JugadorDTO jugador = new JugadorDTO();
                 jugador.setIdJugador(rs.getInt("idJugador"));
@@ -159,20 +161,22 @@ public class JugadoresDAO {
                 jugador.setCuentaActiva(rs.getInt("cuentaActiva") == 1);
                 jugador.setTipoUsuario(rs.getString("tipoUsuario"));
                 jugador.setNumeroReservasCompletadas(calcularReservasCompletadas(jugador.getIdJugador()));
-                return jugador;
+                return jugador; // Retornar el jugador autenticado
+            } else {
+                System.out.println("No se encontró un jugador con las credenciales proporcionadas.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Mostrar el error en la consola
         } finally {
-            // Si la conexión no es compartida, ciérrala
             try {
-                if (con != null) con.close();
+                if (con != null) con.close(); // Cerrar conexión si no es compartida
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return null; // Retornar null si no se encuentra el jugador
     }
+
 
     
 
