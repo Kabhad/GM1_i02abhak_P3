@@ -2,7 +2,6 @@
 <%@ page import="es.uco.pw.data.dao.JugadoresDAO" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
-<%@ page import="java.io.IOException" %>
 <%
     // Parámetros recibidos del formulario
     String nombre = request.getParameter("nombre");
@@ -19,8 +18,10 @@
         return;
     }
 
+    // Instanciar DAO pasando el contexto de la aplicación
+    JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
+
     // Crear un nuevo jugador con tipo de usuario "cliente" (por defecto)
-    JugadoresDAO jugadoresDAO = new JugadoresDAO();
     JugadorDTO nuevoJugador = new JugadorDTO();
     nuevoJugador.setNombreApellidos(nombre);
     nuevoJugador.setCorreoElectronico(correo);

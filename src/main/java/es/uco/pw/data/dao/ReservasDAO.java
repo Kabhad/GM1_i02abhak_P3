@@ -1,5 +1,6 @@
 package es.uco.pw.data.dao;
 
+import javax.servlet.ServletContext;
 import es.uco.pw.business.jugador.JugadorDTO;
 import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.business.pista.TamanoPista;
@@ -48,12 +49,15 @@ public class ReservasDAO {
      * Busca un jugador por su ID utilizando JugadoresDAO.
      *
      * @param idJugador El ID del jugador a buscar.
+     * @param application El contexto de la aplicación para cargar el archivo sql.properties.
      * @return El jugador encontrado o null si no se encuentra.
      */
-    public static JugadorDTO buscarJugadorPorId(int idJugador) {
-        JugadoresDAO jugadoresDAO = new JugadoresDAO();
+    public static JugadorDTO buscarJugadorPorId(int idJugador, ServletContext application) {
+        // Pasar el contexto al DAO
+        JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
         return jugadoresDAO.buscarJugadorPorId(idJugador);
     }
+
 
     /**
      * Inserta una reserva familiar en la base de datos.
@@ -454,7 +458,7 @@ public class ReservasDAO {
      * @return El ID de la reserva creada.
      * @throws IllegalArgumentException Si la cuenta del jugador no está activa, si los parámetros son inválidos, o si la pista no cumple las condiciones para el tipo de reserva.
      */
-    public int hacerReservaIndividual(JugadorDTO jugadorDTO, Date fechaHora, int duracionMinutos, PistaDTO pistaDTO, int numeroAdultos, int numeroNinos) {
+    public int hacerReservaIndividual(JugadorDTO jugadorDTO, Date fechaHora, int duracionMinutos, PistaDTO pistaDTO, int numeroAdultos, int numeroNinos, ServletContext application) {
         if (!jugadorDTO.isCuentaActiva()) {
             throw new IllegalArgumentException("La cuenta del jugador no está activa.");
         }
@@ -485,7 +489,7 @@ public class ReservasDAO {
         }
 
         reservaDTO.setDescuento(descuentoAntiguedad);
-        actualizarFechaInscripcionSiEsNecesario(jugadorDTO);
+        actualizarFechaInscripcionSiEsNecesario(jugadorDTO, application);
         return insertarReserva(reservaDTO);
     }
 
@@ -1202,15 +1206,17 @@ public class ReservasDAO {
     }
 
 
-
+    
     /**
      * Busca un jugador por su correo electrónico.
      *
      * @param correoElectronico El correo electrónico del jugador.
+     * @param application El contexto de la aplicación para cargar el archivo sql.properties.
      * @return El jugador encontrado, o null si no se encuentra.
      */
-    public JugadorDTO buscarJugadorPorCorreo(String correoElectronico) {
-        JugadoresDAO jugadoresDAO = new JugadoresDAO();
+    public JugadorDTO buscarJugadorPorCorreo(String correoElectronico, ServletContext application) {
+        // Pasar el contexto al DAO
+        JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
         return jugadoresDAO.buscarJugadorPorCorreo(correoElectronico);
     }
 
@@ -1262,13 +1268,16 @@ public class ReservasDAO {
      * Actualiza la fecha de inscripción del jugador si está en estado NULL.
      *
      * @param jugadorDTO El jugador cuyo estado de inscripción será actualizado.
+     * @param application El contexto de la aplicación para cargar el archivo sql.properties.
      */
-    public void actualizarFechaInscripcionSiEsNecesario(JugadorDTO jugadorDTO) {
+    public void actualizarFechaInscripcionSiEsNecesario(JugadorDTO jugadorDTO, ServletContext application) {
         if (jugadorDTO.getFechaInscripcion() == null) {
-            JugadoresDAO jugadoresDAO = new JugadoresDAO();
+            // Pasar el contexto al DAO
+            JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
             jugadoresDAO.actualizarFechaInscripcion(jugadorDTO.getCorreoElectronico());
         }
     }
+
     
     /**
      * Obtiene un bono asociado a un jugador por su ID.

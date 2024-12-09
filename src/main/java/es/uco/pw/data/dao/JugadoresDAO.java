@@ -1,5 +1,6 @@
 package es.uco.pw.data.dao;
 
+import javax.servlet.ServletContext;
 import java.util.Date;
 import java.io.*;
 import java.sql.*;
@@ -28,10 +29,17 @@ public class JugadoresDAO {
     /**
      * Constructor que carga las propiedades SQL desde el archivo `sql.properties`.
      */
-    public JugadoresDAO() {
+    public JugadoresDAO(ServletContext application) {
         prop = new Properties();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("sql.properties"));
+            // Obtener la ruta al archivo desde el parámetro de contexto
+            String path = application.getInitParameter("sqlproperties");
+            if (path == null) {
+                throw new FileNotFoundException("El parámetro 'sqlproperties' no está definido en web.xml");
+            }
+
+            // Cargar el archivo de propiedades
+            BufferedReader reader = new BufferedReader(new FileReader(application.getRealPath(path)));
             prop.load(reader);
             reader.close();
         } catch (FileNotFoundException e) {
@@ -39,7 +47,6 @@ public class JugadoresDAO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
 
     /**
@@ -137,15 +144,20 @@ public class JugadoresDAO {
      */
     public JugadorDTO autenticarJugador(String correo, String contrasena) {
         DBConnection connection = new DBConnection();
-        con = connection.getConnection(); // Intentar obtener conexión
+        con = connection.getConnection(); // Obtener conexión
         if (con == null) {
             System.err.println("Error: Conexión no inicializada.");
             return null;
         }
 
         try {
-            // Consulta SQL desde las propiedades
-            PreparedStatement ps = con.prepareStatement(prop.getProperty("autenticarJugador"));
+            // Preparar la consulta SQL desde las propiedades
+            String query = prop.getProperty("autenticarJugador");
+            if (query == null) {
+                throw new SQLException("La consulta 'autenticarJugador' no está definida en sql.properties.");
+            }
+
+            PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, correo);
             ps.setString(2, contrasena);
             ResultSet rs = ps.executeQuery();
@@ -160,8 +172,8 @@ public class JugadoresDAO {
                 jugador.setCorreoElectronico(rs.getString("correo"));
                 jugador.setCuentaActiva(rs.getInt("cuentaActiva") == 1);
                 jugador.setTipoUsuario(rs.getString("tipoUsuario"));
-                jugador.setNumeroReservasCompletadas(calcularReservasCompletadas(jugador.getIdJugador()));
-                return jugador; // Retornar el jugador autenticado
+                jugador.setNumeroReservasCompletadas(rs.getInt("numeroReservasCompletadas"));
+                return jugador;
             } else {
                 System.out.println("No se encontró un jugador con las credenciales proporcionadas.");
             }
@@ -177,8 +189,6 @@ public class JugadoresDAO {
         return null; // Retornar null si no se encuentra el jugador
     }
 
-
-    
 
 	/**
 	 * Lista todos los jugadores activos con información de sus reservas completadas.

@@ -4,9 +4,9 @@
     String correo = request.getParameter("correo");
     String contrasena = request.getParameter("contrasena");
 
-    // Instanciar DAO y pasar el contexto
-    JugadoresDAO jugadoresDAO = new JugadoresDAO();
-    JugadorDTO jugador = jugadoresDAO.autenticarJugador(correo, contrasena, application);
+    // Instanciar DAO pasando el contexto de la aplicación
+    JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
+    JugadorDTO jugador = jugadoresDAO.autenticarJugador(correo, contrasena);
 
     if (jugador != null && jugador.isCuentaActiva()) {
         session.setAttribute("jugador", jugador);
