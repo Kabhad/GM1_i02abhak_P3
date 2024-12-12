@@ -1,26 +1,17 @@
-<%@ page import="es.uco.pw.business.jugador.JugadorDTO" %>
+<%@ page import="es.uco.pw.data.dao.JugadoresDAO" %>
+<%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%
-    JugadorDTO jugador = (JugadorDTO) session.getAttribute("jugador");
-
-    if (jugador == null || !jugador.getTipoUsuario().equalsIgnoreCase("administrador")) {
-        response.sendRedirect("login.jsp");
+    CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+    if (customer == null || !"administrador".equals(customer.getTipoUsuario())) {
+        response.sendRedirect("../view/login.jsp");
         return;
     }
+
+    JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
+    String listaClientes = jugadoresDAO.listarJugadoresConReservas();
 %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrador - Inicio</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Bienvenido, Administrador</h1>
-        <p>Hola <strong><%= jugador.getNombreApellidos() %></strong>, has iniciado sesión como administrador.</p>
-        <p>Aquí podrás gestionar usuarios y reservas.</p>
-        <a href="../controller/LogoutController.jsp">Cerrar Sesión</a>
-    </div>
-</body>
-</html>
+<h2>Panel de Administración</h2>
+<h3>Lista de Clientes</h3>
+<pre><%= listaClientes %></pre>
+<a href="../controller/logoutController.jsp">Cerrar sesión</a>
+<a href="../view/modifyUser.jsp">Modificar datos</a>

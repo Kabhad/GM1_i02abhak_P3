@@ -274,15 +274,16 @@ public class JugadoresDAO {
     /**
      * Modifica los datos de un jugador en el sistema.
      *
-     * @param correoElectronico    El correo del jugador a modificar (clave única, no modificable).
-     * @param nuevoNombre          Nuevo nombre del jugador.
-     * @param nuevaFechaNacimiento Nueva fecha de nacimiento del jugador.
+     * @param correoElectronico El correo del jugador a modificar (clave única, no modificable).
+     * @param nuevoNombre       Nuevo nombre del jugador.
+     * @param nuevaContrasena   Nueva contraseña del jugador.
      * @return Mensaje indicando el resultado de la operación.
      */
-    public String modificarJugador(String correoElectronico, String nuevoNombre, Date nuevaFechaNacimiento) {
+    public String modificarJugador(String correoElectronico, String nuevoNombre, String nuevaContrasena) {
         DBConnection connection = new DBConnection();
         con = (Connection) connection.getConnection();
         try {
+            // Verificar si el jugador existe
             PreparedStatement psExistencia = con.prepareStatement(prop.getProperty("consultaExistenciaPorCorreo"));
             psExistencia.setString(1, correoElectronico);
             ResultSet rs = psExistencia.executeQuery();
@@ -296,9 +297,10 @@ public class JugadoresDAO {
                 }
             }
 
-            PreparedStatement psModificar = con.prepareStatement(prop.getProperty("actualizarInfoSinCorreo"));
+            // Modificar nombre y contraseña
+            PreparedStatement psModificar = con.prepareStatement(prop.getProperty("actualizarInfoJugador"));
             psModificar.setString(1, nuevoNombre);
-            psModificar.setDate(2, new java.sql.Date(nuevaFechaNacimiento.getTime()));
+            psModificar.setString(2, nuevaContrasena);
             psModificar.setString(3, correoElectronico);
 
             int filasActualizadas = psModificar.executeUpdate();
@@ -318,6 +320,7 @@ public class JugadoresDAO {
             }
         }
     }
+
 
     /**
      * Lista todos los jugadores activos en el sistema.

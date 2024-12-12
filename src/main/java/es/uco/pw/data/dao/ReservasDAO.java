@@ -29,21 +29,28 @@ public class ReservasDAO {
 	private Properties prop;
 
 
-    /**
-     * Constructor que inicializa la conexión a la base de datos y carga las propiedades SQL.
-     */
-    public ReservasDAO() {
-        prop = new Properties();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("sql.properties"));
-            prop.load(reader);
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Constructor que carga las propiedades SQL desde el archivo `sql.properties`.
+	 */
+	public ReservasDAO(ServletContext application) {
+	    prop = new Properties();
+	    try {
+	        // Obtener la ruta al archivo desde el parámetro de contexto
+	        String path = application.getInitParameter("sqlproperties");
+	        if (path == null) {
+	            throw new FileNotFoundException("El parámetro 'sqlproperties' no está definido en web.xml");
+	        }
+
+	        // Cargar el archivo de propiedades
+	        BufferedReader reader = new BufferedReader(new FileReader(application.getRealPath(path)));
+	        prop.load(reader);
+	        reader.close();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 
     /**
      * Busca un jugador por su ID utilizando JugadoresDAO.
@@ -658,12 +665,12 @@ public class ReservasDAO {
      * @param fechaHora La fecha y hora de la reserva a cancelar.
      * @throws IllegalArgumentException Si la cuenta del jugador no está activa, si no se encuentra la reserva, o si no se puede cancelar la reserva.
      */
-    public void cancelarReserva(JugadorDTO jugadorDTO, PistaDTO pistaDTO, Date fechaHora) {
+    public void cancelarReserva(JugadorDTO jugadorDTO, PistaDTO pistaDTO, Date fechaHora, ServletContext application) {
         if (!jugadorDTO.isCuentaActiva()) {
             throw new IllegalArgumentException("La cuenta del jugador no está activa.");
         }
 
-        ReservasDAO reservasDAO = new ReservasDAO();
+        ReservasDAO reservasDAO = new ReservasDAO(application);
         
         // Buscar la reserva en la base de datos
         ReservaDTO reservaDTO = reservasDAO.encontrarReserva(jugadorDTO.getIdJugador(), pistaDTO.getIdPista(), fechaHora);
@@ -1277,6 +1284,46 @@ public class ReservasDAO {
             jugadoresDAO.actualizarFechaInscripcion(jugadorDTO.getCorreoElectronico());
         }
     }
+    
+    /**
+     * Obtiene la fecha y hora de la próxima reserva para un usuario.
+     *
+     * @param correoElectronico El correo del usuario.
+     * @return La fecha y hora de la próxima reserva como String, o null si no hay reservas.
+     */
+    public String obtenerProximaReserva(String correoElectronico) {
+        DBConnection connection = new DBConnection();
+        Connection con = connection.getConnection();
+        String proximaReserva = null;
+
+        try {
+            // Preparar la consulta SQL desde el archivo de propiedades
+            String query = prop.getProperty("obtenerProximaReserva");
+            if (query == null) {
+                throw new SQLException("La consulta 'obtenerProximaReserva' no está definida en sql.properties.");
+            }
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, correoElectronico);
+            ResultSet rs = ps.executeQuery();
+
+            // Si hay una reserva, obtener su fecha y hora
+            if (rs.next()) {
+                proximaReserva = rs.getString("proximaReserva");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return proximaReserva;
+    }
+
 
     
     /**

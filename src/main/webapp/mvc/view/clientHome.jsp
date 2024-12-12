@@ -1,26 +1,14 @@
-<%@ page import="es.uco.pw.business.jugador.JugadorDTO" %>
+<%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%
-    JugadorDTO jugador = (JugadorDTO) session.getAttribute("jugador");
-
-    if (jugador == null || !jugador.getTipoUsuario().equalsIgnoreCase("cliente")) {
-        response.sendRedirect("login.jsp");
+    CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+    if (customer == null) {
+        response.sendRedirect("../view/login.jsp");
         return;
     }
 %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cliente - Inicio</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Bienvenido, Cliente</h1>
-        <p>Hola <strong><%= jugador.getNombreApellidos() %></strong>, bienvenido a tu área personal.</p>
-        <p>Aquí podrás realizar reservas y ver tu historial.</p>
-        <a href="../controller/LogoutController.jsp">Cerrar Sesión</a>
-    </div>
-</body>
-</html>
+<h1>Bienvenido, <%= customer.getNombre() %>!</h1>
+<p>Correo: <%= customer.getCorreo() %></p>
+<p>Fecha de inscripción: <%= customer.getFechaInscripcion() %></p>
+<p>Próxima reserva: <%= customer.getFechaProximaReserva() %></p>
+<a href="../controller/logoutController.jsp">Cerrar sesión</a>
+<a href="../view/modifyUser.jsp">Modificar datos</a>
