@@ -25,7 +25,7 @@
 
     if (nuevaContrasena.length() < 6 || 
         !nuevaContrasena.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$")) {
-        response.sendRedirect("../../include/modifyError.jsp?message=La contraseña no cumple con los requisitos.");
+        response.sendRedirect("../../include/modifyError.jsp?message=La contraseña debe contener al menos 6 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial.");
         return;
     }
         
