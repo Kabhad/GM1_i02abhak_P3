@@ -792,6 +792,130 @@ public class ReservasDAO {
 
         return reservasFuturas;
     }
+    
+    
+    /**
+     * Consulta las reservas de un usuario dentro de un rango de fechas utilizando su correo electrónico.
+     *
+     * @param correoUsuario El correo electrónico del usuario.
+     * @param fechaInicio La fecha de inicio del rango.
+     * @param fechaFin La fecha de fin del rango.
+     * @return Una lista de reservas asociadas al usuario dentro del rango de fechas.
+     */
+    public List<ReservaDTO> consultarReservasPorCorreoYFechas(String correoUsuario, Date fechaInicio, Date fechaFin) {
+        List<ReservaDTO> reservasPorFecha = new ArrayList<>();
+        String sql = prop.getProperty("consultarReservasPorCorreoYFechas"); // Define esta consulta en sql.properties
+        DBConnection conexion = new DBConnection();
+        con = (Connection) conexion.getConnection();
+
+        // Ajustar las fechas de inicio y fin
+        Calendar calInicio = Calendar.getInstance();
+        calInicio.setTime(fechaInicio);
+        calInicio.set(Calendar.HOUR_OF_DAY, 0);
+        calInicio.set(Calendar.MINUTE, 0);
+        calInicio.set(Calendar.SECOND, 0);
+        calInicio.set(Calendar.MILLISECOND, 0);
+        Date fechaInicioAjustada = calInicio.getTime();
+
+        Calendar calFin = Calendar.getInstance();
+        calFin.setTime(fechaFin);
+        calFin.set(Calendar.HOUR_OF_DAY, 23);
+        calFin.set(Calendar.MINUTE, 59);
+        calFin.set(Calendar.SECOND, 59);
+        calFin.set(Calendar.MILLISECOND, 999);
+        Date fechaFinAjustada = calFin.getTime();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correoUsuario);
+            ps.setTimestamp(2, new java.sql.Timestamp(fechaInicioAjustada.getTime()));
+            ps.setTimestamp(3, new java.sql.Timestamp(fechaFinAjustada.getTime()));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Aquí reusa la lógica de tu método actual para construir ReservaDTO
+                    // Recuerda verificar si es familiar, adulto o infantil
+                    int idReserva = rs.getInt("idReserva");
+                    int idJugador = rs.getInt("idJugador");
+                    int idPista = rs.getInt("idPista");
+                    Date fechaHora = rs.getTimestamp("fechaHora");
+                    int duracionMin = rs.getInt("duracionMin");
+                    float precio = rs.getFloat("precio");
+                    float descuento = rs.getFloat("descuento");
+                    Integer idBono = rs.getObject("idBono") != null ? rs.getInt("idBono") : null;
+                    Integer numeroSesion = rs.getObject("numeroSesion") != null ? rs.getInt("numeroSesion") : null;
+
+                    // Crear la fábrica adecuada
+                    ReservaFactory reservaFactory = (idBono != null) ? new ReservaBonoFactory() : new ReservaIndividualFactory();
+                    ReservaDTO reservaDTO = null;
+
+                    // Verificar el tipo de reserva en la base de datos
+                    String sqlFamiliar = prop.getProperty("buscarReservaFamiliar");
+                    try (PreparedStatement psFamiliar = con.prepareStatement(sqlFamiliar)) {
+                        psFamiliar.setInt(1, idReserva);
+                        try (ResultSet rsFamiliar = psFamiliar.executeQuery()) {
+                            if (rsFamiliar.next()) {
+                                int numeroAdultos = rsFamiliar.getInt("numAdultos");
+                                int numeroNinos = rsFamiliar.getInt("numNinos");
+                                reservaDTO = (idBono != null)
+                                        ? reservaFactory.crearReservaFamiliar(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, numeroNinos, obtenerBono(idBono), numeroSesion)
+                                        : reservaFactory.crearReservaFamiliar(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, numeroNinos);
+                            }
+                        }
+                    }
+
+                    // Si no es familiar, verificar si es adulto
+                    if (reservaDTO == null) {
+                        String sqlAdulto = prop.getProperty("buscarReservaAdulto");
+                        try (PreparedStatement psAdulto = con.prepareStatement(sqlAdulto)) {
+                            psAdulto.setInt(1, idReserva);
+                            try (ResultSet rsAdulto = psAdulto.executeQuery()) {
+                                if (rsAdulto.next()) {
+                                    int numeroAdultos = rsAdulto.getInt("numAdultos");
+                                    reservaDTO = (idBono != null)
+                                            ? reservaFactory.crearReservaAdulto(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, obtenerBono(idBono), numeroSesion)
+                                            : reservaFactory.crearReservaAdulto(idJugador, fechaHora, duracionMin, idPista, numeroAdultos);
+                                }
+                            }
+                        }
+                    }
+
+                    // Si no es familiar ni adulto, verificar si es infantil
+                    if (reservaDTO == null) {
+                        String sqlInfantil = prop.getProperty("buscarReservaInfantil");
+                        try (PreparedStatement psInfantil = con.prepareStatement(sqlInfantil)) {
+                            psInfantil.setInt(1, idReserva);
+                            try (ResultSet rsInfantil = psInfantil.executeQuery()) {
+                                if (rsInfantil.next()) {
+                                    int numeroNinos = rsInfantil.getInt("numNinos");
+                                    reservaDTO = (idBono != null)
+                                            ? reservaFactory.crearReservaInfantil(idJugador, fechaHora, duracionMin, idPista, numeroNinos, obtenerBono(idBono), numeroSesion)
+                                            : reservaFactory.crearReservaInfantil(idJugador, fechaHora, duracionMin, idPista, numeroNinos);
+                                }
+                            }
+                        }
+                    }
+
+                    if (reservaDTO != null) {
+                        reservaDTO.setIdReserva(idReserva);
+                        reservaDTO.setPrecio(precio);
+                        reservaDTO.setDescuento(descuento);
+
+                        reservasPorFecha.add(reservaDTO);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return reservasPorFecha;
+    }
 
 
 

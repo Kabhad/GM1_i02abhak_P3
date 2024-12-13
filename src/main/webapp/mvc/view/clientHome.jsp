@@ -17,5 +17,11 @@
 <p>Fecha actual: <%= fechaActualFormateada %></p>
 <p>Fecha de inscripción: <%= customer.getFechaInscripcion() %></p>
 <p>Próxima reserva: <%= customer.getFechaProximaReserva() %></p>
-<a href="../controller/LogoutController.jsp">Cerrar sesión</a>
-<a href="../view/modifyUser.jsp">Modificar datos</a>
+
+<nav>
+    <ul>
+        <li><a href="../controller/LogoutController.jsp">Cerrar sesión</a></li>
+        <li><a href="../view/modifyUser.jsp">Modificar datos</a></li>
+        <li><a href="../view/formularioConsulta.jsp">Consultar reservas</a></li>
+    </ul>
+</nav>

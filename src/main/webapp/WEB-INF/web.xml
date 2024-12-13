@@ -27,6 +27,27 @@
 		<param-name>sqlproperties</param-name>
 		<param-value>/WEB-INF/sql.properties</param-value>
 	</context-param>
+	
+	<filter>
+    <filter-name>AccessControlFilter</filter-name>
+    <filter-class>es.uco.pw.servlet.filters.AccessControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>AccessControlFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+    <servlet-name>ConsultarReservasServlet</servlet-name>
+    <servlet-class>es.uco.pw.servlet.client.ConsultarReservasServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>ConsultarReservasServlet</servlet-name>
+	    <url-pattern>/cliente/consultarReservas</url-pattern>
+	</servlet-mapping>
+	
+		
 
 	<!-- Archivo de bienvenida -->
 	<welcome-file-list>
