@@ -13,5 +13,5 @@
 <h2>Panel de Administración</h2>
 <h3>Lista de Clientes</h3>
 <pre><%= listaClientes %></pre>
-<a href="../controller/logoutController.jsp">Cerrar sesión</a>
+<a href="../controller/LogoutController.jsp">Cerrar sesión</a>
 <a href="../view/modifyUser.jsp">Modificar datos</a>

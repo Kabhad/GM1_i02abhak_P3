@@ -10,6 +10,6 @@
         <% String error = request.getParameter("error"); %>
         <%= error != null ? error : "Ha ocurrido un error desconocido. Por favor, intenta nuevamente." %>
     </p>
-    <a href="../view/register.jsp">Volver al Registro</a>
+    <a href="<%= request.getContextPath() %>/mvc/view/register.jsp">Volver al Registro</a>
 </body>
 </html>

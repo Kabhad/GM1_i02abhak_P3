@@ -18,8 +18,8 @@
         return;
     }
 
-    if (!nuevoNombre.matches("^[a-zA-Z\\s]+$")) {
-        response.sendRedirect("../../include/modifyError.jsp?message=El nombre solo puede contener letras.");
+    if (!nuevoNombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+$")) {
+        response.sendRedirect("../../include/modifyError.jsp?message=El nombre solo puede contener letras y caracteres válidos en español.");
         return;
     }
 
@@ -52,6 +52,6 @@
         }
     } else {
         // Redirigir a una página de error en caso de fallo
-        response.sendRedirect("../../include/modifyError.jsp?message=" + mensaje);
+    	response.sendRedirect("../../include/modifyError.jsp?message=" + mensaje);
     }
 %>
