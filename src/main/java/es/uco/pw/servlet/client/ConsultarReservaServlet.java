@@ -50,11 +50,15 @@ public class ConsultarReservaServlet extends HttpServlet {
 
             // Lógica de consulta y redirección a la vista correspondiente
             ReservasDAO reservasDAO = new ReservasDAO(getServletContext());
+            // Se obtienen las reservas desde la base de datos
             List<ReservaDTO> reservas = reservasDAO.consultarReservasPorCorreoYFechas(customer.getCorreo(), fechaInicio, fechaFin);
 
+            // Se crea un objeto reservaBean con las reservas obtenidas
             ReservaBean reservaBean = new ReservaBean(reservas);
+            // Se pasa el objeto reservaBean a la vista
             request.setAttribute("reservaBean", reservaBean);
-
+            
+            // Redirige a la vista para mostrar las reservas
             request.getRequestDispatcher("/mvc/view/mostrarReservas.jsp").forward(request, response);
 
         } catch (ParseException e) {
