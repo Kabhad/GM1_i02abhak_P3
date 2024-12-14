@@ -3,6 +3,7 @@ package es.uco.pw.servlet.client;
 import es.uco.pw.business.reserva.ReservaDTO;
 import es.uco.pw.data.dao.ReservasDAO;
 import es.uco.pw.display.javabean.CustomerBean;
+import es.uco.pw.display.javabean.ReservaBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet("/cliente/consultarReservas")
+@WebServlet(name = "ConsultarReservaServlet", urlPatterns = "/client/consultarReserva")
 public class ConsultarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -51,14 +52,10 @@ public class ConsultarReservaServlet extends HttpServlet {
             ReservasDAO reservasDAO = new ReservasDAO(getServletContext());
             List<ReservaDTO> reservas = reservasDAO.consultarReservasPorCorreoYFechas(customer.getCorreo(), fechaInicio, fechaFin);
 
-            Date now = new Date();
-            List<ReservaDTO> reservasFuturas = reservas.stream().filter(r -> r.getFechaHora().after(now)).toList();
-            List<ReservaDTO> reservasFinalizadas = reservas.stream().filter(r -> r.getFechaHora().before(now)).toList();
+            ReservaBean reservaBean = new ReservaBean(reservas);
+            request.setAttribute("reservaBean", reservaBean);
 
-            request.setAttribute("reservasFuturas", reservasFuturas);
-            request.setAttribute("reservasFinalizadas", reservasFinalizadas);
-
-            request.getRequestDispatcher("../view/resultadoConsulta.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/mostrarReservas.jsp").forward(request, response);
 
         } catch (ParseException e) {
             request.setAttribute("error", "Formato de fecha inválido.");

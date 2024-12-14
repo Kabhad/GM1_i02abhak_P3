@@ -16,33 +16,44 @@ public class AccessControlFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession(false); // Obtener la sesión actual
         String path = httpRequest.getRequestURI(); // Obtener la URL solicitada
+        String contextPath = httpRequest.getContextPath(); // Contexto de la aplicación
 
-        // Rutas públicas que no requieren autenticación
-        if (path.startsWith("/index.jsp") || path.startsWith("/include/") || path.startsWith("/css/") || path.startsWith("/img/")) {
+     // Rutas públicas que no requieren autenticación
+        if (path.startsWith(contextPath + "/index.jsp") || 
+            path.startsWith(contextPath + "/include/") || 
+            path.startsWith(contextPath + "/css/") || 
+            path.startsWith(contextPath + "/img/") || 
+            path.startsWith(contextPath + "/mvc/view/login.jsp") || 
+            path.startsWith(contextPath + "/mvc/view/register.jsp") || 
+            path.startsWith(contextPath + "/mvc/controller/LogoutController.jsp") || 
+            path.startsWith(contextPath + "/mvc/controller/LoginController.jsp") ||
+            path.startsWith(contextPath + "/mvc/controller/RegisterController.jsp"))
+        {
             chain.doFilter(request, response); // Continuar sin verificar permisos
             return;
         }
 
+
         // Verificar autenticación
-        CustomerBean usuario = (session != null) ? (CustomerBean) session.getAttribute("usuario") : null;
+        CustomerBean usuario = (session != null) ? (CustomerBean) session.getAttribute("customer") : null;
         if (usuario == null) {
             // Redirigir a página de error si no hay usuario en sesión
             request.setAttribute("error", "Debe iniciar sesión para acceder a esta página.");
-            request.getRequestDispatcher("/include/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
             return;
         }
 
         // Verificar permisos por rol y ruta
-        String rol = usuario.getTipoUsuario();
-        if (path.startsWith("/admin") && !"ADMIN".equals(rol)) {
+        String rol = usuario.getTipoUsuario().toUpperCase(); // Convertir rol a mayúsculas para consistencia
+        if (path.startsWith(contextPath + "/administrador") && !"ADMINISTRADOR".equals(rol)) {
             request.setAttribute("error", "Acceso denegado. Solo los administradores pueden acceder a esta página.");
-            request.getRequestDispatcher("/include/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
             return;
         }
 
-        if (path.startsWith("/cliente") && !"CLIENTE".equals(rol) && !"ADMIN".equals(rol)) {
+        if (path.startsWith(contextPath + "/cliente") && !"CLIENTE".equals(rol) && !"ADMINISTRADOR".equals(rol)) {
             request.setAttribute("error", "Acceso denegado. Solo los clientes pueden acceder a esta página.");
-            request.getRequestDispatcher("/include/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
             return;
         }
 
@@ -50,15 +61,13 @@ public class AccessControlFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void destroy() {
+        // Método opcional
+    }
 
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void init(FilterConfig arg0) throws ServletException {
+        // Método opcional
+    }
 }

@@ -9,6 +9,6 @@
     <h1>Error</h1>
     <p>Se ha producido un error durante la ejecución de la operación.</p>
     <p>${requestScope.error}</p>
-    <a href="<c:url value='/index.jsp' />">Volver al inicio</a>
+    <a href="<c:url value='../index.jsp' />">Volver al inicio</a>
 </body>
 </html>

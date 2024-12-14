@@ -18,7 +18,7 @@
     if (jugador != null && jugador.isCuentaActiva()) {
         // Crear CustomerBean
         String proximaReserva = null;
-        if ("cliente".equals(jugador.getTipoUsuario())) {
+        if ("CLIENTE".equalsIgnoreCase(jugador.getTipoUsuario())) {
             // Solo los clientes tienen próxima reserva
             proximaReserva = reservasDAO.obtenerProximaReserva(jugador.getCorreoElectronico());
         }
@@ -26,7 +26,7 @@
         CustomerBean customer = new CustomerBean(
             jugador.getNombreApellidos(),
             jugador.getCorreoElectronico(),
-            jugador.getTipoUsuario(),
+            jugador.getTipoUsuario().toUpperCase(), // Convertir el rol a mayúsculas
             jugador.getFechaInscripcion() != null ? jugador.getFechaInscripcion().toString() : "No disponible",
             proximaReserva != null ? proximaReserva : "No disponible"
         );
@@ -35,14 +35,18 @@
         session.setAttribute("customer", customer);
 
         // Redirigir según el tipo de usuario
-        if ("administrador".equals(jugador.getTipoUsuario())) {
+        if ("ADMINISTRADOR".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
             response.sendRedirect("../view/adminHome.jsp");
-        } else {
+        } else if ("CLIENTE".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
             response.sendRedirect("../view/clientHome.jsp");
+        } else {
+            // Si el tipo de usuario es desconocido, redirigir al login con un error
+            request.setAttribute("error", "Tipo de usuario desconocido.");
+            request.getRequestDispatcher("../include/loginError.jsp").forward(request, response);
         }
     } else {
-        // Redirigir al login con mensaje de error
-        request.setAttribute("error", "Credenciales inválidas. Intente nuevamente.");
-        request.getRequestDispatcher("../view/login.jsp").forward(request, response);
+        // Redirigir al loginError.jsp con mensaje de error
+        request.setAttribute("error", "Credenciales inválidas. Por favor, inténtalo nuevamente.");
+        request.getRequestDispatcher("../include/loginError.jsp").forward(request, response);
     }
 %>

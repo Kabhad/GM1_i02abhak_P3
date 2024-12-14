@@ -38,13 +38,13 @@
 	</filter-mapping>
 	
 	<servlet>
-    <servlet-name>ConsultarReservasServlet</servlet-name>
-    <servlet-class>es.uco.pw.servlet.client.ConsultarReservasServlet</servlet-class>
+    <servlet-name>ConsultarReservaServlet</servlet-name>
+    <servlet-class>es.uco.pw.servlet.client.ConsultarReservaServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-	    <servlet-name>ConsultarReservasServlet</servlet-name>
-	    <url-pattern>/cliente/consultarReservas</url-pattern>
+	    <servlet-name>ConsultarReservaServlet</servlet-name>
+	    <url-pattern>/client/consultarReserva</url-pattern>
 	</servlet-mapping>
 	
 		

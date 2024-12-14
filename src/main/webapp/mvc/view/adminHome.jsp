@@ -2,10 +2,11 @@
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
-    if (customer == null || !"administrador".equals(customer.getTipoUsuario())) {
-        response.sendRedirect("../view/login.jsp");
-        return;
-    }
+	if (customer == null || !"ADMINISTRADOR".equalsIgnoreCase(customer.getTipoUsuario())) {
+	    response.sendRedirect("../view/login.jsp");
+	    return;
+	}
+
 
     JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
     String listaClientes = jugadoresDAO.listarJugadoresConReservas();

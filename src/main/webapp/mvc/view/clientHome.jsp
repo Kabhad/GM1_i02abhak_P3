@@ -22,6 +22,6 @@
     <ul>
         <li><a href="../controller/LogoutController.jsp">Cerrar sesión</a></li>
         <li><a href="../view/modifyUser.jsp">Modificar datos</a></li>
-        <li><a href="../view/formularioConsulta.jsp">Consultar reservas</a></li>
+        <li><a href="../view/consultarReservas.jsp">Consultar reservas</a></li>
     </ul>
 </nav>

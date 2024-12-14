@@ -804,7 +804,7 @@ public class ReservasDAO {
      */
     public List<ReservaDTO> consultarReservasPorCorreoYFechas(String correoUsuario, Date fechaInicio, Date fechaFin) {
         List<ReservaDTO> reservasPorFecha = new ArrayList<>();
-        String sql = prop.getProperty("consultarReservasPorCorreoYFechas"); // Define esta consulta en sql.properties
+        String sql = prop.getProperty("consultarReservasPorCorreoYFechas");
         DBConnection conexion = new DBConnection();
         con = (Connection) conexion.getConnection();
 

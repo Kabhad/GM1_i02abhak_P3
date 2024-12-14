@@ -6,5 +6,5 @@
     }
 
     // Redirigir al login
-    response.sendRedirect("../view/login.jsp");
+	response.sendRedirect(request.getContextPath() + "/index.jsp");
 %>

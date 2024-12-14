@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Consulta de Reservas</h1>
-    <form action="<c:url value='/cliente/consultarReservas' />" method="post" onsubmit="return validarFechas()">
+	<form action="${pageContext.request.contextPath}/client/consultarReserva" method="post" onsubmit="return validarFechas()">
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="date" id="fechaInicio" name="fechaInicio" required>
         <br><br>
