@@ -45,7 +45,7 @@
         session.setAttribute("customer", customer);
 
         // Verificar el tipo de usuario para redirigir
-        if ("administrador".equals(customer.getTipoUsuario())) {
+        if ("administrador".equalsIgnoreCase(customer.getTipoUsuario())) {
             response.sendRedirect("../view/adminHome.jsp");
         } else {
             response.sendRedirect("../view/clientHome.jsp");

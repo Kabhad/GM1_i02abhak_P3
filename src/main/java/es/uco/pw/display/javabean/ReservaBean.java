@@ -1,91 +1,75 @@
 package es.uco.pw.display.javabean;
 
-import es.uco.pw.business.reserva.ReservaDTO;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Clase JavaBean que encapsula las reservas y proporciona métodos
- * para separar las reservas futuras y finalizadas.
+ * JavaBean que encapsula los datos de una reserva para la vista.
  */
 public class ReservaBean implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Lista de todas las reservas del usuario.
-     */
-    private List<ReservaDTO> reservas;
+    private int idReserva;
+    private Date fechaHora;
+    private int duracionMinutos;
+    private int idPista;
+    private float precio;
+    private float descuento;
 
-    /**
-     * Constructor por defecto.
-     */
-    public ReservaBean() {
+    // Atributos específicos para reservas con bono
+    private Integer idBono;
+    private Integer numeroSesion;
+
+    // Atributos específicos para reservas familiares e infantiles
+    private Integer numeroAdultos;
+    private Integer numeroNinos;
+
+    // Constructor vacío
+    public ReservaBean() { }
+
+    // Constructor general que permite inicializar los datos de una reserva
+    public ReservaBean(int idReserva, Date fechaHora, int duracionMinutos, int idPista, float precio, float descuento,
+                       Integer idBono, Integer numeroSesion, Integer numeroAdultos, Integer numeroNinos) {
+        this.idReserva = idReserva;
+        this.fechaHora = fechaHora;
+        this.duracionMinutos = duracionMinutos;
+        this.idPista = idPista;
+        this.precio = precio;
+        this.descuento = descuento;
+        this.idBono = idBono;
+        this.numeroSesion = numeroSesion;
+        this.numeroAdultos = numeroAdultos;
+        this.numeroNinos = numeroNinos;
     }
 
-    /**
-     * Constructor que inicializa el bean con una lista de reservas.
-     *
-     * @param reservas La lista de reservas a encapsular.
-     */
-    public ReservaBean(List<ReservaDTO> reservas) {
-        this.reservas = reservas;
-    }
+    // Getters y Setters
+    public int getIdReserva() { return idReserva; }
+    public void setIdReserva(int idReserva) { this.idReserva = idReserva; }
 
-    /**
-     * Obtiene todas las reservas.
-     *
-     * @return La lista de todas las reservas.
-     */
-    public List<ReservaDTO> getReservas() {
-        return reservas;
-    }
+    public Date getFechaHora() { return fechaHora; }
+    public void setFechaHora(Date fechaHora) { this.fechaHora = fechaHora; }
 
-    /**
-     * Establece la lista de reservas.
-     *
-     * @param reservas La lista de reservas a establecer.
-     */
-    public void setReservas(List<ReservaDTO> reservas) {
-        this.reservas = reservas;
-    }
+    public int getDuracionMinutos() { return duracionMinutos; }
+    public void setDuracionMinutos(int duracionMinutos) { this.duracionMinutos = duracionMinutos; }
 
-    /**
-     * Obtiene las reservas futuras (fecha posterior a la fecha actual).
-     *
-     * @return Una lista de reservas futuras.
-     */
-    public List<ReservaDTO> getReservasFuturas() {
-        Date now = new Date();
-        return reservas.stream()
-                .filter(reserva -> reserva.getFechaHora().after(now))
-                .collect(Collectors.toList());
-    }
+    public int getIdPista() { return idPista; }
+    public void setIdPista(int idPista) { this.idPista = idPista; }
 
-    /**
-     * Obtiene las reservas finalizadas (fecha anterior o igual a la fecha actual).
-     *
-     * @return Una lista de reservas finalizadas.
-     */
-    public List<ReservaDTO> getReservasFinalizadas() {
-        Date now = new Date();
-        return reservas.stream()
-                .filter(reserva -> reserva.getFechaHora().before(now) || reserva.getFechaHora().equals(now))
-                .collect(Collectors.toList());
-    }
+    public float getPrecio() { return precio; }
+    public void setPrecio(float precio) { this.precio = precio; }
 
-    /**
-     * Representación en cadena del bean, para depuración.
-     *
-     * @return Una cadena que representa el estado del bean.
-     */
-    @Override
-    public String toString() {
-        return "ReservaBean{" +
-                "reservas=" + reservas +
-                '}';
-    }
+    public float getDescuento() { return descuento; }
+    public void setDescuento(float descuento) { this.descuento = descuento; }
+
+    public Integer getIdBono() { return idBono; }
+    public void setIdBono(Integer idBono) { this.idBono = idBono; }
+
+    public Integer getNumeroSesion() { return numeroSesion; }
+    public void setNumeroSesion(Integer numeroSesion) { this.numeroSesion = numeroSesion; }
+
+    public Integer getNumeroAdultos() { return numeroAdultos; }
+    public void setNumeroAdultos(Integer numeroAdultos) { this.numeroAdultos = numeroAdultos; }
+
+    public Integer getNumeroNinos() { return numeroNinos; }
+    public void setNumeroNinos(Integer numeroNinos) { this.numeroNinos = numeroNinos; }
 }

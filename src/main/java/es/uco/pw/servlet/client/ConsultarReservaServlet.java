@@ -1,6 +1,9 @@
 package es.uco.pw.servlet.client;
 
 import es.uco.pw.business.reserva.ReservaDTO;
+import es.uco.pw.business.reserva.ReservaBono;
+import es.uco.pw.business.reserva.ReservaFamiliar;
+import es.uco.pw.business.reserva.ReservaInfantil;
 import es.uco.pw.data.dao.ReservasDAO;
 import es.uco.pw.display.javabean.CustomerBean;
 import es.uco.pw.display.javabean.ReservaBean;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,45 +32,84 @@ public class ConsultarReservaServlet extends HttpServlet {
 
         if (customer == null) {
             request.setAttribute("error", "Debes iniciar sesión para acceder a esta funcionalidad.");
-            request.getRequestDispatcher("../view/consultarReservaError.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/consultarReservaError.jsp").forward(request, response);
             return;
         }
 
         String fechaInicioParam = request.getParameter("fechaInicio");
         String fechaFinParam = request.getParameter("fechaFin");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaInicio, fechaFin;
-
         try {
-            fechaInicio = sdf.parse(fechaInicioParam);
-            fechaFin = sdf.parse(fechaFinParam);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaInicio = sdf.parse(fechaInicioParam);
+            Date fechaFin = sdf.parse(fechaFinParam);
 
             if (fechaInicio.after(fechaFin)) {
                 request.setAttribute("error", "La fecha de inicio no puede ser posterior a la fecha de fin.");
-                request.getRequestDispatcher("../view/consultarReservaError.jsp").forward(request, response);
+                request.getRequestDispatcher("/include/consultarReservaError.jsp").forward(request, response);
                 return;
             }
 
-            // Lógica de consulta y redirección a la vista correspondiente
+            // Consulta las reservas desde la base de datos
             ReservasDAO reservasDAO = new ReservasDAO(getServletContext());
-            // Se obtienen las reservas desde la base de datos
             List<ReservaDTO> reservas = reservasDAO.consultarReservasPorCorreoYFechas(customer.getCorreo(), fechaInicio, fechaFin);
 
-            // Se crea un objeto reservaBean con las reservas obtenidas
-            ReservaBean reservaBean = new ReservaBean(reservas);
-            // Se pasa el objeto reservaBean a la vista
-            request.setAttribute("reservaBean", reservaBean);
+            if (reservas == null || reservas.isEmpty()) {
+                request.setAttribute("error", "No se encontraron reservas en el rango seleccionado.");
+                request.getRequestDispatcher("/include/consultarReservaError.jsp").forward(request, response);
+                return;
+            }
+
+            // Transformar y clasificar reservas en finalizadas y futuras
+            List<ReservaBean> reservasFinalizadas = new ArrayList<>();
+            List<ReservaBean> reservasFuturas = new ArrayList<>();
+            Date fechaActual = new Date();
+
+            for (ReservaDTO reserva : reservas) {
+                ReservaBean reservaBean = new ReservaBean();
+
+                // Datos comunes de la reserva
+                reservaBean.setIdReserva(reserva.getIdReserva());
+                reservaBean.setFechaHora(reserva.getFechaHora());
+                reservaBean.setDuracionMinutos(reserva.getDuracionMinutos());
+                reservaBean.setIdPista(reserva.getIdPista());
+                reservaBean.setPrecio(reserva.getPrecio());
+                reservaBean.setDescuento(reserva.getDescuento());
+
+                // Datos específicos si es con bono
+                if (reserva instanceof ReservaBono) {
+                    ReservaBono reservaBono = (ReservaBono) reserva;
+                    reservaBean.setIdBono(reservaBono.getIdBono());
+                    reservaBean.setNumeroSesion(reservaBono.getNumeroSesion());
+                }
+
+                // Datos específicos si es Familiar o Infantil
+                if (reserva.getReservaEspecifica() instanceof ReservaFamiliar) {
+                    ReservaFamiliar reservaFamiliar = (ReservaFamiliar) reserva.getReservaEspecifica();
+                    reservaBean.setNumeroAdultos(reservaFamiliar.getNumeroAdultos());
+                    reservaBean.setNumeroNinos(reservaFamiliar.getNumeroNinos());
+                } else if (reserva.getReservaEspecifica() instanceof ReservaInfantil) {
+                    ReservaInfantil reservaInfantil = (ReservaInfantil) reserva.getReservaEspecifica();
+                    reservaBean.setNumeroNinos(reservaInfantil.getNumeroNinos());
+                }
+
+                // Clasificación de reservas
+                if (reserva.getFechaHora().before(fechaActual)) {
+                    reservasFinalizadas.add(reservaBean);
+                } else {
+                    reservasFuturas.add(reservaBean);
+                }
+            }
             
-            // Redirige a la vista para mostrar las reservas
+
+            // Pasar las listas a la vista
+            request.setAttribute("reservasFinalizadas", reservasFinalizadas);
+            request.setAttribute("reservasFuturas", reservasFuturas);
             request.getRequestDispatcher("/mvc/view/mostrarReservas.jsp").forward(request, response);
 
         } catch (ParseException e) {
-            request.setAttribute("error", "Formato de fecha inválido.");
-            request.getRequestDispatcher("../view/consultarReservaError.jsp").forward(request, response);
+            request.setAttribute("error", "Formato de fecha inválido. Usa yyyy-MM-dd.");
+            request.getRequestDispatcher("/include/consultarReservaError.jsp").forward(request, response);
         }
     }
 }
-
-
-

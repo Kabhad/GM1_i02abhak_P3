@@ -1,0 +1,64 @@
+/* Estilos para tablas de reservas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+h2 {
+    margin-top: 20px;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 1.5em;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.no-reservas {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.nav-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.nav-button:hover {
+    background-color: #45a049;
+}
+
