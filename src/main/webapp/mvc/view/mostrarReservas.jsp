@@ -7,7 +7,7 @@
 <head>
     <title>Reservas Finalizadas y Futuras</title>
     <!-- Enlace al CSS separado -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mostrarReservas.css">
+    <link rel="stylesheet" href="../../css/mostrarReservas.css">
 </head>
 <body>
     <h2>Reservas Finalizadas</h2>
@@ -18,6 +18,8 @@
             <th>Duración</th>
             <th>Pista</th>
             <th>Precio</th>
+            <th>Descuento</th>
+            <th>Detalles</th>
         </tr>
         <%
             List<ReservaBean> reservasFinalizadas = (List<ReservaBean>) request.getAttribute("reservasFinalizadas");
@@ -30,13 +32,26 @@
                 <td><%= reserva.getDuracionMinutos() %> minutos</td>
                 <td><%= reserva.getIdPista() %></td>
                 <td><%= reserva.getPrecio() %> €</td>
+                <td><%= reserva.getDescuento() %> €</td>
+                <td>
+                    <c:if test="${not empty reserva.idBono}">
+                        <b>Bono:</b> <%= reserva.getIdBono() %> <br/>
+                        <b>Sesión:</b> <%= reserva.getNumeroSesion() %> <br/>
+                    </c:if>
+                    <c:if test="${not empty reserva.numeroAdultos}">
+                        <b>Familiares:</b> Adultos: <%= reserva.getNumeroAdultos() %>, Niños: <%= reserva.getNumeroNinos() %> <br/>
+                    </c:if>
+                    <c:if test="${empty reserva.numeroAdultos}">
+                        <b>Infantil:</b> Niños: <%= reserva.getNumeroNinos() %> <br/>
+                    </c:if>
+                </td>
             </tr>
         <%
                 }
             } else {
         %>
             <tr>
-                <td colspan="5" class="no-reservas">No hay reservas finalizadas en este rango de fechas.</td>
+                <td colspan="7" class="no-reservas">No hay reservas finalizadas en este rango de fechas.</td>
             </tr>
         <%
             }
@@ -51,6 +66,8 @@
             <th>Duración</th>
             <th>Pista</th>
             <th>Precio</th>
+            <th>Descuento</th>
+            <th>Detalles</th>
         </tr>
         <%
             List<ReservaBean> reservasFuturas = (List<ReservaBean>) request.getAttribute("reservasFuturas");
@@ -63,26 +80,36 @@
                 <td><%= reserva.getDuracionMinutos() %> minutos</td>
                 <td><%= reserva.getIdPista() %></td>
                 <td><%= reserva.getPrecio() %> €</td>
+                <td><%= reserva.getDescuento() %> €</td>
+                <td>
+                    <c:if test="${not empty reserva.idBono}">
+                        <b>Bono:</b> <%= reserva.getIdBono() %> <br/>
+                        <b>Sesión:</b> <%= reserva.getNumeroSesion() %> <br/>
+                    </c:if>
+                    <c:if test="${not empty reserva.numeroAdultos}">
+                        <b>Familiares:</b> Adultos: <%= reserva.getNumeroAdultos() %>, Niños: <%= reserva.getNumeroNinos() %> <br/>
+                    </c:if>
+                    <c:if test="${empty reserva.numeroAdultos}">
+                        <b>Infantil:</b> Niños: <%= reserva.getNumeroNinos() %> <br/>
+                    </c:if>
+                </td>
             </tr>
         <%
                 }
             } else {
         %>
             <tr>
-                <td colspan="5" class="no-reservas">No hay reservas futuras en este rango de fechas.</td>
+                <td colspan="7" class="no-reservas">No hay reservas futuras en este rango de fechas.</td>
             </tr>
         <%
             }
         %>
     </table>
 
-	
-	<!-- Botones de navegación -->
-	<div class="button-container">
-	    <a href="../mvc/view/consultarReservas.jsp" class="nav-button">Hacer Otra Búsqueda</a>
-	    <a href="../mvc/view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
-	</div>
-
-
+    <!-- Botones de navegación -->
+    <div class="button-container">
+        <a href="../mvc/view/consultarReservas.jsp" class="nav-button">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+    </div>
 </body>
 </html>
