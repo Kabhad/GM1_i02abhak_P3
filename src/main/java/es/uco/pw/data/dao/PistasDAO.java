@@ -165,11 +165,13 @@ public class PistasDAO {
         // Consulta para buscar la pista por nombre
         String buscarPistaPorNombre = prop.getProperty("buscarPistaPorNombre");
         // Consulta para obtener el estado del material
-        String obtenerEstadoMaterial = "SELECT idMaterial, tipo, usoExterior, estado FROM Material WHERE idMaterial = ?";
+        String obtenerEstadoMaterial = prop.getProperty("obtenerEstadoMaterial");
         // Consulta para asociar el material a la pista
         String asociarMaterialAPista = prop.getProperty("asociarMaterialAPista");
         // Consulta para actualizar el estado del material
-        String actualizarEstadoMaterial = "UPDATE Material SET estado = 'RESERVADO' WHERE idMaterial = ?";
+        String actualizarEstadoMaterial = prop.getProperty("actualizarEstadoMaterial");
+        // Consulta para verificar si el material ya esta asociado
+        String verificarMateriales = prop.getProperty("verificarMaterialesAsociados");
 
         // Buscar la pista por nombre primero y verificar disponibilidad
         try (PreparedStatement psBuscar = con.prepareStatement(buscarPistaPorNombre)) {
@@ -209,13 +211,11 @@ public class PistasDAO {
                     throw new AsociacionMaterialException("El material no se puede usar en una pista exterior porque no es apto para exteriores.");
                 }
 
-                // Verificar el número de materiales ya asociados a la pista
-                String verificarMateriales = "SELECT tipo, COUNT(*) AS cantidad FROM Material WHERE idPista = ? GROUP BY tipo";
                 try (PreparedStatement psVerificar = con.prepareStatement(verificarMateriales)) {
                     psVerificar.setInt(1, idPista);
                     ResultSet rsVerificar = psVerificar.executeQuery();
-                    
                     int pelotas = 0, canastas = 0, conos = 0;
+
                     while (rsVerificar.next()) {
                         TipoMaterial tipo = TipoMaterial.valueOf(rsVerificar.getString("tipo"));
                         int cantidad = rsVerificar.getInt("cantidad");
@@ -242,12 +242,11 @@ public class PistasDAO {
                     }
                 }
 
-                // Asociar el material a la pista
                 try (PreparedStatement psAsociar = con.prepareStatement(asociarMaterialAPista)) {
                     psAsociar.setInt(1, idPista);
                     psAsociar.setInt(2, idMaterial);
                     int filasActualizadas = psAsociar.executeUpdate();
-                    
+
                     if (filasActualizadas > 0) {
                         try (PreparedStatement psActualizarEstado = con.prepareStatement(actualizarEstadoMaterial)) {
                             psActualizarEstado.setInt(1, idMaterial);
@@ -255,7 +254,7 @@ public class PistasDAO {
                         }
                         return true;
                     } else {
-                        throw new AsociacionMaterialException("No se pudo asociar el material. Verifica que el material esté disponible.");
+                        throw new AsociacionMaterialException("No se pudo asociar el material.");
                     }
                 }
             }
