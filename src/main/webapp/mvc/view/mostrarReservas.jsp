@@ -6,8 +6,7 @@
 <html>
 <head>
     <title>Reservas Finalizadas y Futuras</title>
-    <!-- Enlace al CSS separado -->
-    <link rel="stylesheet" href="../../css/mostrarReservas.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mostrarReservas.css">
 </head>
 <body>
     <h2>Reservas Finalizadas</h2>
@@ -18,7 +17,7 @@
             <th>Duración</th>
             <th>Pista</th>
             <th>Precio</th>
-            <th>Descuento</th>
+            <th>Descuento (%)</th>
             <th>Detalles</th>
         </tr>
         <%
@@ -31,19 +30,20 @@
                 <td><%= reserva.getFechaHora() %></td>
                 <td><%= reserva.getDuracionMinutos() %> minutos</td>
                 <td><%= reserva.getIdPista() %></td>
-                <td><%= reserva.getPrecio() %> €</td>
-                <td><%= reserva.getDescuento() %> €</td>
+                <td><%= String.format("%.2f", reserva.getPrecio()) %> €</td>
+                <td><%= String.format("%.0f", reserva.getDescuento() * 100) %>%</td>
                 <td>
-                    <c:if test="${not empty reserva.idBono}">
-                        <b>Bono:</b> <%= reserva.getIdBono() %> <br/>
-                        <b>Sesión:</b> <%= reserva.getNumeroSesion() %> <br/>
-                    </c:if>
-                    <c:if test="${not empty reserva.numeroAdultos}">
-                        <b>Familiares:</b> Adultos: <%= reserva.getNumeroAdultos() %>, Niños: <%= reserva.getNumeroNinos() %> <br/>
-                    </c:if>
-                    <c:if test="${empty reserva.numeroAdultos}">
-                        <b>Infantil:</b> Niños: <%= reserva.getNumeroNinos() %> <br/>
-                    </c:if>
+                    Tipo: <%= reserva.getTipoReserva() %> <br>
+                    <% if (reserva.getIdBono() != null) { %>
+                        Bono: <%= reserva.getIdBono() %> - Sesión: <%= reserva.getNumeroSesion() %> <br>
+                    <% } %>
+                    <% if (reserva.getTipoReserva().equals("Familiar")) { %>
+                        Adultos: <%= reserva.getNumeroAdultos() %> - Niños: <%= reserva.getNumeroNinos() %>
+                    <% } else if (reserva.getTipoReserva().equals("Infantil")) { %>
+                        Niños: <%= reserva.getNumeroNinos() %>
+                    <% } else if (reserva.getTipoReserva().equals("Adulto")) { %>
+                        Adultos: <%= reserva.getNumeroAdultos() %>
+                    <% } %>
                 </td>
             </tr>
         <%
@@ -66,7 +66,7 @@
             <th>Duración</th>
             <th>Pista</th>
             <th>Precio</th>
-            <th>Descuento</th>
+            <th>Descuento (%)</th>
             <th>Detalles</th>
         </tr>
         <%
@@ -79,19 +79,20 @@
                 <td><%= reserva.getFechaHora() %></td>
                 <td><%= reserva.getDuracionMinutos() %> minutos</td>
                 <td><%= reserva.getIdPista() %></td>
-                <td><%= reserva.getPrecio() %> €</td>
-                <td><%= reserva.getDescuento() %> €</td>
+                <td><%= String.format("%.2f", reserva.getPrecio()) %> €</td>
+                <td><%= String.format("%.0f", reserva.getDescuento() * 100) %>%</td>
                 <td>
-                    <c:if test="${not empty reserva.idBono}">
-                        <b>Bono:</b> <%= reserva.getIdBono() %> <br/>
-                        <b>Sesión:</b> <%= reserva.getNumeroSesion() %> <br/>
-                    </c:if>
-                    <c:if test="${not empty reserva.numeroAdultos}">
-                        <b>Familiares:</b> Adultos: <%= reserva.getNumeroAdultos() %>, Niños: <%= reserva.getNumeroNinos() %> <br/>
-                    </c:if>
-                    <c:if test="${empty reserva.numeroAdultos}">
-                        <b>Infantil:</b> Niños: <%= reserva.getNumeroNinos() %> <br/>
-                    </c:if>
+                    Tipo: <%= reserva.getTipoReserva() %> <br>
+                    <% if (reserva.getIdBono() != null) { %>
+                        Bono: <%= reserva.getIdBono() %> - Sesión: <%= reserva.getNumeroSesion() %> <br>
+                    <% } %>
+                    <% if (reserva.getTipoReserva().equals("Familiar")) { %>
+                        Adultos: <%= reserva.getNumeroAdultos() %> - Niños: <%= reserva.getNumeroNinos() %>
+                    <% } else if (reserva.getTipoReserva().equals("Infantil")) { %>
+                        Niños: <%= reserva.getNumeroNinos() %>
+                    <% } else if (reserva.getTipoReserva().equals("Adulto")) { %>
+                        Adultos: <%= reserva.getNumeroAdultos() %>
+                    <% } %>
                 </td>
             </tr>
         <%
@@ -108,8 +109,9 @@
 
     <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../mvc/view/consultarReservas.jsp" class="nav-button">Hacer Otra Búsqueda</a>
-        <a href="../mvc/view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+        <a href="../mvc/view/consultarReservas.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
     </div>
+
 </body>
 </html>

@@ -174,9 +174,7 @@ public class JugadoresDAO {
                 jugador.setTipoUsuario(rs.getString("tipoUsuario"));
                 jugador.setNumeroReservasCompletadas(rs.getInt("numeroReservasCompletadas"));
                 return jugador;
-            } else {
-                System.out.println("No se encontró un jugador con las credenciales proporcionadas.");
-            }
+            } 
         } catch (SQLException e) {
             e.printStackTrace(); // Mostrar el error en la consola
         } finally {

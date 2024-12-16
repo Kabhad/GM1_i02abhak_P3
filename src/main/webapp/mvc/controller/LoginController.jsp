@@ -42,11 +42,11 @@
         } else {
             // Si el tipo de usuario es desconocido, redirigir al login con un error
             request.setAttribute("error", "Tipo de usuario desconocido.");
-            request.getRequestDispatcher("../include/loginError.jsp").forward(request, response);
+            request.getRequestDispatcher("../../include/loginError.jsp").forward(request, response);
         }
     } else {
         // Redirigir al loginError.jsp con mensaje de error
         request.setAttribute("error", "Credenciales inválidas. Por favor, inténtalo nuevamente.");
-        request.getRequestDispatcher("../include/loginError.jsp").forward(request, response);
+        request.getRequestDispatcher("../../include/loginError.jsp").forward(request, response);
     }
 %>

@@ -1,6 +1,7 @@
 package es.uco.pw.servlet.client;
 
 import es.uco.pw.business.reserva.ReservaDTO;
+import es.uco.pw.business.reserva.ReservaAdulto;
 import es.uco.pw.business.reserva.ReservaBono;
 import es.uco.pw.business.reserva.ReservaFamiliar;
 import es.uco.pw.business.reserva.ReservaInfantil;
@@ -83,7 +84,7 @@ public class ConsultarReservaServlet extends HttpServlet {
                     reservaBean.setNumeroSesion(reservaBono.getNumeroSesion());
                 }
 
-                // Datos específicos si es Familiar o Infantil
+             // Datos específicos si es Familiar, Infantil o Adulto
                 if (reserva.getReservaEspecifica() instanceof ReservaFamiliar) {
                     ReservaFamiliar reservaFamiliar = (ReservaFamiliar) reserva.getReservaEspecifica();
                     reservaBean.setNumeroAdultos(reservaFamiliar.getNumeroAdultos());
@@ -91,16 +92,21 @@ public class ConsultarReservaServlet extends HttpServlet {
                 } else if (reserva.getReservaEspecifica() instanceof ReservaInfantil) {
                     ReservaInfantil reservaInfantil = (ReservaInfantil) reserva.getReservaEspecifica();
                     reservaBean.setNumeroNinos(reservaInfantil.getNumeroNinos());
+                } else if (reserva.getReservaEspecifica() instanceof ReservaAdulto) {
+                    ReservaAdulto reservaAdulto = (ReservaAdulto) reserva.getReservaEspecifica();
+                    reservaBean.setNumeroAdultos(reservaAdulto.getNumeroAdultos());
                 }
+
 
                 // Clasificación de reservas
                 if (reserva.getFechaHora().before(fechaActual)) {
                     reservasFinalizadas.add(reservaBean);
                 } else {
                     reservasFuturas.add(reservaBean);
-                }
+                }	            
             }
-            
+
+
 
             // Pasar las listas a la vista
             request.setAttribute("reservasFinalizadas", reservasFinalizadas);

@@ -21,26 +21,11 @@ public class ReservaBean implements Serializable {
     private Integer numeroSesion;
 
     // Atributos específicos para reservas familiares e infantiles
-    private Integer numeroAdultos;
-    private Integer numeroNinos;
+    private Integer numeroAdultos = 0; // Inicializado a 0
+    private Integer numeroNinos = 0;   // Inicializado a 0
 
     // Constructor vacío
     public ReservaBean() { }
-
-    // Constructor general que permite inicializar los datos de una reserva
-    public ReservaBean(int idReserva, Date fechaHora, int duracionMinutos, int idPista, float precio, float descuento,
-                       Integer idBono, Integer numeroSesion, Integer numeroAdultos, Integer numeroNinos) {
-        this.idReserva = idReserva;
-        this.fechaHora = fechaHora;
-        this.duracionMinutos = duracionMinutos;
-        this.idPista = idPista;
-        this.precio = precio;
-        this.descuento = descuento;
-        this.idBono = idBono;
-        this.numeroSesion = numeroSesion;
-        this.numeroAdultos = numeroAdultos;
-        this.numeroNinos = numeroNinos;
-    }
 
     // Getters y Setters
     public int getIdReserva() { return idReserva; }
@@ -72,4 +57,24 @@ public class ReservaBean implements Serializable {
 
     public Integer getNumeroNinos() { return numeroNinos; }
     public void setNumeroNinos(Integer numeroNinos) { this.numeroNinos = numeroNinos; }
+
+    /**
+     * Método calculado: Devuelve el tipo de reserva basado en los valores de adultos y niños.
+     * @return String con el tipo de reserva: "Infantil", "Adulto" o "Familiar".
+     */
+    /**
+     * Método calculado: Devuelve el tipo de reserva basado en los valores de adultos y niños.
+     * @return String con el tipo de reserva: "Infantil", "Adulto" o "Familiar".
+     */
+    public String getTipoReserva() {
+        if ((numeroAdultos != null && numeroAdultos > 0) && (numeroNinos == null || numeroNinos == 0)) {
+            return "Adulto";
+        } else if ((numeroNinos != null && numeroNinos > 0) && (numeroAdultos == null || numeroAdultos == 0)) {
+            return "Infantil";
+        } else if (numeroAdultos != null && numeroAdultos > 0 && numeroNinos != null && numeroNinos > 0) {
+            return "Familiar";
+        }
+        return "Desconocido";
+    }
+
 }
