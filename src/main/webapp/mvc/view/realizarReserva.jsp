@@ -4,25 +4,28 @@
 <head>
     <title>Realizar Reserva</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
-    <script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js" defer></script>
-    
 </head>
 <body>
     <h1>Realizar una Nueva Reserva</h1>
-    <form action="${pageContext.request.contextPath}/client/realizarReserva" method="post">
-        <!-- Selección de tipo de reserva -->
-        <label for="tipoReserva">Tipo de Reserva:</label><br>
-        <select id="tipoReserva" name="tipoReserva" onchange="filtrarPistas()" required>
-            <option value="adulto">Adulto</option>
-            <option value="infantil">Infantil</option>
-            <option value="familiar">Familiar</option>
-        </select><br><br>
 
+    <!-- Formulario para filtrar las pistas -->
+    <form action="${pageContext.request.contextPath}/client/realizarReserva" method="get">
+        <label for="tipoReserva">Tipo de Reserva:</label><br>
+        <select id="tipoReserva" name="tipoReserva" onchange="this.form.submit()" required>
+            <option value="" disabled ${empty param.tipoReserva ? 'selected' : ''}>Selecciona un tipo</option>
+            <option value="adulto" ${param.tipoReserva == 'adulto' ? 'selected' : ''}>Adulto</option>
+            <option value="infantil" ${param.tipoReserva == 'infantil' ? 'selected' : ''}>Infantil</option>
+            <option value="familiar" ${param.tipoReserva == 'familiar' ? 'selected' : ''}>Familiar</option>
+        </select><br><br>
+    </form>
+
+    <!-- Formulario principal para enviar la reserva -->
+    <form action="${pageContext.request.contextPath}/client/realizarReserva" method="post">
         <!-- Selección de pista -->
         <label for="idPista">Pista Disponible:</label><br>
         <select id="idPista" name="idPista" required>
             <option value="" disabled selected>Selecciona una pista</option>
-            <!-- Las opciones de pista se cargarán dinámicamente con JavaScript -->
+            ${opcionesPistas} <!-- Inserta el HTML generado en el Servlet -->
         </select><br><br>
 
         <!-- Fecha y hora -->
@@ -49,41 +52,8 @@
         <button type="submit" class="btn-primary">Realizar Reserva</button>
     </form>
 
-    <script>
-        // Simulación de pistas disponibles por tipo
-        const pistasDisponibles = {
-            adulto: [
-                { id: 1, nombre: "Pista A - Exterior" },
-                { id: 2, nombre: "Pista B - Interior" }
-            ],
-            infantil: [
-                { id: 3, nombre: "Pista C - Infantil" },
-                { id: 4, nombre: "Pista D - Multiuso" }
-            ],
-            familiar: [
-                { id: 1, nombre: "Pista A - Exterior" },
-                { id: 3, nombre: "Pista C - Infantil" }
-            ]
-        };
-
-        // Filtrar las pistas según el tipo de reserva seleccionado
-        function filtrarPistas() {
-            const tipo = document.getElementById("tipoReserva").value;
-            const pistaSelect = document.getElementById("idPista");
-
-            // Limpiar opciones anteriores
-            pistaSelect.innerHTML = '<option value="" disabled selected>Selecciona una pista</option>';
-
-            // Agregar nuevas opciones
-            if (pistasDisponibles[tipo]) {
-                pistasDisponibles[tipo].forEach(pista => {
-                    const option = document.createElement("option");
-                    option.value = pista.id;
-                    option.textContent = pista.nombre;
-                    pistaSelect.appendChild(option);
-                });
-            }
-        }
-    </script>
+    <!-- Botón para volver al menú principal -->
+    <br>
+    <a href="../view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>

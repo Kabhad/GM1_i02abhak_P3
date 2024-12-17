@@ -29,7 +29,7 @@
     <%
         }
     %>
-    <a href="${pageContext.request.contextPath}/client/realizarReserva" class="btn-secondary">Nueva Reserva</a>
-    <a href="${pageContext.request.contextPath}/client/home" class="btn-secondary">Menú Principal</a>
+        <a href="../mvc/view/realizarReserva.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>

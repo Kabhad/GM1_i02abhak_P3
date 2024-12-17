@@ -8,6 +8,9 @@ import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.business.pista.TamanoPista;
 import es.uco.pw.data.common.DBConnection;
 import java.util.*;
+
+import javax.servlet.ServletContext;
+
 import java.io.*;
 import java.sql.*;
 
@@ -28,24 +31,33 @@ public class PistasDAO {
 	 */
 	private Properties prop;
 
-    /**
-     * Constructor privado para evitar la instanciación directa.
-     * Inicializa las listas de pistas y materiales y carga las rutas de los ficheros.
-     */
-    public PistasDAO() {
-        prop = new Properties();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("sql.properties"));
-            prop.load(reader);
-            reader.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("Archivo 'sql.properties' no encontrado.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("Error al leer 'sql.properties'.");
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Constructor que carga las propiedades SQL desde el archivo `sql.properties`.
+	 * 
+	 * @param application ServletContext para acceder a los parámetros y archivos de configuración.
+	 */
+	public PistasDAO(ServletContext application) {
+	    prop = new Properties();
+	    try {
+	        // Obtener la ruta al archivo 'sql.properties' desde el contexto de la aplicación (web.xml)
+	        String path = application.getInitParameter("sqlproperties");
+	        if (path == null) {
+	            throw new FileNotFoundException("El parámetro 'sqlproperties' no está definido en web.xml");
+	        }
+
+	        // Obtener la ruta física y cargar el archivo de propiedades
+	        BufferedReader reader = new BufferedReader(new FileReader(application.getRealPath(path)));
+	        prop.load(reader);
+	        reader.close();
+	    } catch (FileNotFoundException e) {
+	        System.err.println("Archivo 'sql.properties' no encontrado. Verifica la ruta en web.xml.");
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        System.err.println("Error al leer el archivo 'sql.properties'.");
+	        e.printStackTrace();
+	    }
+	}
+
 
     /**
      * Método para crear una nueva pista y añadirla a la lista de pistas.

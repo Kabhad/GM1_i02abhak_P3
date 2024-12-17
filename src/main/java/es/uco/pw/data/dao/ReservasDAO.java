@@ -1357,8 +1357,8 @@ public class ReservasDAO {
      * @param tipoReserva El tipo de reserva (infantil, familiar, adulto).
      * @return Una lista de pistas disponibles para el tipo de reserva dado.
      */
-    public List<PistaDTO> listarPistasDisponibles(String tipoReserva) {
-        PistasDAO pistasDAO = new PistasDAO(); // Instanciación de PistasDAO
+    public List<PistaDTO> listarPistasDisponibles(String tipoReserva, ServletContext application) {
+        PistasDAO pistasDAO = new PistasDAO(application); // Instanciación de PistasDAO
         try {
             return pistasDAO.listarPistasDisponibles(tipoReserva); // Llamada al método en PistasDAO con el tipo de reserva
         } catch (SQLException e) {
@@ -1373,9 +1373,9 @@ public class ReservasDAO {
      * @param idPista El ID de la pista a buscar.
      * @return La pista encontrada, o null si no se encuentra.
      */
-    public PistaDTO buscarPistaPorId(int idPista) {
+    public PistaDTO buscarPistaPorId(int idPista, ServletContext application) {
         try {
-            PistasDAO pistasDAO = new PistasDAO(); // Instanciación directa de PistasDAO
+            PistasDAO pistasDAO = new PistasDAO(application); // Instanciación directa de PistasDAO
             return pistasDAO.buscarPistaPorId(idPista); // Llamada al método no estático
         } catch (SQLException e) {
             e.printStackTrace();

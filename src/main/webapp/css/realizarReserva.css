@@ -38,3 +38,25 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+/* Estilos generales para enlaces con clase btn-secondary */
+a.btn-secondary {
+    display: inline-block; /* Permite que se comporte como un botón */
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #4CAF50; /* Mismo color que el botón */
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none; /* Elimina el subrayado */
+    border-radius: 5px; /* Esquinas redondeadas */
+    border: none;
+    cursor: pointer;
+}
+
+a.btn-secondary:hover {
+    background-color: #45a049; /* Efecto hover igual al del botón */
+}
+
+
