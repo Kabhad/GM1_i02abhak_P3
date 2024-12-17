@@ -16,3 +16,4 @@
 <pre><%= listaClientes %></pre>
 <a href="../controller/LogoutController.jsp">Cerrar sesión</a>
 <a href="../view/modifyUser.jsp">Modificar datos</a>
+<a href="../view/eliminarReservas.jsp">Eliminar reservas</a>
