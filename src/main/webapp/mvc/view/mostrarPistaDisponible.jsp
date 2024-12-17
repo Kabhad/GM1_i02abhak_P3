@@ -1,4 +1,6 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="es.uco.pw.display.javabean.PistaBean" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +8,13 @@
 </head>
 <body>
     <h1>Pistas Disponibles</h1>
-    <c:if test="${not empty pistasDisponibles}">
+
+    <%
+        // Recuperar la lista de pistas desde el atributo de la solicitud
+        List<PistaBean> pistasDisponibles = (List<PistaBean>) request.getAttribute("pistasDisponibles");
+
+        if (pistasDisponibles != null && !pistasDisponibles.isEmpty()) {
+    %>
         <table border="1">
             <thead>
                 <tr>
@@ -14,26 +22,33 @@
                     <th>Nombre</th>
                     <th>Disponible</th>
                     <th>Exterior</th>
-                    <th>Tamaño</th>
-                    <th>Máx. Jugadores</th>
+                    <th>TamaÃ±o</th>
+                    <th>MÃ¡x. Jugadores</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="pista" items="${pistasDisponibles}">
+                <%
+                    for (PistaBean pista : pistasDisponibles) {
+                %>
                     <tr>
-                        <td>${pista.idPista}</td>
-                        <td>${pista.nombrePista}</td>
-                        <td>${pista.disponible ? 'Sí' : 'No'}</td>
-                        <td>${pista.exterior ? 'Sí' : 'No'}</td>
-                        <td>${pista.tamanoPista}</td>
-                        <td>${pista.maxJugadores}</td>
+                        <td><%= pista.getIdPista() %></td>
+                        <td><%= pista.getNombrePista() %></td>
+                        <td><%= pista.isDisponible() ? "SÃ­" : "No" %></td>
+                        <td><%= pista.isExterior() ? "SÃ­" : "No" %></td>
+                        <td><%= pista.getTamanoPista() %></td>
+                        <td><%= pista.getMaxJugadores() %></td>
                     </tr>
-                </c:forEach>
+                <%
+                    }
+                %>
             </tbody>
         </table>
-    </c:if>
-    <c:if test="${empty pistasDisponibles}">
+    <%
+        } else {
+    %>
         <p>No hay pistas disponibles en este momento.</p>
-    </c:if>
+    <%
+        }
+    %>
 </body>
 </html>

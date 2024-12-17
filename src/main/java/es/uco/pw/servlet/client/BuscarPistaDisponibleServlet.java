@@ -32,51 +32,54 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Crear una instancia del DAO
         PistasDAO pistasDAO = new PistasDAO();
 
         try {
-            // Obtener los parámetros de búsqueda del formulario
             String tamanoParam = request.getParameter("tamano");
             String exteriorParam = request.getParameter("exterior");
 
-            // Llamar al método del DAO para buscar pistas disponibles
-            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasDisponibles();
+            // Manejo correcto de los parámetros
+            String tamano = (tamanoParam != null && !tamanoParam.trim().isEmpty()) ? tamanoParam : "";
+            String exteriorStr = (exteriorParam != null && !exteriorParam.trim().isEmpty()) ? exteriorParam : "";
+            Boolean exterior = null;
 
-            // Convertir la lista de PistaDTO a PistaBean para la vista
+            if (!exteriorStr.isEmpty()) {
+                exterior = Boolean.parseBoolean(exteriorStr);
+            }
+
+            System.out.println("Parametros enviados: ");
+            System.out.println("tamano: " + tamano);
+            System.out.println("exterior: " + exterior);
+
+            // Llamada al método del DAO
+            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasDisponibles(tamano, exterior);
+
+            // Convertir a PistaBean
             List<PistaBean> pistaBeans = new ArrayList<>();
             for (PistaDTO pistaDTO : pistasDisponibles) {
-                // Filtrar según los parámetros recibidos
-                if (tamanoParam != null && !tamanoParam.isEmpty() && !tamanoParam.equals(pistaDTO.getPista().name())) {
-                    continue; // Saltar si el tamaño no coincide
-                }
-                if (exteriorParam != null && !exteriorParam.isEmpty() && Boolean.parseBoolean(exteriorParam) != pistaDTO.isExterior()) {
-                    continue; // Saltar si el exterior no coincide
-                }
-
-                // Encapsular la información en PistaBean
                 PistaBean bean = new PistaBean(
-                        pistaDTO.getIdPista(),
-                        pistaDTO.getNombrePista(),
-                        pistaDTO.isDisponible(),
-                        pistaDTO.isExterior(),
-                        pistaDTO.getPista(),
-                        pistaDTO.getMax_jugadores()
+                    pistaDTO.getIdPista(),
+                    pistaDTO.getNombrePista(),
+                    pistaDTO.isDisponible(),
+                    pistaDTO.isExterior(),
+                    pistaDTO.getPista(),
+                    pistaDTO.getMax_jugadores()
                 );
                 pistaBeans.add(bean);
             }
 
-            // Enviar la lista de pistas a la vista
+            // Pasar los resultados a la vista
             request.setAttribute("pistasDisponibles", pistaBeans);
-            request.getRequestDispatcher("/mostrarPistasDisponibles.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/mostrarPistaDisponible.jsp").forward(request, response);
 
         } catch (Exception e) {
-            // Manejo de errores
             e.printStackTrace();
             request.setAttribute("error", "Error al buscar pistas disponibles: " + e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
+
+
 
     /**
      * Método doPost redirige a doGet.

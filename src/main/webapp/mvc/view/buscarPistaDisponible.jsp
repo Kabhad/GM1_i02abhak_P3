@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Buscar Pistas Disponibles</h1>
-    <form id="buscarPistasForm" action="BuscarPistaDisponible" method="GET">
+    <form id="buscarPistasForm" action="${pageContext.request.contextPath}/BuscarPistaDisponible" method="GET">
         <label for="tamano">Tamaño de la pista:</label>
         <select name="tamano" id="tamano">
             <option value="">Cualquiera</option>
