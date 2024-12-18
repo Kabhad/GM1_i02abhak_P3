@@ -1561,9 +1561,8 @@ public class ReservasDAO {
      */
     public Bono obtenerBonoPorJugador(int idJugador) throws SQLException {
         Bono bono = null;
-        String sql = prop.getProperty("obtenerBonoPorJugador"); // Define esta consulta en `sql.properties`
+        String sql = prop.getProperty("obtenerBonoPorJugador"); // Consulta SQL corregida
 
-        // Abrir la conexión a la base de datos
         DBConnection conexion = new DBConnection();
         Connection con = (Connection) conexion.getConnection();
 
@@ -1573,17 +1572,25 @@ public class ReservasDAO {
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idJugador);
-            try (ResultSet rs = (ResultSet) ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     bono = new Bono();
                     bono.setIdBono(rs.getInt("idBono"));
                     bono.setIdUsuario(idJugador);
 
-                    // Recuperar numeroSesion y calcular sesionesRestantes
+                    // Validar y calcular las sesiones restantes
                     int numeroSesion = rs.getInt("numeroSesion");
-                    bono.setSesionesRestantes(5 - numeroSesion);
+                    int sesionesRestantes = Math.max(0, 5 - numeroSesion); // Asegura que no sea negativo
+                    bono.setSesionesRestantes(sesionesRestantes);
 
-                    bono.setFechaCaducidad(rs.getDate("fechaCaducidad"));
+                    // Validar la fecha de caducidad
+                    Date fechaCaducidad = rs.getDate("fechaCaducidad");
+                    bono.setFechaCaducidad(fechaCaducidad);
+
+                    // Lógica para detectar si el bono está caducado
+                    if (fechaCaducidad.before(new Date()) || sesionesRestantes <= 0) {
+                        return null; // Retorna null si el bono no es válido
+                    }
                 }
             }
         } finally {
@@ -1594,6 +1601,7 @@ public class ReservasDAO {
 
         return bono;
     }
+
     
     /**
      * Obtiene una reserva por su ID.
