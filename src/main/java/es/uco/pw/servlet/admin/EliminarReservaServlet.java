@@ -1,5 +1,8 @@
+package es.uco.pw.servlet.admin;
+
 import java.io.IOException;
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,17 +28,22 @@ public class EliminarReservaServlet extends HttpServlet {
         if (idReservaParam != null) {
             try {
                 int idReserva = Integer.parseInt(idReservaParam);
-                boolean eliminada = reservasDAO.eliminarReserva(idReserva);
 
-                if (eliminada) {
+                // Llamada al método eliminarReserva que no devuelve boolean
+                try {
+                    reservasDAO.eliminarReserva(idReserva);
                     request.setAttribute("mensaje", "Reserva eliminada correctamente.");
-                } else {
+                } catch (Exception e) {
+                    // Si hay algún error en la eliminación, manejamos la situación
+                    e.printStackTrace();
                     request.setAttribute("error", "No se pudo eliminar la reserva. Inténtalo de nuevo.");
                 }
+
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "ID de reserva inválido.");
             }
         }
+
 
         // Recargar reservas actualizadas
         List<ReservaDTO> reservasFuturasDTO = reservasDAO.consultarReservasFuturas();
