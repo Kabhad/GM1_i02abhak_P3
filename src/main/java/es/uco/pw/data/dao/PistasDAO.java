@@ -281,7 +281,7 @@ public class PistasDAO {
      * @return La pista correspondiente al nombre dado, o null si no se encuentra.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
-    private PistaDTO buscarPistaPorNombre(String nombrePista) throws SQLException {
+    public PistaDTO buscarPistaPorNombre(String nombrePista) throws SQLException {
         DBConnection conexion = new DBConnection();
         con = (Connection) conexion.getConnection();
         String sql = prop.getProperty("buscarPistaPorNombre");

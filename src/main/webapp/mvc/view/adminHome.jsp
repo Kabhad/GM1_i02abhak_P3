@@ -17,4 +17,5 @@
 <a href="../controller/LogoutController.jsp">Cerrar sesión</a>
 <a href="../view/modifyUser.jsp">Modificar datos</a>
 <a href="../view/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta Material</a>
+<a href="../view/darAltaPista.jsp" class="btn-secondary">Dar de Alta Pista</a>
 <a href="<%= request.getContextPath() %>/admin/eliminarReserva">Eliminar reservas</a>
