@@ -16,4 +16,5 @@
 <pre><%= listaClientes %></pre>
 <a href="../controller/LogoutController.jsp">Cerrar sesión</a>
 <a href="../view/modifyUser.jsp">Modificar datos</a>
+<a href="../view/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta Material</a>
 <a href="<%= request.getContextPath() %>/admin/eliminarReserva">Eliminar reservas</a>

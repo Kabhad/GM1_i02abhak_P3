@@ -4,8 +4,10 @@
 <html>
 <head>
     <title>Buscar Pistas Disponibles</title>
+
+
     <link rel="stylesheet" href="../../css/buscarPistaDisponible.css">
-    <script src="scripts/buscarPistasValidation.js" defer></script>
+    <script src="../js/buscarPistasValidation.js" defer></script>
 </head>
 <body>
     <h1>Buscar Pistas Disponibles</h1>

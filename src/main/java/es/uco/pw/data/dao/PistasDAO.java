@@ -612,6 +612,43 @@ public class PistasDAO {
         }
         return pistas;
     }
+    
+    /**
+     * Método para obtener todos los materiales almacenados en la base de datos.
+     *
+     * @return Lista de objetos MaterialDTO con todos los materiales disponibles.
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     */
+    public List<MaterialDTO> obtenerTodosLosMateriales() throws SQLException {
+        List<MaterialDTO> materiales = new ArrayList<>();
+        DBConnection conexion = new DBConnection();
+        this.con = conexion.getConnection();
+
+        if (this.con == null) {
+            throw new SQLException("Error: No se pudo obtener la conexión a la base de datos.");
+        }
+        String sql = prop.getProperty("obtenerTodosLosMateriales");
+        if (sql == null || sql.isEmpty()) {
+            throw new IllegalStateException("Error: La consulta SQL para 'obtenerTodosLosMateriales' no está definida.");
+        }
+
+        try (PreparedStatement ps = this.con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                MaterialDTO material = new MaterialDTO(
+                    rs.getInt("idMaterial"),
+                    TipoMaterial.valueOf(rs.getString("tipo")),
+                    rs.getBoolean("usoExterior"),
+                    EstadoMaterial.valueOf(rs.getString("estado"))
+                );
+                materiales.add(material);
+            }
+        } finally {
+            conexion.closeConnection();
+        }
+        return materiales;
+    }
+
 
     /**
      * Método para buscar una pista por su ID.
