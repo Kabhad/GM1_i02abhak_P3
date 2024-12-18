@@ -45,13 +45,13 @@ public class AccessControlFilter implements Filter {
 
         // Verificar permisos por rol y ruta
         String rol = usuario.getTipoUsuario().toUpperCase(); // Convertir rol a mayúsculas para consistencia
-        if (path.startsWith(contextPath + "/administrador") && !"ADMINISTRADOR".equals(rol)) {
+        if (path.startsWith(contextPath + "/admin") && !"ADMINISTRADOR".equals(rol)) {
             request.setAttribute("error", "Acceso denegado. Solo los administradores pueden acceder a esta página.");
             request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
             return;
         }
 
-        if (path.startsWith(contextPath + "/cliente") && !"CLIENTE".equals(rol) && !"ADMINISTRADOR".equals(rol)) {
+        if (path.startsWith(contextPath + "/client") && !"CLIENTE".equals(rol) && !"ADMINISTRADOR".equals(rol)) {
             request.setAttribute("error", "Acceso denegado. Solo los clientes pueden acceder a esta página.");
             request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
             return;
