@@ -1,0 +1,143 @@
+/* Importar la fuente Aptos de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Aptos:wght@500&display=swap');
+
+/* Estilo para el título */
+h1 {
+    text-align: center; /* Centra el título */
+    font-family: 'Aptos', sans-serif; /* Aplicamos la fuente Aptos */
+    font-size: 36px; /* Tamaño de la fuente */
+    color: #333; /* Color oscuro para el texto */
+    text-transform: uppercase; /* Convertir a mayúsculas */
+    letter-spacing: 2px; /* Espaciado entre letras */
+    margin-bottom: 20px; /* Espacio debajo del título */
+    font-weight: bold; /* Hacer la fuente en negrita */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Agregar sombra suave */
+}
+
+/* Estilos de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo del botón eliminar (usando imagen de papelera) */
+.btn-eliminar {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    outline: none;
+}
+
+/* Estilo de la imagen dentro del botón (papelera) */
+.trash-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Efecto hover sobre la imagen */
+.btn-eliminar:hover .trash-icon {
+    transform: scale(1.2); /* Agranda la imagen */
+    opacity: 0.8;
+}
+
+/* Efecto click sobre la imagen */
+.btn-eliminar:active .trash-icon {
+    transform: scale(0.95); /* Reduce ligeramente la imagen */
+}
+
+/* Mensajes de éxito o error */
+#mensajeExito, #mensajeError {
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+/* Mensaje de éxito */
+#mensajeExito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Mensaje de error */
+#mensajeError {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none; /* Inicialmente está oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal-content h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.btn-confirmar, .btn-cancelar {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.btn-confirmar {
+    background-color: #28a745; /* Verde para confirmar */
+    color: #fff;
+}
+
+.btn-cancelar {
+    background-color: #dc3545; /* Rojo para cancelar */
+    color: #fff;
+}
+
+.btn-confirmar:hover, .btn-cancelar:hover {
+    opacity: 0.8;
+}
