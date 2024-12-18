@@ -583,8 +583,7 @@ public class ReservasDAO {
      * @throws IllegalArgumentException Si no se encuentra la reserva, si no se puede modificar, si la pista no es válida o si los parámetros son inválidos.
      * @throws IllegalStateException Si ocurre un error al actualizar la base de datos.
      */
-    public void modificarReserva(JugadorDTO jugadorDTO, PistaDTO pistaOriginal, Date fechaHoraOriginal, PistaDTO nuevaPista, Date nuevaFechaHora, int nuevaDuracionMinutos, int numeroAdultos, int numeroNinos, Bono bono, int numeroSesion) {
-        // Buscar la reserva existente en la base de datos
+    public void modificarReserva(JugadorDTO jugadorDTO, PistaDTO pistaOriginal, Date fechaHoraOriginal, PistaDTO nuevaPista, Date nuevaFechaHora, int nuevaDuracionMinutos, int numeroAdultos, int numeroNinos, ServletContext application) {
         ReservaDTO reservaExistente = encontrarReserva(jugadorDTO.getIdJugador(), pistaOriginal.getIdPista(), fechaHoraOriginal);
 
         if (reservaExistente == null) {
@@ -596,32 +595,36 @@ public class ReservasDAO {
             throw new IllegalArgumentException("No se puede modificar la reserva, ya está dentro de las 24h antes de la hora de inicio.");
         }
 
+        // Validar restricciones para reservas de bono
+        if (reservaExistente instanceof ReservaBono && !pistaOriginal.equals(nuevaPista)) {
+            throw new IllegalArgumentException("No se puede cambiar la pista en reservas asociadas a un bono.");
+        }
+
         // Validar la nueva fecha y hora
         validarFechaHora(nuevaFechaHora);
 
-        // Determinar el nuevo tipo de reserva basado en los parámetros
-        String nuevoTipoReserva = determinarTipoReserva(numeroAdultos, numeroNinos);
-
-        // Validar si la nueva pista cumple las condiciones para el tipo de reserva
-        if (!cumpleCondicionesTipoReserva(nuevaPista, nuevoTipoReserva)) {
-            throw new IllegalArgumentException("La pista seleccionada no es válida para el tipo de reserva '" + nuevoTipoReserva + "'.");
-        }
-
-        // Validar el número máximo de jugadores en la nueva pista
+        // Validar máximo de jugadores
         validarMaximoJugadores(nuevaPista, numeroAdultos, numeroNinos);
 
-        // Calcular el nuevo precio
+        // Determinar el tipo de reserva
+        String nuevoTipoReserva = determinarTipoReserva(numeroAdultos, numeroNinos);
+
+        // Validar tipo de pista
+        if (!cumpleCondicionesTipoReserva(nuevaPista, nuevoTipoReserva)) {
+            throw new IllegalArgumentException("La nueva pista no es válida para el tipo de reserva.");
+        }
+
+        // Calcular nuevo precio
         float nuevoPrecio = ReservaDTO.calcularPrecio(nuevaDuracionMinutos, reservaExistente.getDescuento());
 
-        // Actualizar los datos comunes de la reserva en la tabla principal
+        // Actualizar la reserva
         actualizarReserva(reservaExistente.getIdReserva(), nuevaFechaHora, nuevaDuracionMinutos, nuevoPrecio, reservaExistente.getDescuento(), nuevaPista.getIdPista(), 
-                          nuevoTipoReserva.equals("familiar") || nuevoTipoReserva.equals("adulto") ? numeroAdultos : null, 
-                          nuevoTipoReserva.equals("familiar") || nuevoTipoReserva.equals("infantil") ? numeroNinos : null);
-
+                          numeroAdultos, numeroNinos);
+        
 	        switch (nuevoTipoReserva.toLowerCase()) {
 	        case "familiar":
 	            try {
-	                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
 	                insertarReservaFamiliar(reservaExistente.getIdReserva(), numeroAdultos, numeroNinos);
 	            } catch (SQLException e) {
 	                throw new IllegalStateException("Error al actualizar la reserva como Familiar: " + e.getMessage(), e);
@@ -630,7 +633,7 @@ public class ReservasDAO {
 	
 	        case "adulto":
 	            try {
-	                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
 	                insertarReservaAdulto(reservaExistente.getIdReserva(), numeroAdultos);
 	            } catch (SQLException e) {
 	                throw new IllegalStateException("Error al actualizar la reserva como Adulto: " + e.getMessage(), e);
@@ -639,7 +642,7 @@ public class ReservasDAO {
 	
 	        case "infantil":
 	            try {
-	                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
 	                insertarReservaInfantil(reservaExistente.getIdReserva(), numeroNinos);
 	            } catch (SQLException e) {
 	                throw new IllegalStateException("Error al actualizar la reserva como Infantil: " + e.getMessage(), e);
@@ -670,22 +673,22 @@ public class ReservasDAO {
             throw new IllegalArgumentException("La cuenta del jugador no está activa.");
         }
 
-        ReservasDAO reservasDAO = new ReservasDAO(application);
-        
-        // Buscar la reserva en la base de datos
-        ReservaDTO reservaDTO = reservasDAO.encontrarReserva(jugadorDTO.getIdJugador(), pistaDTO.getIdPista(), fechaHora);
+        // Verificar la reserva existente
+        ReservaDTO reservaDTO = encontrarReserva(jugadorDTO.getIdJugador(), pistaDTO.getIdPista(), fechaHora);
 
         if (reservaDTO == null) {
             throw new IllegalArgumentException("Reserva no encontrada.");
         }
 
-        // Verificar si la reserva puede cancelarse
+        // Verificar si puede cancelarse
         if (!puedeModificarseOCancelarse(reservaDTO)) {
             throw new IllegalArgumentException("No se puede cancelar la reserva, ya está dentro de las 24h antes de la hora de inicio.");
         }
 
         // Eliminar la reserva de la base de datos
-        reservasDAO.eliminarReserva(reservaDTO.getIdReserva());
+        eliminarReserva(reservaDTO.getIdReserva());
+
+        // Si es una reserva asociada a un bono, decrementar sesiones del bono
         if (reservaDTO instanceof ReservaBono) {
             ReservaBono reservaBono = (ReservaBono) reservaDTO;
             decrementarSesionesBono(reservaBono.getBono().getIdBono());
