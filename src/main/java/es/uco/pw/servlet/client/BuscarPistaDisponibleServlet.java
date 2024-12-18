@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Servlet para buscar pistas disponibles en el sistema.
  */
-@WebServlet("/BuscarPistaDisponible")
+@WebServlet(name = "BuscarPistaDisponibleServlet", urlPatterns = "/client/buscarPistaDisponible")
 public class BuscarPistaDisponibleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -32,43 +32,47 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PistasDAO pistasDAO = new PistasDAO();
+        PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
         try {
             String tamanoParam = request.getParameter("tamano");
             String exteriorParam = request.getParameter("exterior");
+            String fechaParam = request.getParameter("fecha");
 
-            // Manejo correcto de los parámetros
-            String tamano = (tamanoParam != null && !tamanoParam.trim().isEmpty()) ? tamanoParam : "";
-            String exteriorStr = (exteriorParam != null && !exteriorParam.trim().isEmpty()) ? exteriorParam : "";
-            Boolean exterior = null;
-
-            if (!exteriorStr.isEmpty()) {
-                exterior = Boolean.parseBoolean(exteriorStr);
+            // Convertir parámetros
+            TamanoPista tamano = null;
+            if (tamanoParam != null && !tamanoParam.isEmpty()) {
+                tamano = TamanoPista.valueOf(tamanoParam.toUpperCase());
             }
 
-            System.out.println("Parametros enviados: ");
-            System.out.println("tamano: " + tamano);
-            System.out.println("exterior: " + exterior);
+            Boolean exterior = null;
+            if (exteriorParam != null && !exteriorParam.isEmpty()) {
+                exterior = Boolean.parseBoolean(exteriorParam);
+            }
+
+            String fecha = null;
+            if (fechaParam != null && !fechaParam.isEmpty()) {
+                fecha = fechaParam; // Fecha en formato yyyy-MM-dd
+            }
 
             // Llamada al método del DAO
-            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasDisponibles(tamano, exterior);
+            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasPorTipoYFecha(tamano, exterior, fecha);
 
-            // Convertir a PistaBean
+
+            // Convertir a PistaBean para la vista
             List<PistaBean> pistaBeans = new ArrayList<>();
             for (PistaDTO pistaDTO : pistasDisponibles) {
-                PistaBean bean = new PistaBean(
+                pistaBeans.add(new PistaBean(
                     pistaDTO.getIdPista(),
                     pistaDTO.getNombrePista(),
                     pistaDTO.isDisponible(),
                     pistaDTO.isExterior(),
                     pistaDTO.getPista(),
                     pistaDTO.getMax_jugadores()
-                );
-                pistaBeans.add(bean);
+                ));
             }
 
-            // Pasar los resultados a la vista
+            // Enviar a la vista
             request.setAttribute("pistasDisponibles", pistaBeans);
             request.getRequestDispatcher("/mvc/view/mostrarPistaDisponible.jsp").forward(request, response);
 
@@ -78,6 +82,7 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
+
 
 
 

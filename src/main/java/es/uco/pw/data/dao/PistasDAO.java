@@ -326,45 +326,60 @@ public class PistasDAO {
     }
 
     /**
-     * Método para buscar todas las pistas disponibles.
-     * 
-     * @return Lista de pistas disponibles.
+     * Método para buscar las pistas disponibles filtradas por tamaño, tipo (exterior/interior) y fecha.
+     * Si tamano o exterior son null, no se aplica el filtro correspondiente.
+     *
+     * @param tamano El tamaño de la pista (MINIBASKET, ADULTOS, _3VS3) o null para "Cualquiera".
+     * @param exterior Booleano que indica si la pista es exterior/interior, o null para "Cualquiera".
+     * @param fecha La fecha en la que se busca la disponibilidad (formato "yyyy-MM-dd").
+     * @return Lista de pistas disponibles que coinciden con los filtros.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
-    public List<PistaDTO> buscarPistasDisponibles() throws SQLException {
+    public List<PistaDTO> buscarPistasPorTipoYFecha(TamanoPista tamano, Boolean exterior, String fecha) throws SQLException {
         List<PistaDTO> pistas = new ArrayList<>();
         DBConnection conexion = new DBConnection();
-        this.con = (java.sql.Connection) conexion.getConnection();
+        this.con = conexion.getConnection();
+
         if (this.con == null) {
-            System.err.println("Error: No se pudo obtener la conexión a la base de datos.");
-            return pistas;
+            throw new SQLException("Error: No se pudo obtener la conexión a la base de datos.");
         }
         if (this.prop == null) {
-            System.err.println("Error: Las propiedades 'prop' no están inicializadas.");
-            return pistas;
+            throw new IllegalStateException("Error: Las propiedades 'prop' no están inicializadas.");
         }
-        String sql = prop.getProperty("buscarPistasDisponibles");
+
+        String sql = prop.getProperty("buscarPistasPorTipoYFecha");
         if (sql == null || sql.isEmpty()) {
-            System.err.println("Error: La consulta SQL para 'buscarPistasDisponibles' no está definida o está vacía.");
-            return pistas;
+            throw new IllegalStateException("Error: La consulta SQL para 'buscarPistasPorTipoYFecha' no está definida.");
         }
-        try (PreparedStatement ps = this.con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                pistas.add(new PistaDTO(
-                    rs.getString("nombre"),
-                    rs.getBoolean("disponible"),
-                    rs.getBoolean("exterior"),
-                    TamanoPista.valueOf(rs.getString("tamanoPista")),
-                    rs.getInt("maxJugadores")
-                ));
+
+        try (PreparedStatement ps = this.con.prepareStatement(sql)) {
+            // Parámetros para la consulta SQL
+            ps.setObject(1, tamano != null ? tamano.name() : null); // TamanoPista
+            ps.setObject(2, tamano != null ? tamano.name() : null); // Para el OR NULL
+            ps.setObject(3, exterior); // Exterior
+            ps.setObject(4, exterior); // Para el OR NULL
+            ps.setString(5, fecha);    // Fecha
+
+            // Ejecutar consulta
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    pistas.add(new PistaDTO(
+                    	rs.getInt("idPista"),  // Recupera el ID de la pista
+                        rs.getString("nombre"),
+                        rs.getBoolean("disponible"),
+                        rs.getBoolean("exterior"),
+                        TamanoPista.valueOf(rs.getString("tamanoPista")),
+                        rs.getInt("maxJugadores")
+                    ));
+                }
             }
         } catch (SQLException e) {
-            System.err.println("Error al ejecutar la consulta de pistas disponibles.");
-            e.printStackTrace();
+            System.err.println("Error al ejecutar la consulta de pistas por tipo y fecha.");
+            throw e;
         }
         return pistas;
     }
+
 
     /**
      * Método para listar todas las pistas no disponibles.

@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Buscar Pistas Disponibles</h1>
-    <form id="buscarPistasForm" action="${pageContext.request.contextPath}/client/realizarReserva" method="GET">
+    <form id="buscarPistasForm" action="${pageContext.request.contextPath}/client/buscarPistaDisponible" method="GET">
         <label for="tamano">Tamaño de la pista:</label>
         <select name="tamano" id="tamano">
             <option value="">Cualquiera</option>
@@ -25,6 +25,9 @@
             <option value="false">No</option>
         </select>
         <br><br>
+        
+        <label for="fecha">Fecha de búsqueda:</label>
+    	<input type="date" name="fecha" id="fecha"><br><br>
         
         <button type="submit">Buscar Pistas</button>
     </form>
