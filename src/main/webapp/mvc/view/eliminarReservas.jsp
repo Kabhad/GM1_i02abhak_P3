@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="es.uco.pw.display.javabean.ReservaBean" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
@@ -7,90 +8,79 @@
     <title>Eliminar Reservas</title>
     <style>
         table {
-            width: 80%;
-            margin: auto;
+            width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
+
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
+
         th, td {
-            padding: 10px;
-            text-align: center;
+            padding: 8px;
+            text-align: left;
         }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
         img {
-            cursor: pointer;
             width: 20px;
             height: 20px;
         }
-        .message {
+
+        .success {
             color: green;
-            text-align: center;
-            font-size: 18px;
-            margin: 10px 0;
+            font-weight: bold;
         }
+
         .error {
             color: red;
-            text-align: center;
-            font-size: 18px;
-            margin: 10px 0;
+            font-weight: bold;
         }
     </style>
-    <script>
-        function confirmarEliminacion(idReserva) {
-            const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta reserva?");
-            if (confirmacion) {
-                document.getElementById("formEliminar" + idReserva).submit();
-            }
-        }
-    </script>
 </head>
 <body>
-    <h2 style="text-align: center;">Gestión de Reservas Futuras</h2>
+    <h2>Reservas Futuras</h2>
 
-    <%-- Mostrar mensajes de éxito o error --%>
+    <!-- Mensajes de éxito o error -->
     <% if (request.getAttribute("mensaje") != null) { %>
-        <div class="message"><%= request.getAttribute("mensaje") %></div>
-    <% } %>
-    <% if (request.getAttribute("error") != null) { %>
-        <div class="error"><%= request.getAttribute("error") %></div>
+        <p class="success"><%= request.getAttribute("mensaje") %></p>
+    <% } else if (request.getAttribute("error") != null) { %>
+        <p class="error"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <%-- Tabla de reservas futuras --%>
+    <!-- Tabla de reservas -->
     <table>
-        <tr>
-            <th>ID Reserva</th>
-            <th>Fecha y Hora</th>
-            <th>Duración (min)</th>
-            <th>Pista</th>
-            <th>Precio (€)</th>
-            <th>Acción</th>
-        </tr>
-        <%
-            List<ReservaBean> reservas = (List<ReservaBean>) request.getAttribute("reservasFuturas");
-            if (reservas != null && !reservas.isEmpty()) {
-                for (ReservaBean reserva : reservas) { %>
-                    <tr>
-                        <td><%= reserva.getIdReserva() %></td>
-                        <td><%= reserva.getFechaHora() %></td>
-                        <td><%= reserva.getDuracionMinutos() %></td>
-                        <td><%= reserva.getIdPista() %></td>
-                        <td><%= reserva.getPrecio() %></td>
-                        <td>
-                            <%-- Formulario oculto para enviar la eliminación --%>
-                            <form id="formEliminar<%= reserva.getIdReserva() %>" method="post" action="<%= request.getContextPath() %>/admin/eliminarReserva">
-                                <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
-                                <img src="<%= request.getContextPath() %>/resources/trash.png" alt="Eliminar" title="Eliminar"
-                                     onclick="confirmarEliminacion('<%= reserva.getIdReserva() %>')">
-                            </form>
-                        </td>
-                    </tr>
-                <% }
-            } else { %>
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Duración (min)</th>
+                <th>Pista</th>
+                <th>Precio (€)</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="reserva" items="${reservasFuturas}">
                 <tr>
-                    <td colspan="6">No hay reservas futuras disponibles.</td>
+                    <td>${reserva.fechaHora}</td>
+                    <td>${reserva.duracionMinutos}</td>
+                    <td>${reserva.idPista}</td>
+                    <td>${reserva.precio}</td>
+                    <td>
+                        <form action="/admin/eliminarReserva" method="POST">
+                            <input type="hidden" name="idReserva" value="${reserva.idReserva}">
+                            <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar esta reserva?');">
+                                <img src="/resources/img/trash.png" alt="Eliminar">
+                            </button>
+                        </form>
+                    </td>
                 </tr>
-            <% } %>
+            </c:forEach>
+        </tbody>
     </table>
 </body>
 </html>
