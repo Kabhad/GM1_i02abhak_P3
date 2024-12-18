@@ -5,9 +5,33 @@
 <html>
 <head>
     <title>Cancelar Reservas</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/cancelarReserva.css">
+    <!-- Enlace al script de validación -->
+    <script src="<%= request.getContextPath() %>/js/cancelarReservaValidation.js" defer></script>
+    <style>
+        /* Estilo básico para el modal */
+        #modalConfirmacion {
+            display: none; /* Oculto inicialmente */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center; justify-content: center;
+        }
+        #modalContent {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <h1>Cancelar Reservas Futuras</h1>
+    
+    <form action="<%= request.getContextPath() %>/mvc/view/clientHome.jsp" method="get">
+    	<button type="submit">Volver a Inicio</button>
+	</form>
 
     <!-- Mensajes -->
     <% if (request.getAttribute("mensaje") != null) { %>
@@ -39,9 +63,12 @@
                 <td><%= reserva.getIdPista() %></td>
                 <td><%= reserva.getPrecio() %></td>
                 <td>
+                    <!-- Botón de cancelar -->
                     <form method="post" action="<%= request.getContextPath() %>/client/cancelarReserva">
                         <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
-                        <button type="submit">Cancelar</button>
+                        <button type="button" class="btn-cancelar-reserva">
+    						<img src="<%= request.getContextPath() %>/images/cross.png" alt="Cancelar" class="cross-icon"/>
+						</button>
                     </form>
                 </td>
             </tr>
@@ -56,5 +83,14 @@
             }
         %>
     </table>
+
+    <!-- Modal de Confirmación -->
+    <div id="modalConfirmacion">
+        <div id="modalContent">
+            <h3>¿Estás seguro de que deseas cancelar esta reserva?</h3>
+            <button id="btn-confirmar" class="btn-confirmar">Confirmar</button>
+            <button id="btn-cancelar" class="btn-cancelar">Cancelar</button>
+        </div>
+    </div>
 </body>
 </html>
