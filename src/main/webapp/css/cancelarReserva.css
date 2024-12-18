@@ -3,35 +3,35 @@
 
 /* Estilo para el título */
 h1 {
-    text-align: center; /* Centra el título */
-    font-family: 'Aptos', sans-serif; /* Fuente */
-    font-size: 36px; /* Tamaño */
-    color: #333; /* Color oscuro */
-    text-transform: uppercase; /* Mayúsculas */
-    letter-spacing: 2px; /* Espaciado */
-    margin-bottom: 20px; /* Espacio */
-    font-weight: bold; /* Negrita */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+    text-align: center;
+    font-family: 'Aptos', sans-serif;
+    font-size: 36px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Tabla de reservas */
+/* Estilos de la tabla */
 table {
-    width: 90%;
-    margin: 20px auto;
+    width: 100%;
     border-collapse: collapse;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    text-align: center;
     padding: 12px;
+    text-align: center;
     border: 1px solid #ddd;
 }
 
 th {
     background-color: #f4f4f4;
-    color: #333;
     font-weight: bold;
+    color: #333;
 }
 
 tr:nth-child(even) {
@@ -42,45 +42,56 @@ tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Botón cancelar con imagen */
+/* Botón de cancelar con imagen (cruz) */
 .btn-cancelar-reserva {
-    background: none;
+    background-color: transparent;
     border: none;
     cursor: pointer;
+    outline: none;
     padding: 0;
-    transition: transform 0.2s ease-in-out, opacity 0.3s ease;
-}
-
-.btn-cancelar-reserva img.cross-icon {
-    width: 20px; /* Tamaño del ícono */
-    height: 20px;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.btn-cancelar-reserva:hover img.cross-icon {
-    transform: scale(1.2); /* Agranda la imagen al hacer hover */
-    opacity: 0.8; /* Suaviza la imagen */
+.btn-cancelar-reserva .cross-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Mensajes de éxito y error */
-p {
-    font-family: 'Aptos', sans-serif;
-    text-align: center;
+.btn-cancelar-reserva:hover .cross-icon {
+    transform: scale(1.2);
+    opacity: 0.8;
+}
+
+.btn-cancelar-reserva:active .cross-icon {
+    transform: scale(0.95);
+}
+
+/* Mensajes de éxito o error */
+#mensajeExito, #mensajeError {
     font-size: 16px;
-    margin: 10px auto;
-    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+    margin: 0 auto;
 }
 
-p[style*="green"] {
-    color: #28a745; /* Verde */
+#mensajeExito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-p[style*="red"] {
-    color: #dc3545; /* Rojo */
+#mensajeError {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
-/* Estilos del modal de confirmación */
-.modal {
+/* Modal de confirmación */
+#modalConfirmacion {
     display: none;
     position: fixed;
     top: 0;
@@ -92,31 +103,33 @@ p[style*="red"] {
     align-items: center;
 }
 
-.modal-content {
+#modalContent {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     width: 300px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.modal-content h2 {
+#modalContent h2 {
+    font-family: 'Aptos', sans-serif;
     font-size: 20px;
     margin-bottom: 15px;
     color: #333;
+    font-weight: bold;
 }
 
 /* Botones dentro del modal */
-.modal-content .btn-confirmar, .modal-content .btn-cancelar {
-    display: inline-block;
+.btn-confirmar, .btn-cancelar {
     padding: 10px 20px;
-    margin: 10px 5px;
-    font-size: 16px;
-    color: #fff;
+    margin: 5px;
     border: none;
     cursor: pointer;
+    font-size: 16px;
     border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
     transition: background-color 0.3s ease;
 }
 
@@ -124,35 +137,38 @@ p[style*="red"] {
     background-color: #28a745; /* Verde */
 }
 
-.btn-cancelar {
-    background-color: #dc3545; /* Rojo */
-}
-
 .btn-confirmar:hover {
     background-color: #218838;
+}
+
+.btn-cancelar {
+    background-color: #dc3545; /* Rojo */
 }
 
 .btn-cancelar:hover {
     background-color: #c82333;
 }
 
-/* Botón de regresar al inicio */
+/* Botón de regresar al inicio con estilo */
 .button-container {
     text-align: center;
     margin-top: 20px;
 }
 
-.button-container a {
-    text-decoration: none;
+.button-container button {
     font-family: 'Aptos', sans-serif;
+    text-decoration: none;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff;
-    padding: 10px 15px;
+    background-color: #007bff; /* Azul principal */
+    padding: 10px 20px;
+    border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
-.button-container a:hover {
-    background-color: #0056b3;
+.button-container button:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

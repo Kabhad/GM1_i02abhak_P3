@@ -29,9 +29,12 @@
 <body>
     <h1>Cancelar Reservas Futuras</h1>
     
-    <form action="<%= request.getContextPath() %>/mvc/view/clientHome.jsp" method="get">
-    	<button type="submit">Volver a Inicio</button>
-	</form>
+    <div class="button-container">
+	    <form action="<%= request.getContextPath() %>/mvc/view/clientHome.jsp" method="get">
+	        <button type="submit">Volver a Inicio</button>
+	    </form>
+	</div>
+
 
     <!-- Mensajes -->
     <% if (request.getAttribute("mensaje") != null) { %>
