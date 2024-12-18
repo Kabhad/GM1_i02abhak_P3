@@ -41,22 +41,23 @@ button:hover {
 
 /* Estilos generales para enlaces con clase btn-secondary */
 a.btn-secondary {
-    display: inline-block; /* Permite que se comporte como un botón */
-    width: 100%;
-    margin: 10px 0;
+    display: block; /* Ajustar el ancho automáticamente */
+    width: auto; /* El ancho se ajusta al contenido */
+    max-width: 200px; /* Establecer un ancho máximo */
+    margin: 20px auto 0; /* Margen superior de 20px y centrado horizontal */
     padding: 10px;
-    background-color: #4CAF50; /* Mismo color que el botón */
-    color: white;
-    font-size: 16px;
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    font-size: 16px; /* Tamaño de la fuente */
     text-align: center;
-    text-decoration: none; /* Elimina el subrayado */
-    border-radius: 5px; /* Esquinas redondeadas */
-    border: none;
+    text-decoration: none;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 a.btn-secondary:hover {
-    background-color: #45a049; /* Efecto hover igual al del botón */
+    background-color: #45a049;
 }
+
 
 

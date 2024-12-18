@@ -1,0 +1,12 @@
+# Ignorar configuración específica de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Carpeta de salida de compilación
+bin/
+target/
