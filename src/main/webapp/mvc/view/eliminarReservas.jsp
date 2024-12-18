@@ -1,86 +1,59 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="es.uco.pw.display.javabean.ReservaBean" %>
 <%@ page import="java.util.List" %>
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Eliminar Reservas</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        img {
-            width: 20px;
-            height: 20px;
-        }
-
-        .success {
-            color: green;
-            font-weight: bold;
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    <title>Eliminar Reservas Futuras</title>
 </head>
 <body>
-    <h2>Reservas Futuras</h2>
+    <h1>Eliminar Reservas Futuras</h1>
 
     <!-- Mensajes de éxito o error -->
     <% if (request.getAttribute("mensaje") != null) { %>
-        <p class="success"><%= request.getAttribute("mensaje") %></p>
-    <% } else if (request.getAttribute("error") != null) { %>
-        <p class="error"><%= request.getAttribute("error") %></p>
+        <p style="color: green;"><%= request.getAttribute("mensaje") %></p>
+    <% } %>
+    <% if (request.getAttribute("error") != null) { %>
+        <p style="color: red;"><%= request.getAttribute("error") %></p>
     <% } %>
 
     <!-- Tabla de reservas -->
-    <table>
-        <thead>
+    <table border="1">
+        <tr>
+            <th>ID Reserva</th>
+            <th>Fecha y Hora</th>
+            <th>Duración (min)</th>
+            <th>ID Pista</th>
+            <th>Precio</th>
+            <th>Acción</th>
+        </tr>
+        <%
+            List<es.uco.pw.display.javabean.ReservaBean> reservasFuturas =
+                    (List<es.uco.pw.display.javabean.ReservaBean>) request.getAttribute("reservasFuturas");
+            if (reservasFuturas != null && !reservasFuturas.isEmpty()) {
+                for (es.uco.pw.display.javabean.ReservaBean reserva : reservasFuturas) {
+        %>
             <tr>
-                <th>Fecha y Hora</th>
-                <th>Duración (min)</th>
-                <th>Pista</th>
-                <th>Precio (€)</th>
-                <th>Acción</th>
+                <td><%= reserva.getIdReserva() %></td>
+                <td><%= reserva.getFechaHora() %></td>
+                <td><%= reserva.getDuracionMinutos() %></td>
+                <td><%= reserva.getIdPista() %></td>
+                <td><%= reserva.getPrecio() %></td>
+                <td>
+                    <form method="post" action="<%= request.getContextPath() %>/admin/eliminarReserva">
+                        <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="reserva" items="${reservasFuturas}">
-                <tr>
-                    <td>${reserva.fechaHora}</td>
-                    <td>${reserva.duracionMinutos}</td>
-                    <td>${reserva.idPista}</td>
-                    <td>${reserva.precio}</td>
-                    <td>
-                        <form action="/admin/eliminarReserva" method="POST">
-                            <input type="hidden" name="idReserva" value="${reserva.idReserva}">
-                            <button type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar esta reserva?');">
-                                <img src="/resources/img/trash.png" alt="Eliminar">
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </tbody>
+        <%
+                }
+            } else {
+        %>
+            <tr>
+                <td colspan="6">No hay reservas futuras disponibles.</td>
+            </tr>
+        <%
+            }
+        %>
     </table>
 </body>
 </html>
