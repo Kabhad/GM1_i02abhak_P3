@@ -1047,6 +1047,105 @@ public class ReservasDAO {
         return reservasPorFecha;
     }
 
+    
+    /**
+     * Consulta las reservas de un usuario utilizando su correo electrónico.
+     *
+     * @param correoUsuario El correo electrónico del usuario.
+     * @return Una lista de reservas asociadas al usuario.
+     */
+    public List<ReservaDTO> consultarReservasPorCorreo(String correoUsuario) {
+        List<ReservaDTO> reservasPorCorreo = new ArrayList<>();
+        String sql = prop.getProperty("consultarReservasPorCorreo"); // Nueva consulta SQL
+        DBConnection conexion = new DBConnection();
+        con = (Connection) conexion.getConnection();
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correoUsuario);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int idReserva = rs.getInt("idReserva");
+                    int idJugador = rs.getInt("idJugador");
+                    int idPista = rs.getInt("idPista");
+                    Date fechaHora = rs.getTimestamp("fechaHora");
+                    int duracionMin = rs.getInt("duracionMin");
+                    float precio = rs.getFloat("precio");
+                    float descuento = rs.getFloat("descuento");
+                    Integer idBono = rs.getObject("idBono") != null ? rs.getInt("idBono") : null;
+                    Integer numeroSesion = rs.getObject("numeroSesion") != null ? rs.getInt("numeroSesion") : null;
+
+                    ReservaFactory reservaFactory = (idBono != null) ? new ReservaBonoFactory() : new ReservaIndividualFactory();
+                    ReservaDTO reservaDTO = null;
+
+                    // Verificar si es Familiar
+                    String sqlFamiliar = prop.getProperty("buscarReservaFamiliar");
+                    try (PreparedStatement psFamiliar = con.prepareStatement(sqlFamiliar)) {
+                        psFamiliar.setInt(1, idReserva);
+                        try (ResultSet rsFamiliar = psFamiliar.executeQuery()) {
+                            if (rsFamiliar.next()) {
+                                int numeroAdultos = rsFamiliar.getInt("numAdultos");
+                                int numeroNinos = rsFamiliar.getInt("numNinos");
+                                reservaDTO = (idBono != null)
+                                        ? reservaFactory.crearReservaFamiliar(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, numeroNinos, obtenerBono(idBono), numeroSesion)
+                                        : reservaFactory.crearReservaFamiliar(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, numeroNinos);
+                            }
+                        }
+                    }
+
+                    // Verificar si es Adulto
+                    if (reservaDTO == null) {
+                        String sqlAdulto = prop.getProperty("buscarReservaAdulto");
+                        try (PreparedStatement psAdulto = con.prepareStatement(sqlAdulto)) {
+                            psAdulto.setInt(1, idReserva);
+                            try (ResultSet rsAdulto = psAdulto.executeQuery()) {
+                                if (rsAdulto.next()) {
+                                    int numeroAdultos = rsAdulto.getInt("numAdultos");
+                                    reservaDTO = (idBono != null)
+                                            ? reservaFactory.crearReservaAdulto(idJugador, fechaHora, duracionMin, idPista, numeroAdultos, obtenerBono(idBono), numeroSesion)
+                                            : reservaFactory.crearReservaAdulto(idJugador, fechaHora, duracionMin, idPista, numeroAdultos);
+                                }
+                            }
+                        }
+                    }
+
+                    // Verificar si es Infantil
+                    if (reservaDTO == null) {
+                        String sqlInfantil = prop.getProperty("buscarReservaInfantil");
+                        try (PreparedStatement psInfantil = con.prepareStatement(sqlInfantil)) {
+                            psInfantil.setInt(1, idReserva);
+                            try (ResultSet rsInfantil = psInfantil.executeQuery()) {
+                                if (rsInfantil.next()) {
+                                    int numeroNinos = rsInfantil.getInt("numNinos");
+                                    reservaDTO = (idBono != null)
+                                            ? reservaFactory.crearReservaInfantil(idJugador, fechaHora, duracionMin, idPista, numeroNinos, obtenerBono(idBono), numeroSesion)
+                                            : reservaFactory.crearReservaInfantil(idJugador, fechaHora, duracionMin, idPista, numeroNinos);
+                                }
+                            }
+                        }
+                    }
+
+                    if (reservaDTO != null) {
+                        reservaDTO.setIdReserva(idReserva);
+                        reservaDTO.setPrecio(precio);
+                        reservaDTO.setDescuento(descuento);
+                        reservasPorCorreo.add(reservaDTO);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return reservasPorCorreo;
+    }
+
 
 
     /**

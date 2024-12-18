@@ -1,28 +1,60 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="es.uco.pw.display.javabean.ReservaBean" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cancelar Reserva</title>
-    <link rel="stylesheet" href="../../css/cancelarReserva.css">
+    <title>Cancelar Reservas</title>
 </head>
 <body>
-    <h1>Cancelar Reserva</h1>
-    <form id="cancelarReservaForm" action="${pageContext.request.contextPath}/CancelarReserva" method="POST">
-        <label for="idReserva">ID de la Reserva:</label>
-        <input type="number" name="idReserva" id="idReserva" required>
-        <br><br>
-        
-        <label for="correoUsuario">Correo Electrónico:</label>
-        <input type="email" name="correoUsuario" id="correoUsuario" required>
-        <br><br>
-        
-        <button type="submit">Cancelar Reserva</button>
-    </form>
-    
-    <!-- Botón para volver al menú principal -->
-    <div class="button-container">
-        <a href="../view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
-    </div>
+    <h1>Cancelar Reservas Futuras</h1>
+
+    <!-- Mensajes -->
+    <% if (request.getAttribute("mensaje") != null) { %>
+        <p style="color: green;"><%= request.getAttribute("mensaje") %></p>
+    <% } %>
+    <% if (request.getAttribute("error") != null) { %>
+        <p style="color: red;"><%= request.getAttribute("error") %></p>
+    <% } %>
+
+    <!-- Tabla de reservas -->
+    <table border="1">
+        <tr>
+            <th>ID Reserva</th>
+            <th>Fecha y Hora</th>
+            <th>Duración (min)</th>
+            <th>ID Pista</th>
+            <th>Precio</th>
+            <th>Acción</th>
+        </tr>
+        <%
+            List<ReservaBean> reservas = (List<ReservaBean>) request.getAttribute("reservas");
+            if (reservas != null && !reservas.isEmpty()) {
+                for (ReservaBean reserva : reservas) {
+        %>
+            <tr>
+                <td><%= reserva.getIdReserva() %></td>
+                <td><%= reserva.getFechaHora() %></td>
+                <td><%= reserva.getDuracionMinutos() %></td>
+                <td><%= reserva.getIdPista() %></td>
+                <td><%= reserva.getPrecio() %></td>
+                <td>
+                    <form method="post" action="<%= request.getContextPath() %>/client/cancelarReserva">
+                        <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
+                        <button type="submit">Cancelar</button>
+                    </form>
+                </td>
+            </tr>
+        <%
+                }
+            } else {
+        %>
+            <tr>
+                <td colspan="6">No tienes reservas futuras con más de 24 horas de margen.</td>
+            </tr>
+        <%
+            }
+        %>
+    </table>
 </body>
 </html>
