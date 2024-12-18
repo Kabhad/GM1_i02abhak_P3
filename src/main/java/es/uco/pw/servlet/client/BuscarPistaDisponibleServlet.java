@@ -79,7 +79,7 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al buscar pistas disponibles: " + e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/buscarPistaError.jsp").forward(request, response);
         }
     }
 

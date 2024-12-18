@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mostrarPistaDisponible.css">
     <title>Pistas Disponibles</title>
 </head>
 <body>
@@ -50,5 +51,13 @@
     <%
         }
     %>
+    
+    
+    <!-- Botones de navegación -->
+    <div class="button-container">
+        <a href="../mvc/view/buscarPistaDisponible.jsp" class="nav-button">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+    </div>
+    
 </body>
 </html>

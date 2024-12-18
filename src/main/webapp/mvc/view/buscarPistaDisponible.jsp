@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Buscar Pistas Disponibles</title>
+    <link rel="stylesheet" href="../../css/buscarPistaDisponible.css">
     <script src="scripts/buscarPistasValidation.js" defer></script>
 </head>
 <body>
@@ -31,5 +32,11 @@
         
         <button type="submit">Buscar Pistas</button>
     </form>
+    
+    <!-- Botón para volver al menú principal -->
+    <div class="button-container">
+        <a href="../view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+    </div>
+    
 </body>
 </html>
