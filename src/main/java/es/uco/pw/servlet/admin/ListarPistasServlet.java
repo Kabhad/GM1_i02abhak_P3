@@ -1,7 +1,6 @@
 package es.uco.pw.servlet.admin;
 
 import es.uco.pw.business.pista.PistaDTO;
-import es.uco.pw.business.pista.TamanoPista;
 import es.uco.pw.display.javabean.PistaBean;
 import es.uco.pw.data.dao.PistasDAO;
 
@@ -35,7 +34,7 @@ public class ListarPistasServlet extends HttpServlet {
                     dto.getNombrePista(),
                     dto.isDisponible(),
                     dto.isExterior(),
-                    TamanoPista.valueOf(dto.getPista().toString()),
+                    dto.getPista(),
                     dto.getMax_jugadores()
                 ));
             }

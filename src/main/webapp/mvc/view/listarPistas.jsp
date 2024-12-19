@@ -6,33 +6,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listarPistas.css">
     <title>Listado de Pistas</title>
 </head>
 <body>
 
 <h2>Listado de Pistas</h2>
 
-<!-- Inicia el ciclo for para iterar sobre la lista de pistas -->
-<%
-    List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
-    if (pistas != null) {
-        for (PistaBean pista : pistas) {
-%>
-            <div>
-                <h3><%= pista.getNombrePista() %></h3>
-                <p>Disponible: <%= pista.isDisponible() ? "Sí" : "No" %></p>
-                <p>Exterior: <%= pista.isExterior() ? "Sí" : "No" %></p>
-                <p>Tamaño: <%= pista.getTamanoPista() %></p>
-                <p>Max Jugadores: <%= pista.getMaxJugadores() %></p>
-            </div>
-<%
-        }
-    } else {
-%>
-        <p>No hay pistas disponibles.</p>
-<%
-    }
-%>
+<!-- Botón de Volver al Menú Principal -->
+<a href="${pageContext.request.contextPath}/mvc/view/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+
+<!-- Inicia la tabla para mostrar las pistas -->
+<table>
+    <thead>
+        <tr>
+            <th>ID de la Pista</th>
+            <th>Nombre</th>
+            <th>Disponible</th>
+            <th>Exterior</th>
+            <th>Tamaño</th>
+            <th>Max Jugadores</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Inicia el ciclo for para iterar sobre la lista de pistas -->
+        <%
+            List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
+            if (pistas != null && !pistas.isEmpty()) {
+                for (PistaBean pista : pistas) {
+        %>
+            <tr>
+                <td><%= pista.getIdPista() %></td>
+                <td><%= pista.getNombrePista() %></td>
+                <td><%= pista.isDisponible() ? "Sí" : "No" %></td>
+                <td><%= pista.isExterior() ? "Sí" : "No" %></td>
+                <td><%= pista.getTamanoPista() %></td>
+                <td><%= pista.getMaxJugadores() %></td>
+            </tr>
+        <%
+                }
+            } else {
+        %>
+            <tr>
+                <td colspan="6">No hay pistas disponibles.</td>
+            </tr>
+        <% 
+            }
+        %>
+    </tbody>
+</table>
 
 </body>
 </html>
