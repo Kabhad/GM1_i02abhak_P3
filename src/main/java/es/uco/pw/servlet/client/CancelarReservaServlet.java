@@ -55,7 +55,6 @@ public class CancelarReservaServlet extends HttpServlet {
                 reservaBean.setDescuento(reserva.getDescuento());
 
                 reservasFiltradas.add(reservaBean);
-                System.out.println("Id reserva: " + reservaBean.getIdReserva());
             }
         }
 

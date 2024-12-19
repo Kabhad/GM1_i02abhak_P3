@@ -7,7 +7,7 @@
 
 
     <link rel="stylesheet" href="../../css/buscarPistaDisponible.css">
-    <script src="../js/buscarPistasValidation.js" defer></script>
+    <script src="${pageContext.request.contextPath}/js/buscarPistaValidation.js" defer></script>
 </head>
 <body>
     <h1>Buscar Pistas Disponibles</h1>
@@ -29,8 +29,9 @@
         </select>
         <br><br>
         
-        <label for="fecha">Fecha de búsqueda:</label>
-    	<input type="date" name="fecha" id="fecha"><br><br>
+	<label for="fecha">Fecha de búsqueda:</label>
+	<input type="date" name="fecha" id="fecha" required><br><br>
+
         
         <button type="submit">Buscar Pistas</button>
     </form>

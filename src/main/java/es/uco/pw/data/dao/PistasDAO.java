@@ -648,6 +648,69 @@ public class PistasDAO {
         }
         return materiales;
     }
+    
+    /**
+     * Método para modificar el estado de un material.
+     * 
+     * @param idMaterial El ID del material cuyo estado se desea modificar.
+     * @param nuevoEstado El nuevo estado del material (DISPONIBLE, RESERVADO, MAL_ESTADO).
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     * @throws IllegalArgumentException Si el nuevo estado es inválido.
+     */
+    public void modificarEstadoMaterial(int idMaterial, EstadoMaterial nuevoEstado) throws SQLException {
+        if (nuevoEstado == null) {
+            throw new IllegalArgumentException("El estado del material no puede ser nulo.");
+        }
+
+        DBConnection conexion = new DBConnection();
+        con = conexion.getConnection();
+        String sql = prop.getProperty("modificarEstadoMaterial");
+
+        if (sql == null || sql.isEmpty()) {
+            throw new IllegalStateException("Error: La consulta SQL para 'modificarEstadoMaterial' no está definida.");
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nuevoEstado.name());
+            ps.setInt(2, idMaterial);
+
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas == 0) {
+                throw new SQLException("No se encontró un material con el ID especificado.");
+            }
+        } finally {
+            conexion.closeConnection();
+        }
+    }
+
+    /**
+     * Método para modificar el estado de una pista.
+     * 
+     * @param idPista El ID de la pista cuyo estado se desea modificar.
+     * @param disponible El nuevo estado de disponibilidad de la pista (true para disponible, false para no disponible).
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     */
+    public void modificarEstadoPista(int idPista, boolean disponible) throws SQLException {
+        DBConnection conexion = new DBConnection();
+        con = conexion.getConnection();
+        String sql = prop.getProperty("modificarEstadoPista");
+
+        if (sql == null || sql.isEmpty()) {
+            throw new IllegalStateException("Error: La consulta SQL para 'modificarEstadoPista' no está definida.");
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setBoolean(1, disponible);
+            ps.setInt(2, idPista);
+
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas == 0) {
+                throw new SQLException("No se encontró una pista con el ID especificado.");
+            }
+        } finally {
+            conexion.closeConnection();
+        }
+    }
 
 
     /**

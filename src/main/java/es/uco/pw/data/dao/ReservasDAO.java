@@ -496,7 +496,10 @@ public class ReservasDAO {
         }
 
         reservaDTO.setDescuento(descuentoAntiguedad);
+        float precio = ReservaDTO.calcularPrecio(duracionMinutos, descuentoAntiguedad);
+        reservaDTO.setPrecio(precio);
         actualizarFechaInscripcionSiEsNecesario(jugadorDTO, application);
+
         return insertarReserva(reservaDTO);
     }
 
@@ -557,6 +560,9 @@ public class ReservasDAO {
             default:
                 throw new IllegalArgumentException("Tipo de reserva no válido: " + tipoReserva);
         }
+        
+        float precio = ReservaDTO.calcularPrecio(duracionMinutos, reservaDTO.getDescuento());
+        reservaDTO.setPrecio(precio);
 
         // Insertar la reserva en la base de datos
         int idReserva = insertarReserva(reservaDTO);

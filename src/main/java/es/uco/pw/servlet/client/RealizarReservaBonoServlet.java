@@ -4,12 +4,15 @@ import es.uco.pw.business.jugador.JugadorDTO;
 import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.business.reserva.Bono;
 import es.uco.pw.data.dao.ReservasDAO;
+import es.uco.pw.display.javabean.CustomerBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,15 +26,30 @@ public class RealizarReservaBonoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+
+        if (customer == null) {
+            request.setAttribute("mensaje", "Debes iniciar sesión para realizar una reserva con bono.");
+            request.getRequestDispatcher("/mvc/view/login.jsp").forward(request, response);
+            return;
+        }
+
         ReservasDAO reservasDAO = new ReservasDAO(getServletContext());
 
         try {
-            int idJugador = Integer.parseInt(request.getParameter("idJugador"));
+            // Obtener el ID del jugador desde el CustomerBean
+            String correo = customer.getCorreo();
+            JugadorDTO jugador = reservasDAO.buscarJugadorPorCorreo(correo, getServletContext());
+            if (jugador == null) {
+                throw new IllegalArgumentException("No se encontró un jugador asociado al correo: " + correo);
+            }
+
+            int idJugador = jugador.getIdJugador();
             Bono bono = reservasDAO.obtenerBonoPorJugador(idJugador);
 
             if (bono == null || bono.estaCaducado() || bono.getSesionesRestantes() <= 0) {
                 request.setAttribute("mensaje", "No tienes un bono válido. ¿Deseas crear uno?");
-                request.setAttribute("idJugador", idJugador);
                 request.getRequestDispatcher("/mvc/view/crearBono.jsp").forward(request, response);
                 return;
             }
@@ -47,8 +65,9 @@ public class RealizarReservaBonoServlet extends HttpServlet {
             request.setAttribute("mensaje", "Error al obtener información del bono.");
         }
 
-        request.getRequestDispatcher("/mvc/view/reservaBono.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/realizarReservaBono.jsp").forward(request, response);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

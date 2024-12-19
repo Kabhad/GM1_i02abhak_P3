@@ -102,7 +102,6 @@ public class EliminarReservaServlet extends HttpServlet {
                 }
 
                 reservasFuturas.add(reservaBean);
-                System.out.println("ID reserva: " + reservaBean.getIdReserva());
             }
         }
         return reservasFuturas;
