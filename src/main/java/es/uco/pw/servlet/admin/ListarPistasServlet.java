@@ -25,21 +25,19 @@ public class ListarPistasServlet extends HttpServlet {
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
             // Obtener todas las pistas usando el método correcto en el DAO
-            List<PistaDTO> pistasDTO = pistasDAO.listarPistas();  // Llamada al método correcto
+            List<PistaDTO> pistasDTO = pistasDAO.listarPistas();
 
             // Convertir los DTOs a Beans para la vista
             List<PistaBean> pistas = new ArrayList<>();
             for (PistaDTO dto : pistasDTO) {
-            	// Creamos un PistaBean para cada PistaDTO
-            	pistas.add(new PistaBean(
-            	    dto.getIdPista(),
-            	    dto.getNombrePista(),
-            	    dto.isDisponible(),
-            	    dto.isExterior(),
-            	    TamanoPista.valueOf(dto.getPista().toString()),  // Convertimos el String a un valor TamanoPista
-            	    dto.getMax_jugadores()
-            	));
-
+                pistas.add(new PistaBean(
+                    dto.getIdPista(),
+                    dto.getNombrePista(),
+                    dto.isDisponible(),
+                    dto.isExterior(),
+                    TamanoPista.valueOf(dto.getPista().toString()),
+                    dto.getMax_jugadores()
+                ));
             }
 
             // Añadir la lista de pistas a la solicitud para ser mostrada en la vista
@@ -48,9 +46,9 @@ public class ListarPistasServlet extends HttpServlet {
             // Redirigir a la vista correspondiente
             request.getRequestDispatcher("/mvc/view/listarPistas.jsp").forward(request, response);
         } catch (Exception e) {
-            // Si hay un error, mostrar un mensaje de error
+            // Si hay un error, redirigir a la página de error con un mensaje descriptivo
             request.setAttribute("error", "Error al obtener la lista de pistas: " + e.getMessage());
-            request.getRequestDispatcher("/mvc/view/listarPistas.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/listarPistasError.jsp").forward(request, response);
         }
     }
 

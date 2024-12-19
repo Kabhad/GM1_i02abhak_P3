@@ -1,16 +1,15 @@
 package es.uco.pw.servlet.admin;
 
-import java.io.IOException;
+import es.uco.pw.business.pista.TamanoPista;
+import es.uco.pw.display.javabean.PistaBean;
+import es.uco.pw.data.dao.PistasDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import es.uco.pw.business.pista.TamanoPista;
-import es.uco.pw.data.dao.PistasDAO;
-import es.uco.pw.display.javabean.PistaBean;
+import java.io.IOException;
 
 @WebServlet(name = "DarAltaPistaServlet", urlPatterns = "/admin/darAltaPista")
 public class DarAltaPistaServlet extends HttpServlet {
@@ -23,43 +22,32 @@ public class DarAltaPistaServlet extends HttpServlet {
             String nombrePista = request.getParameter("nombrePista");
             boolean disponible = Boolean.parseBoolean(request.getParameter("disponible"));
             boolean exterior = Boolean.parseBoolean(request.getParameter("exterior"));
-            
-            // Capturar el valor de tamanoPista y convertirlo a TamanoPista
+
+            // Capturar el valor de tamanoPista y convertirlo al enum correspondiente
             String tamanoPistaParam = request.getParameter("tamanoPista");
-            System.out.println("Valor recibido para tamanoPista: " + tamanoPistaParam);
             TamanoPista tamanoPista = null;
+
+            // Mapeo de los valores recibidos al enum TamanoPista
             if (tamanoPistaParam != null && !tamanoPistaParam.isEmpty()) {
                 try {
+                    // Convertir el string a TamanoPista enum (asegurándonos de que es en mayúsculas)
                     tamanoPista = TamanoPista.valueOf(tamanoPistaParam.toUpperCase());
                 } catch (IllegalArgumentException e) {
+                    // Si el valor no es válido, mostramos un mensaje de error
                     request.setAttribute("error", "Tamaño de pista no válido.");
                     request.getRequestDispatcher("/mvc/view/darAltaPista.jsp").forward(request, response);
                     return;
                 }
             }
 
+            // Obtener el resto de parámetros
             int maxJugadores = Integer.parseInt(request.getParameter("maxJugadores"));
-            int idPista = Integer.parseInt(request.getParameter("idPista")); // Obtener el ID de la pista desde el formulario
 
             // Crear el objeto PistasDAO
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
-            // Verificar si ya existe una pista con el mismo nombre
-            if (pistasDAO.buscarPistaPorNombre(nombrePista) != null) {
-                request.setAttribute("error", "Ya existe una pista con ese nombre.");
-                request.getRequestDispatcher("/mvc/view/darAltaPista.jsp").forward(request, response);
-                return;
-            }
-
-            // Verificar si ya existe una pista con el mismo ID
-            if (pistasDAO.buscarPistaPorId(idPista) != null) {
-                request.setAttribute("error", "Ya existe una pista con ese ID.");
-                request.getRequestDispatcher("/mvc/view/darAltaPista.jsp").forward(request, response);
-                return;
-            }
-
-            // Crear el bean de la pista
-            PistaBean pistaBean = new PistaBean(idPista, nombrePista, disponible, exterior, tamanoPista, maxJugadores);
+            // Crear el bean de la pista sin idPista ya que es autoincremental
+            PistaBean pistaBean = new PistaBean(0, nombrePista, disponible, exterior, tamanoPista, maxJugadores);
 
             // Guardar la pista en la base de datos
             pistasDAO.crearPista(pistaBean.getNombrePista(), pistaBean.isDisponible(), pistaBean.isExterior(), pistaBean.getTamanoPista(), pistaBean.getMaxJugadores());
@@ -68,8 +56,9 @@ public class DarAltaPistaServlet extends HttpServlet {
             request.setAttribute("mensaje", "Pista creada con éxito.");
             request.getRequestDispatcher("/admin/listarPistas").forward(request, response);
         } catch (Exception e) {
+            // Manejar posibles errores y redirigir al error de listarPistas
             request.setAttribute("error", "Error al crear la pista: " + e.getMessage());
-            request.getRequestDispatcher("/mvc/view/darAltaPista.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/listarPistasError.jsp").forward(request, response); // Redirigir al error de listarPistas
         }
     }
 }
