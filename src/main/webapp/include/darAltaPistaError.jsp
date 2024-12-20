@@ -13,7 +13,7 @@
         <p>Por favor, vuelve a intentarlo más tarde o contacta con el soporte técnico si el problema persiste.</p>
     </div>
     <br>
-    <a href="${pageContext.request.contextPath}/mvc/view/darAltaPista.jsp" class="btn-secondary">Dar de Alta una Nueva Pista</a>
-    <a href="${pageContext.request.contextPath}/mvc/view/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+    <a href="${pageContext.request.contextPath}/mvc/view/admin/darAltaPista.jsp" class="btn-secondary">Dar de Alta una Nueva Pista</a>
+    <a href="${pageContext.request.contextPath}/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>
