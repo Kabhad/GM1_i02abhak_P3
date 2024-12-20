@@ -56,6 +56,6 @@
 
     <!-- Botón para volver al menú principal -->
     <br>
-    <a href="../view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+    <a href="../client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>

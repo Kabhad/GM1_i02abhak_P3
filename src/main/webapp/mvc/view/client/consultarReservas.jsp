@@ -4,7 +4,7 @@
 <head>
     <title>Consulta de Reservas</title>
     <script src="../js/validarConsultaReserva.js"></script>
-    <link rel="stylesheet" href="../../css/consultarReservas.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/consultarReservas.css">
 </head>
 <body>
     <h1>Consulta de Reservas</h1>

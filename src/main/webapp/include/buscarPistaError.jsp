@@ -45,7 +45,7 @@
 
     <!-- Botón para regresar -->
     <div style="margin-top: 20px;">
-        <a href="${pageContext.request.contextPath}/mvc/view/buscarPistaDisponible.jsp">Volver a Buscar Pistas</a>
+        <a href="${pageContext.request.contextPath}/mvc/view/client/buscarPistaDisponible.jsp">Volver a Buscar Pistas</a>
     </div>
 </body>
 </html>

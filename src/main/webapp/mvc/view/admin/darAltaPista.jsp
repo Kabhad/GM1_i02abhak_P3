@@ -40,5 +40,11 @@
 
         <button type="submit">Crear Pista</button>
     </form>
+    
+            <!-- Botones de navegación -->
+    <div class="button-container">
+        <a href="../admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+    </div>
+    
 </body>
 </html>

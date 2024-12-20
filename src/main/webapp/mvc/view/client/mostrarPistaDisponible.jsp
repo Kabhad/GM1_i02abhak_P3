@@ -55,8 +55,8 @@
     
     <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../mvc/view/buscarPistaDisponible.jsp" class="nav-button">Hacer Otra Búsqueda</a>
-        <a href="../mvc/view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+        <a href="../mvc/view/client/buscarPistaDisponible.jsp" class="nav-button">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/client/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
     </div>
     
 </body>

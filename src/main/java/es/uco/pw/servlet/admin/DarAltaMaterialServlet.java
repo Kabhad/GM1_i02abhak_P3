@@ -37,7 +37,7 @@ public class DarAltaMaterialServlet extends HttpServlet {
             request.getRequestDispatcher("/admin/listarMateriales").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", "Error al crear el material: " + e.getMessage());
-            request.getRequestDispatcher("/mvc/view/crearMaterial.jsp").forward(request, response);
+            request.getRequestDispatcher("/include/darAltaMaterialError.jsp").forward(request, response);
         }
     }
 }

@@ -43,7 +43,7 @@ public class ListarPistasServlet extends HttpServlet {
             request.setAttribute("pistas", pistas);
 
             // Redirigir a la vista correspondiente
-            request.getRequestDispatcher("/mvc/view/listarPistas.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/admin/listarPistas.jsp").forward(request, response);
         } catch (Exception e) {
             // Si hay un error, redirigir a la página de error con un mensaje descriptivo
             request.setAttribute("error", "Error al obtener la lista de pistas: " + e.getMessage());

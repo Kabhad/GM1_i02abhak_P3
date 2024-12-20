@@ -29,7 +29,7 @@
     <%
         }
     %>
-        <a href="../mvc/view/realizarReserva.jsp" class="btn-secondary">Hacer Otra Reserva</a>
-        <a href="../mvc/view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="../mvc/view/client/realizarReserva.jsp" class="btn-secondary">Hacer Otra Reserva</a>
+        <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>

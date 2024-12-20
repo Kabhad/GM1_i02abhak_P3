@@ -51,8 +51,8 @@
     
             <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../mvc/view/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta otro Material</a>
-        <a href="../mvc/view/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="../mvc/view/admin/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta otro Material</a>
+        <a href="../mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
     </div>
 
 

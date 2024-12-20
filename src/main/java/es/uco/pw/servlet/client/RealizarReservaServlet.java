@@ -133,7 +133,7 @@ public class RealizarReservaServlet extends HttpServlet {
 
             // Redirigir a la vista resultadoReserva.jsp
             request.setAttribute("reserva", reservaBean);
-            request.getRequestDispatcher("/mvc/view/resultadoReserva.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/client/resultadoReserva.jsp").forward(request, response);
 
 
         } catch (ParseException e) {

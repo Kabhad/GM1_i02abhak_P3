@@ -30,10 +30,10 @@ public class ListarMaterialesServlet extends HttpServlet {
             }
 
             request.setAttribute("materiales", materiales);
-            request.getRequestDispatcher("/mvc/view/listarMateriales.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/admin/listarMateriales.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", "Error al obtener la lista de materiales.");
-            request.getRequestDispatcher("/mvc/view/listarMateriales.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view//admin/listarMateriales.jsp").forward(request, response);
         }
     }
     

@@ -35,7 +35,7 @@ public class DarAltaPistaServlet extends HttpServlet {
                 } catch (IllegalArgumentException e) {
                     // Si el valor no es válido, mostramos un mensaje de error
                     request.setAttribute("error", "Tamaño de pista no válido.");
-                    request.getRequestDispatcher("/mvc/view/darAltaPista.jsp").forward(request, response);
+                    request.getRequestDispatcher("/mvc/view/admin/darAltaPista.jsp").forward(request, response);
                     return;
                 }
             }
@@ -58,7 +58,7 @@ public class DarAltaPistaServlet extends HttpServlet {
         } catch (Exception e) {
             // Manejar posibles errores y redirigir al error de listarPistas
             request.setAttribute("error", "Error al crear la pista: " + e.getMessage());
-            request.getRequestDispatcher("/include/listarPistasError.jsp").forward(request, response); // Redirigir al error de listarPistas
+            request.getRequestDispatcher("/include/darAltaPistaError.jsp").forward(request, response); // Redirigir al error de listarPistas
         }
     }
 }

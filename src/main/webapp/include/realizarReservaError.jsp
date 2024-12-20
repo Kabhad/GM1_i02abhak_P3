@@ -13,8 +13,8 @@
         <p>Por favor, vuelve a intentarlo o contacta con el soporte técnico si el problema persiste.</p>
     </div>
     <br>
-        <a href="../mvc/view/realizarReserva.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
-        <a href="../mvc/view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="../mvc/view/client/realizarReserva.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 
 </body>
 </html>
