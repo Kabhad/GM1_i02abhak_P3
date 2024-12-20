@@ -39,7 +39,7 @@
     
         <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../view/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="../admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
     </div>
 
 </body>
