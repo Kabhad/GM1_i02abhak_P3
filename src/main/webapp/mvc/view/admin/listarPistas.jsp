@@ -15,7 +15,7 @@
 
 <!-- Botón de Volver al Menú Principal -->
 <a href="${pageContext.request.contextPath}/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
-<a href="../mvc/view/admin/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta otro Material</a>
+<a href="../mvc/view/admin/darAltaPista.jsp" class="btn-secondary">Dar de Alta otra Pista</a>
 
 <!-- Inicia la tabla para mostrar las pistas -->
 <table>

@@ -1,4 +1,5 @@
 <%@ page import="es.uco.pw.business.jugador.JugadorDTO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="es.uco.pw.data.dao.JugadoresDAO" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
@@ -14,14 +15,14 @@
     try {
         fechaNacimiento = sdf.parse(fechaNacimientoStr);
     } catch (Exception e) {
-        response.sendRedirect("../include/registerError.jsp?error=Fecha inválida.");
+        response.sendRedirect("../include/registerError.jsp?error=Fecha invÃ¡lida.");
         return;
     }
 
-    // Validar que la fecha no sea futura ni mayor a 80 años atrás
+    // Validar que la fecha no sea futura ni mayor a 80 aÃ±os atrÃ¡s
     Calendar hoy = Calendar.getInstance(); // Fecha actual
-    Calendar limiteMin = Calendar.getInstance(); // Límite inferior (80 años atrás)
-    limiteMin.add(Calendar.YEAR, -80); // Restar 80 años
+    Calendar limiteMin = Calendar.getInstance(); // LÃ­mite inferior (80 aÃ±os atrÃ¡s)
+    limiteMin.add(Calendar.YEAR, -80); // Restar 80 aÃ±os
 
     if (fechaNacimiento.after(hoy.getTime())) {
     	response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=La fecha de nacimiento no puede ser futura.");
@@ -29,7 +30,7 @@
     }
 
     if (fechaNacimiento.before(limiteMin.getTime())) {
-        response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=La fecha de nacimiento debe ser dentro de los últimos 80 años.");
+        response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=La fecha de nacimiento debe ser dentro de los Ãºltimos 80 aÃ±os.");
         return;
     }
 
@@ -44,9 +45,9 @@
 
     String mensaje = jugadoresDAO.altaJugador(nuevoJugador);
 
-    if (mensaje.contains("éxito")) {
-        response.sendRedirect("../view/login.jsp?success=Registrado con éxito. Por favor, inicia sesión.");
+    if (mensaje.contains("Ã©xito")) {
+        response.sendRedirect("../view/login.jsp?success=Registrado con Ã©xito. Por favor, inicia sesiÃ³n.");
     } else {
-        response.sendRedirect("../include/registerError.jsp?error=" + mensaje);
+    	response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=" + mensaje);
     }
 %>
