@@ -13,7 +13,7 @@
     <h1>Eliminar Reservas Futuras</h1>
     
     <!-- Botón Volver a Admin Home -->
-	<form action="<%= request.getContextPath() %>/mvc/view/adminHome.jsp" method="get">
+	<form action="<%= request.getContextPath() %>/mvc/view/admin/adminHome.jsp" method="get">
     	<button type="submit">Volver a Inicio</button>
 	</form>
 
