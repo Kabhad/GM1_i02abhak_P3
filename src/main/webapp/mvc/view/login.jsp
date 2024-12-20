@@ -12,9 +12,14 @@
     <div class="container">
         <h1>Inicio de Sesión</h1>
         <!-- Mostrar mensaje de error si existe -->
-        <% String errorMessage = (String) request.getAttribute("error"); %>
+        <% 
+            String errorMessage = (String) request.getAttribute("error");
+       		String successMessage = (String) request.getAttribute("successMessage");
+        %>
         <% if (errorMessage != null) { %>
             <p class="error"><%= errorMessage %></p>
+        <% } else if (successMessage != null) { %>
+            <p class="success"><%= successMessage %></p> <!-- Mensaje de éxito -->
         <% } %>
         <form action="../controller/LoginController.jsp" method="post" onsubmit="return validateLoginForm()">
             <div class="form-group">

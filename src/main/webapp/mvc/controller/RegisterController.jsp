@@ -46,8 +46,11 @@
     String mensaje = jugadoresDAO.altaJugador(nuevoJugador);
 
     if (mensaje.contains("éxito")) {
-        response.sendRedirect("../view/login.jsp?success=Registrado con éxito. Por favor, inicia sesión.");
+        request.setAttribute("successMessage", "Registrado con éxito. Por favor, inicia sesión.");
+        request.getRequestDispatcher("../view/login.jsp").forward(request, response);
     } else {
-    	response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=" + mensaje);
+        request.setAttribute("errorMessage", mensaje);
+        request.getRequestDispatcher("../include/registerError.jsp").forward(request, response);
     }
+
 %>
