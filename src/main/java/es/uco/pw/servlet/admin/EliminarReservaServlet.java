@@ -31,7 +31,7 @@ public class EliminarReservaServlet extends HttpServlet {
 
         // Pasar las reservas futuras a la vista
         request.setAttribute("reservasFuturas", reservasFuturas);
-        request.getRequestDispatcher("/mvc/view/eliminarReservas.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/admin/eliminarReservas.jsp").forward(request, response);
     }
 
     /**
@@ -59,7 +59,7 @@ public class EliminarReservaServlet extends HttpServlet {
         List<ReservaBean> reservasFuturas = empaquetarReservasFuturas(reservasFuturasDTO);
 
         request.setAttribute("reservasFuturas", reservasFuturas);
-        request.getRequestDispatcher("/mvc/view/eliminarReservas.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/admin/eliminarReservas.jsp").forward(request, response);
     }
 
     /**

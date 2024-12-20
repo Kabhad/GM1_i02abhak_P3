@@ -14,7 +14,7 @@
 <h2>Listado de Pistas</h2>
 
 <!-- Botón de Volver al Menú Principal -->
-<a href="${pageContext.request.contextPath}/mvc/view/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+<a href="${pageContext.request.contextPath}/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 
 <!-- Inicia la tabla para mostrar las pistas -->
 <table>
