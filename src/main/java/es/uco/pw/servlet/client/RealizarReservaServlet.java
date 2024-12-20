@@ -57,7 +57,7 @@ public class RealizarReservaServlet extends HttpServlet {
             // Enviar las opciones preformateadas al JSP
             request.setAttribute("opcionesPistas", opcionesPistas.toString());
             request.setAttribute("tipoReserva", tipoReserva);
-            request.getRequestDispatcher("/mvc/view/realizarReserva.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/client/realizarReserva.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

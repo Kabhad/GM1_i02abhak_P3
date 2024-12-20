@@ -36,9 +36,9 @@
 
         // Redirigir según el tipo de usuario
         if ("ADMINISTRADOR".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
-            response.sendRedirect("../view/adminHome.jsp");
+            response.sendRedirect("../view/admin/adminHome.jsp");
         } else if ("CLIENTE".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
-            response.sendRedirect("../view/clientHome.jsp");
+            response.sendRedirect("../view/client/clientHome.jsp");
         } else {
             // Si el tipo de usuario es desconocido, redirigir al login con un error
             request.setAttribute("error", "Tipo de usuario desconocido.");

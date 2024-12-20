@@ -1,4 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/mvc/view/eliminarReservas.jsp=UTF-8
-encoding//src/main/webapp/mvc/view/mostrarReservas.jsp=UTF-8
+encoding//src/main/webapp/mvc/view/admin/eliminarReservas.jsp=UTF-8
+encoding//src/main/webapp/mvc/view/client/mostrarReservas.jsp=UTF-8
 encoding/<project>=UTF-8

@@ -20,8 +20,8 @@
 
 <nav>
     <ul>
-        <li><a href="../controller/LogoutController.jsp">Cerrar sesión</a></li>
-        <li><a href="../view/modifyUser.jsp">Modificar datos</a></li>
+        <li><a href="../../controller/LogoutController.jsp">Cerrar sesión</a></li>
+        <li><a href="../../view/modifyUser.jsp">Modificar datos</a></li>
         <li><a href="../view/consultarReservas.jsp">Consultar reservas</a></li>
         <li><a href="../view/realizarReserva.jsp">Realizar reserva</a></li>
         <li><a href="<%= request.getContextPath() %>/client/realizarReservaBono">Realizar reserva con bono</a></li>

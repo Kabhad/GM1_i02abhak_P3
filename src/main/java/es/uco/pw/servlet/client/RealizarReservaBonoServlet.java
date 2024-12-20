@@ -50,7 +50,7 @@ public class RealizarReservaBonoServlet extends HttpServlet {
 
             if (bono == null || bono.estaCaducado() || bono.getSesionesRestantes() <= 0) {
                 request.setAttribute("mensaje", "No tienes un bono válido. ¿Deseas crear uno?");
-                request.getRequestDispatcher("/mvc/view/crearBono.jsp").forward(request, response);
+                request.getRequestDispatcher("/mvc/view/client/crearBono.jsp").forward(request, response);
                 return;
             }
 
@@ -65,7 +65,7 @@ public class RealizarReservaBonoServlet extends HttpServlet {
             request.setAttribute("mensaje", "Error al obtener información del bono.");
         }
 
-        request.getRequestDispatcher("/mvc/view/realizarReservaBono.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/client/realizarReservaBono.jsp").forward(request, response);
     }
 
 
