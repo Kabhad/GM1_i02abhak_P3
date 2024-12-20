@@ -6,7 +6,7 @@
     <title>Buscar Pistas Disponibles</title>
 
 
-    <link rel="stylesheet" href="../../css/buscarPistaDisponible.css">
+     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/buscarPistaDisponible.css">
     <script src="${pageContext.request.contextPath}/js/buscarPistaValidation.js" defer></script>
 </head>
 <body>
@@ -38,7 +38,7 @@
     
     <!-- Botón para volver al menú principal -->
     <div class="button-container">
-        <a href="../view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+        <a href="../client/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
     </div>
     
 </body>

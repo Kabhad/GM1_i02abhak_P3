@@ -74,7 +74,7 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
 
             // Enviar a la vista
             request.setAttribute("pistasDisponibles", pistaBeans);
-            request.getRequestDispatcher("/mvc/view/mostrarPistaDisponible.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/client/mostrarPistaDisponible.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
