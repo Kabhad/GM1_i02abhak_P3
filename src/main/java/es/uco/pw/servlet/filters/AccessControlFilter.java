@@ -44,6 +44,12 @@ public class AccessControlFilter implements Filter {
 
 	    // Obtener rol del usuario autenticado
 	    String rol = (usuario.getTipoUsuario() != null) ? usuario.getTipoUsuario().toUpperCase() : "";
+	    
+	    // Excepción para la página modifyUser.jsp
+	    if (path.startsWith(contextPath + "/mvc/view/modifyUser.jsp")) {
+	        chain.doFilter(request, response); // Continuar, acceso permitido a ambos roles
+	        return;
+	    }
 
 	    // Validar acceso a servlets
 	    if (path.startsWith(contextPath + "/admin")) {

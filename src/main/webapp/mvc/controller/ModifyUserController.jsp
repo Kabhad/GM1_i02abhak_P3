@@ -11,24 +11,7 @@
     // Obtener los parámetros del formulario
     String nuevoNombre = request.getParameter("nombre");
     String nuevaContrasena = request.getParameter("contrasena");
-    
-    if (nuevoNombre == null || nuevoNombre.trim().isEmpty() || 
-        nuevaContrasena == null || nuevaContrasena.trim().isEmpty()) {
-        response.sendRedirect("../../include/modifyError.jsp?message=Campos obligatorios vacíos.");
-        return;
-    }
 
-    if (!nuevoNombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\\s]+$")) {
-        response.sendRedirect("../../include/modifyError.jsp?message=El nombre solo puede contener letras y caracteres válidos en español.");
-        return;
-    }
-
-    if (nuevaContrasena.length() < 6 || 
-        !nuevaContrasena.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$")) {
-        response.sendRedirect("../../include/modifyError.jsp?message=La contraseña debe contener al menos 6 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial.");
-        return;
-    }
-        
     // Instanciar el DAO de jugadores
     JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
 
@@ -46,12 +29,12 @@
 
         // Verificar el tipo de usuario para redirigir
         if ("administrador".equalsIgnoreCase(customer.getTipoUsuario())) {
-            response.sendRedirect("../view/adminHome.jsp");
+            response.sendRedirect("../view/admin/adminHome.jsp");
         } else {
-            response.sendRedirect("../view/clientHome.jsp");
+            response.sendRedirect("../view/client/clientHome.jsp");
         }
     } else {
         // Redirigir a una página de error en caso de fallo
-    	response.sendRedirect("../../include/modifyError.jsp?message=" + mensaje);
+        response.sendRedirect("../../include/modifyError.jsp?message=" + mensaje);
     }
 %>

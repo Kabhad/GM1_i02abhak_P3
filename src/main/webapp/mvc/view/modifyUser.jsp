@@ -1,4 +1,5 @@
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
     if (customer == null) {
@@ -21,12 +22,12 @@
             <label>Nombre:</label>
             <input type="text" id="nombre" name="nombre" value="<%= customer.getNombre() %>" required>
             
-            <label>Contraseña:</label>
+            <label>ContraseÃ±a:</label>
             <input type="password" id="contrasena" name="contrasena" required>
             
             <div class="button-container">
                 <button type="submit">Guardar Cambios</button>
-                <button type="button" class="volver" onclick="window.location.href='<%= customer.getTipoUsuario().equalsIgnoreCase("administrador") ? "../view/adminHome.jsp" : "../view/clientHome.jsp" %>';">
+                <button type="button" class="volver" onclick="window.location.href='<%= customer.getTipoUsuario().equalsIgnoreCase("administrador") ? "../view/admin/adminHome.jsp" : "../view/client/clientHome.jsp" %>';">
                     Volver
                 </button>
             </div>
