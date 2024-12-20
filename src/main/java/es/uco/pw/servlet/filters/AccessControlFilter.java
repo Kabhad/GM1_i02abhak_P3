@@ -70,13 +70,13 @@ public class AccessControlFilter implements Filter {
 	    if (path.startsWith(contextPath + "/mvc/view/")) {
 	        if (path.startsWith(contextPath + "/mvc/view/admin")) {
 	            if (!"ADMINISTRADOR".equals(rol)) {
-	                request.setAttribute("error", "Acceso denegado. Solo los administradores pueden acceder a esta página.");
+	                request.setAttribute("error", "Acceso denegado. Solo los administradores pueden acceder a esta vista.");
 	                request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
 	                return;
 	            }
 	        } else if (path.startsWith(contextPath + "/mvc/view/client")) {
 	            if (!"CLIENTE".equals(rol)) { // Cambiado para que solo CLIENTE pueda acceder
-	                request.setAttribute("error", "Acceso denegado. Solo los clientes pueden acceder a esta página.");
+	                request.setAttribute("error", "Acceso denegado. Solo los clientes pueden acceder a esta vista.");
 	                request.getRequestDispatcher("/include/errorACF.jsp").forward(request, response);
 	                return;
 	            }

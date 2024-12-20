@@ -30,7 +30,7 @@
     <h1>Cancelar Reservas Futuras</h1>
     
     <div class="button-container">
-	    <form action="<%= request.getContextPath() %>/mvc/view/clientHome.jsp" method="get">
+	    <form action="<%= request.getContextPath() %>/mvc/view/client/clientHome.jsp" method="get">
 	        <button type="submit">Volver a Inicio</button>
 	    </form>
 	</div>
