@@ -109,8 +109,8 @@
 
     <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../mvc/view/consultarReservas.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
-        <a href="../mvc/view/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="../mvc/view/client/consultarReservas.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
+        <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
     </div>
 
 </body>

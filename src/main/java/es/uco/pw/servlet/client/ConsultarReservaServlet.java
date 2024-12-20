@@ -111,7 +111,7 @@ public class ConsultarReservaServlet extends HttpServlet {
             // Pasar las listas a la vista
             request.setAttribute("reservasFinalizadas", reservasFinalizadas);
             request.setAttribute("reservasFuturas", reservasFuturas);
-            request.getRequestDispatcher("/mvc/view/mostrarReservas.jsp").forward(request, response);
+            request.getRequestDispatcher("/mvc/view/client/mostrarReservas.jsp").forward(request, response);
 
         } catch (ParseException e) {
             request.setAttribute("error", "Formato de fecha inválido. Usa yyyy-MM-dd.");

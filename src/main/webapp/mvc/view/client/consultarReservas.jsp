@@ -20,7 +20,7 @@
 
     <!-- Botón para volver al menú principal -->
     <div class="button-container">
-        <a href="../view/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+        <a href="../client/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
     </div>
 </body>
 </html>
