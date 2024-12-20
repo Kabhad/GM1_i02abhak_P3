@@ -59,7 +59,7 @@ public class CancelarReservaServlet extends HttpServlet {
         }
 
         request.setAttribute("reservas", reservasFiltradas);
-        request.getRequestDispatcher("/mvc/view/cancelarReserva.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/client/cancelarReserva.jsp").forward(request, response);
     }
 
     /**
