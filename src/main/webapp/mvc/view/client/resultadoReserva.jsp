@@ -37,7 +37,7 @@
     %>
     <div class="botones">
         <a href="../mvc/view/client/realizarReserva.jsp" class="btn-secondary">Hacer Otra Reserva</a>
-        <a href="../mvc/view/client/realizarReservaBono.jsp" class="btn-secondary">Hacer Otra Reserva de Bono</a>
+        <a href="<%= request.getContextPath() %>/client/realizarReservaBono" class="btn-secondary">Hacer Otra Reserva de Bono</a>
         <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
     </div>
 </body>

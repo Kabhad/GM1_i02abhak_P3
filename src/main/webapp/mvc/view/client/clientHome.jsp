@@ -26,6 +26,7 @@
         <li><a href="../../view/client/realizarReserva.jsp">Realizar reserva</a></li>
         <li><a href="<%= request.getContextPath() %>/client/realizarReservaBono">Realizar reserva con bono</a></li>
         <li><a href="../client/buscarPistaDisponible.jsp" class="btn">Buscar Pistas Disponibles</a></li>
+		<li><a href="<%= request.getContextPath() %>/client/modificarReserva?filtrarReservas=true">Modificar reserva</a></li>
         <li><a href="<%= request.getContextPath() %>/client/cancelarReserva">Cancelar reserva</a></li>
 
         

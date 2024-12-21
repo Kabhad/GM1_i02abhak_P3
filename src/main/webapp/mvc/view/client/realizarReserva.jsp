@@ -4,30 +4,20 @@
 <head>
     <title>Realizar Reserva</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
-    <script>
-        function actualizarPistas() {
-            const tipoReserva = document.getElementById("tipoReserva").value;
-            const fechaHora = document.getElementById("fechaHoraFiltro").value;
-            const duracion = document.getElementById("duracionFiltro").value;
-
-            if (tipoReserva && fechaHora && duracion) {
-                document.getElementById("filtroFormulario").submit();
-            }
-        }
-    </script>
+	<script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js"></script>
 </head>
 <body>
     <h1>Realizar una Nueva Reserva</h1>
 
     <!-- Formulario para filtrar las pistas -->
-    <form id="filtroFormulario" action="${pageContext.request.contextPath}/client/realizarReserva" method="get">
-        <label for="tipoReserva">Tipo de Reserva:</label><br>
-        <select id="tipoReserva" name="tipoReserva" onchange="actualizarPistas()" required>
-            <option value="" disabled ${empty param.tipoReserva ? 'selected' : ''}>Selecciona un tipo</option>
-            <option value="adulto" ${param.tipoReserva == 'adulto' ? 'selected' : ''}>Adulto</option>
-            <option value="infantil" ${param.tipoReserva == 'infantil' ? 'selected' : ''}>Infantil</option>
-            <option value="familiar" ${param.tipoReserva == 'familiar' ? 'selected' : ''}>Familiar</option>
-        </select><br><br>
+	<form id="filtroFormulario" action="${pageContext.request.contextPath}/client/realizarReserva" method="get">
+	    <label for="tipoReserva">Tipo de Reserva:</label><br>
+	    <select id="tipoReserva" name="tipoReserva" onchange="actualizarPistas()" required>
+	        <option value="" disabled ${empty param.tipoReserva ? 'selected' : ''}>Selecciona un tipo</option>
+	        <option value="adulto" ${param.tipoReserva == 'adulto' ? 'selected' : ''}>Adulto</option>
+	        <option value="infantil" ${param.tipoReserva == 'infantil' ? 'selected' : ''}>Infantil</option>
+	        <option value="familiar" ${param.tipoReserva == 'familiar' ? 'selected' : ''}>Familiar</option>
+	    </select><br><br>
 
         <label for="fechaHoraFiltro">Fecha y Hora:</label><br>
         <input type="datetime-local" id="fechaHoraFiltro" name="fechaHora" value="${param.fechaHora}" onchange="actualizarPistas()" required><br><br>

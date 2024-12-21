@@ -627,33 +627,48 @@ public class ReservasDAO {
         actualizarReserva(reservaExistente.getIdReserva(), nuevaFechaHora, nuevaDuracionMinutos, nuevoPrecio, reservaExistente.getDescuento(), nuevaPista.getIdPista(), 
                           numeroAdultos, numeroNinos);
         
-	        switch (nuevoTipoReserva.toLowerCase()) {
-	        case "familiar":
-	            try {
-	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
-	                insertarReservaFamiliar(reservaExistente.getIdReserva(), numeroAdultos, numeroNinos);
-	            } catch (SQLException e) {
-	                throw new IllegalStateException("Error al actualizar la reserva como Familiar: " + e.getMessage(), e);
-	            }
-	            break;
-	
-	        case "adulto":
-	            try {
-	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
-	                insertarReservaAdulto(reservaExistente.getIdReserva(), numeroAdultos);
-	            } catch (SQLException e) {
-	                throw new IllegalStateException("Error al actualizar la reserva como Adulto: " + e.getMessage(), e);
-	            }
-	            break;
-	
-	        case "infantil":
-	            try {
-	            	eliminarReservaEspecifica(reservaExistente.getIdReserva());
-	                insertarReservaInfantil(reservaExistente.getIdReserva(), numeroNinos);
-	            } catch (SQLException e) {
-	                throw new IllegalStateException("Error al actualizar la reserva como Infantil: " + e.getMessage(), e);
-	            }
-	            break;
+        switch (nuevoTipoReserva.toLowerCase()) {
+        case "familiar":
+            try {
+                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+                insertarReservaEspecifica(
+                    "familiar", 
+                    reservaExistente.getIdReserva(), 
+                    numeroAdultos, 
+                    numeroNinos
+                );
+            } catch (SQLException e) {
+                throw new IllegalStateException("Error al actualizar la reserva como Familiar: " + e.getMessage(), e);
+            }
+            break;
+
+        case "adulto":
+            try {
+                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+                insertarReservaEspecifica(
+                    "adulto", 
+                    reservaExistente.getIdReserva(), 
+                    numeroAdultos, 
+                    null
+                );
+            } catch (SQLException e) {
+                throw new IllegalStateException("Error al actualizar la reserva como Adulto: " + e.getMessage(), e);
+            }
+            break;
+
+        case "infantil":
+            try {
+                eliminarReservaEspecifica(reservaExistente.getIdReserva());
+                insertarReservaEspecifica(
+                    "infantil", 
+                    reservaExistente.getIdReserva(), 
+                    null, 
+                    numeroNinos
+                );
+            } catch (SQLException e) {
+                throw new IllegalStateException("Error al actualizar la reserva como Infantil: " + e.getMessage(), e);
+            }
+            break;
 	
 	        default:
 	            throw new IllegalArgumentException("Tipo de reserva no válido: " + nuevoTipoReserva);

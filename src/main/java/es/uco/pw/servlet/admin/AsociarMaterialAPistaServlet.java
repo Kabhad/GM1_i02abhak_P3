@@ -60,8 +60,6 @@ public class AsociarMaterialAPistaServlet extends HttpServlet {
             String nombrePista = request.getParameter("nombrePista");
             int idMaterial = Integer.parseInt(request.getParameter("idMaterial"));
 
-			System.out.println("Nombre de la pista recibido: " + nombrePista);
-
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
             // Asociar material a pista

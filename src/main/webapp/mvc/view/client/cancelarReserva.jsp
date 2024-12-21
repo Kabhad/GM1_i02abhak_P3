@@ -8,23 +8,6 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/cancelarReserva.css">
     <!-- Enlace al script de validación -->
     <script src="<%= request.getContextPath() %>/js/cancelarReservaValidation.js" defer></script>
-    <style>
-        /* Estilo básico para el modal */
-        #modalConfirmacion {
-            display: none; /* Oculto inicialmente */
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            align-items: center; justify-content: center;
-        }
-        #modalContent {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
     <h1>Cancelar Reservas Futuras</h1>

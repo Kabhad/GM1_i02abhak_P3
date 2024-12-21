@@ -66,3 +66,14 @@ function validarFormulario() {
 
     return true; // Permitir el envío del formulario
 }
+
+function actualizarPistas() {
+    const tipoReserva = document.getElementById("tipoReserva").value;
+    const fechaHora = document.getElementById("fechaHoraFiltro").value;
+    const duracion = document.getElementById("duracionFiltro").value;
+
+    if (tipoReserva && fechaHora && duracion) {
+        document.getElementById("filtroFormulario").submit();
+    }
+}
+
