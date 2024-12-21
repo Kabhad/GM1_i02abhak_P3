@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Realizar Reserva con Bono</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReservaBono.css">
     <script>
         function actualizarPistas() {
             const tipoReserva = document.getElementById("tipoReserva").value;
@@ -18,11 +18,20 @@
 <body>
     <h1>Realizar una Reserva Utilizando Bono</h1>
 
-    <!-- Mostrar mensaje -->
-    <% String mensaje = (String) request.getAttribute("mensaje"); %>
-    <% if (mensaje != null) { %>
-        <p class="confirmacion-mensaje"><%= mensaje %></p>
-    <% } %>
+    <!-- Información del bono -->
+    <% 
+        Boolean tieneBono = (Boolean) request.getAttribute("tieneBono");
+        if (tieneBono != null && tieneBono) { 
+    %>
+        <div class="informacion-bono">
+            <h3>Información del Bono Asociado</h3>
+            <p><strong>ID del Bono:</strong> <%= request.getAttribute("idBono") %></p>
+            <p><strong>Sesiones Disponibles:</strong> <%= request.getAttribute("sesionesRestantes") %></p>
+            <p><strong>Fecha de Caducidad:</strong> <%= request.getAttribute("fechaCaducidad") %></p>
+        </div>
+    <% 
+        } 
+    %>
 
     <!-- Formulario para filtrar las pistas -->
     <form id="filtroFormulario" action="${pageContext.request.contextPath}/client/realizarReservaBono" method="get">

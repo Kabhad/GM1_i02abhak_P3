@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, select, button {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo del mensaje de confirmación */
+.confirmacion-mensaje {
+    text-align: center;
+    color: #4CAF50;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Estilos generales para enlaces con clase btn-secondary */
+a.btn-secondary {
+    display: block; /* Ajustar el ancho automáticamente */
+    width: auto; /* El ancho se ajusta al contenido */
+    max-width: 200px; /* Establecer un ancho máximo */
+    margin: 20px auto 0; /* Margen superior de 20px y centrado horizontal */
+    padding: 10px;
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+a.btn-secondary:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para la información del bono */
+.informacion-bono {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #e8f5e9; /* Verde claro */
+    border-left: 5px solid #4CAF50; /* Línea de acento */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.informacion-bono h3 {
+    color: #4CAF50;
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+.informacion-bono p {
+    color: #333;
+    font-size: 16px;
+    margin: 5px 0;
+    line-height: 1.5;
+}
