@@ -46,7 +46,24 @@ public class MaterialBean {
     }
 
     /**
-     * Constructor con parámetros.
+     * Constructor con parámetros mínimos.
+     *
+     * @param id          Identificador del material.
+     * @param tipo        Tipo del material.
+     * @param usoExterior Indica si el material es apto para uso en exteriores.
+     * @param estado      Estado del material.
+     */
+    public MaterialBean(int id, TipoMaterial tipo, boolean usoExterior, EstadoMaterial estado) {
+        this.id = id;
+        this.tipo = tipo.name();
+        this.usoExterior = usoExterior;
+        this.estado = estado.name();
+        this.idPista = -1; // Valor por defecto para idPista cuando no se asigna
+        this.pista = null; // Valor nulo por defecto
+    }
+
+    /**
+     * Constructor completo con todos los parámetros.
      *
      * @param id          Identificador del material.
      * @param tipo        Tipo del material.
