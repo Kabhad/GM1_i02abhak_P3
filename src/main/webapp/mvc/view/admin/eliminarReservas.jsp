@@ -17,7 +17,6 @@
 	    <a href="<%= request.getContextPath() %>/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 	</div>
 
-
     <!-- Mensajes de éxito o error (ahora con IDs para ser detectados por el JS) -->
     <% if (request.getAttribute("mensaje") != null) { %>
         <div id="mensajeExito"><%= request.getAttribute("mensaje") %></div>

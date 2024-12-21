@@ -3,15 +3,15 @@
 
 /* Estilo para el título */
 h1 {
-    text-align: center; /* Centra el título */
-    font-family: 'Aptos', sans-serif; /* Aplicamos la fuente Aptos */
-    font-size: 36px; /* Tamaño de la fuente */
-    color: #333; /* Color oscuro para el texto */
-    text-transform: uppercase; /* Convertir a mayúsculas */
-    letter-spacing: 2px; /* Espaciado entre letras */
-    margin-bottom: 20px; /* Espacio debajo del título */
-    font-weight: bold; /* Hacer la fuente en negrita */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Agregar sombra suave */
+    text-align: center;
+    font-family: 'Aptos', sans-serif;
+    font-size: 36px;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos de la tabla */
@@ -55,13 +55,13 @@ tr:nth-child(even) {
 
 /* Efecto hover sobre la imagen */
 .btn-eliminar:hover .trash-icon {
-    transform: scale(1.2); /* Agranda la imagen */
+    transform: scale(1.2);
     opacity: 0.8;
 }
 
 /* Efecto click sobre la imagen */
 .btn-eliminar:active .trash-icon {
-    transform: scale(0.95); /* Reduce ligeramente la imagen */
+    transform: scale(0.95);
 }
 
 /* Mensajes de éxito o error */
@@ -89,13 +89,13 @@ tr:nth-child(even) {
 
 /* Estilos para el modal */
 .modal {
-    display: none; /* Inicialmente está oculto */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
 }
@@ -129,12 +129,12 @@ tr:nth-child(even) {
 }
 
 .btn-confirmar {
-    background-color: #28a745; /* Verde para confirmar */
+    background-color: #28a745;
     color: #fff;
 }
 
 .btn-cancelar {
-    background-color: #dc3545; /* Rojo para cancelar */
+    background-color: #dc3545;
     color: #fff;
 }
 
@@ -142,4 +142,28 @@ tr:nth-child(even) {
     opacity: 0.8;
 }
 
+/* Estilo para el botón secundario (Volver al Menú Principal) */
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Aptos', sans-serif;
+    text-align: center;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
+/* Efecto hover */
+.btn-secondary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Efecto activo (click) */
+.btn-secondary:active {
+    transform: scale(0.95);
+}
