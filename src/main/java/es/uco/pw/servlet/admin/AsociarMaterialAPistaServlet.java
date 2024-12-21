@@ -1,7 +1,6 @@
 package es.uco.pw.servlet.admin;
 
 import es.uco.pw.data.dao.PistasDAO;
-import es.uco.pw.business.material.MaterialDTO;
 import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.display.javabean.MaterialBean;
 import es.uco.pw.display.javabean.PistaBean;
@@ -24,23 +23,22 @@ public class AsociarMaterialAPistaServlet extends HttpServlet {
         try {
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
-            // Obtener materiales disponibles
-            List<MaterialDTO> materialesDTO = pistasDAO.obtenerTodosLosMateriales();
-            List<MaterialBean> materiales = new ArrayList<>();
+            // Obtener materiales con información de pistas asociadas
+            List<MaterialBean> materiales = pistasDAO.obtenerMaterialesConPistas();
 
-            for (MaterialDTO dto : materialesDTO) {
-                int idPista = pistasDAO.obtenerIdPistaPorMaterial(dto.getId()); // Método para obtener el idPista
-                String nombrePista = pistasDAO.obtenerNombrePistaPorMaterial(dto.getId());
-
-                materiales.add(new MaterialBean(dto.getId(), dto.getTipo(), dto.isUsoExterior(), dto.getEstado(), idPista, nombrePista));
-            }
-
-            // Obtener pistas disponibles
+            // Obtener pistas disponibles para el desplegable
             List<PistaDTO> pistasDTO = pistasDAO.listarPistas();
             List<PistaBean> pistas = new ArrayList<>();
             for (PistaDTO dto : pistasDTO) {
                 if (dto.isDisponible()) {
-                    pistas.add(new PistaBean(dto.getIdPista(), dto.getNombrePista(), dto.isDisponible(), dto.isExterior(), dto.getPista(), dto.getMax_jugadores()));
+                    pistas.add(new PistaBean(
+                        dto.getIdPista(),
+                        dto.getNombrePista(),
+                        dto.isDisponible(),
+                        dto.isExterior(),
+                        dto.getPista(),
+                        dto.getMax_jugadores()
+                    ));
                 }
             }
 
@@ -54,11 +52,15 @@ public class AsociarMaterialAPistaServlet extends HttpServlet {
     }
 
 
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String nombrePista = request.getParameter("nombrePista");
             int idMaterial = Integer.parseInt(request.getParameter("idMaterial"));
+
+			System.out.println("Nombre de la pista recibido: " + nombrePista);
 
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
 

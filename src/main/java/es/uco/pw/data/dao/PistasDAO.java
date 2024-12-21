@@ -7,6 +7,8 @@ import es.uco.pw.business.material.TipoMaterial;
 import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.business.pista.TamanoPista;
 import es.uco.pw.data.common.DBConnection;
+import es.uco.pw.display.javabean.MaterialBean;
+
 import java.util.*;
 import java.util.Date;
 
@@ -794,49 +796,42 @@ public class PistasDAO {
     }
     
     /**
-     * Obtiene el nombre de la pista asociada a un material dado.
+     * Obtiene una lista de materiales junto con los detalles de las pistas asociadas (si las hay).
      *
-     * @param idMaterial El ID del material cuyo ID de pista asociado se desea obtener.
-     * @return El nombre de la pista asociada, o null si no hay pista asociada al material.
+     * @return Lista de MaterialDTO y un mapa que relaciona idMaterial con PistaDTO.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
-    public String obtenerNombrePistaPorMaterial(int idMaterial) throws SQLException {
-        String sql = prop.getProperty("obtenerNombrePistaPorMaterial"); // Asegúrate de que esta consulta esté en tu archivo .properties
-        try (Connection con = new DBConnection().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idMaterial);
+    public List<MaterialBean> obtenerMaterialesConPistas() throws SQLException {
+        List<MaterialBean> materiales = new ArrayList<>();
+        String sql = prop.getProperty("obtenerMaterialesConPistas");
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("nombrePista"); // Devuelve el nombre de la pista asociada
-                }
+        if (sql == null || sql.isEmpty()) {
+            throw new SQLException("La consulta SQL para 'obtenerMaterialesConPistas' no está definida.");
+        }
+
+        try (Connection con = new DBConnection().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int idPista = rs.getInt("idPista");
+                String nombrePista = rs.getString("nombrePista");
+
+                MaterialBean material = new MaterialBean(
+                    rs.getInt("idMaterial"),
+                    TipoMaterial.valueOf(rs.getString("tipo").toUpperCase()),
+                    rs.getBoolean("usoExterior"),
+                    EstadoMaterial.valueOf(rs.getString("estado").toUpperCase()),
+                    idPista > 0 ? idPista : 0, // Si no hay pista, ID es 0
+                    nombrePista != null ? nombrePista : "Sin asignar"
+                );
+
+                materiales.add(material);
             }
         }
-        return null; // Si no hay pista asociada, devuelve null
+
+        return materiales;
     }
-
-    /**
-     * Obtiene el ID de la pista asociada a un material dado.
-     *
-     * @param idMaterial El ID del material cuyo ID de pista asociado se desea obtener.
-     * @return El ID de la pista asociada, o null si no hay pista asociada al material.
-     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
-     */
-    public Integer obtenerIdPistaPorMaterial(int idMaterial) throws SQLException {
-        String sql = prop.getProperty("obtenerIdPistaPorMaterial"); // Cargar la consulta desde el archivo properties
-        try (Connection con = new DBConnection().getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idMaterial);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("idPista"); // Devuelve el ID de la pista asociada
-                }
-            }
-        }
-        return null; // Si no hay pista asociada, retorna null
-    }
-
 
 
     /**
