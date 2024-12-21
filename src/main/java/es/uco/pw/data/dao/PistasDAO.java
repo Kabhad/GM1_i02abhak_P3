@@ -652,13 +652,15 @@ public class PistasDAO {
 
     /**
      * Método para listar todas las pistas con sus detalles.
-     * 
+     *
      * @return Lista de pistas con sus detalles.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
     public List<PistaDTO> listarPistas() throws SQLException {
         List<PistaDTO> pistas = new ArrayList<>();
         String sql = this.prop.getProperty("listarPistas");
+        
+        // Validación inicial de las propiedades y la consulta SQL
         if (sql == null || sql.isEmpty()) {
             System.err.println("Error: La consulta SQL para 'listarPistas' no está definida o está vacía.");
             return pistas;
@@ -667,16 +669,12 @@ public class PistasDAO {
             System.err.println("Error: Las propiedades 'prop' no están inicializadas.");
             return pistas;
         }
-        if (this.con == null) {
-            DBConnection conexion = new DBConnection();
-            this.con = conexion.getConnection();
-            if (this.con == null) {
-                System.err.println("Error: No se pudo obtener la conexión a la base de datos.");
-                return pistas;
-            }
-        }
-        try (PreparedStatement ps = this.con.prepareStatement(sql);
+        
+        // Manejo de conexión dentro del método
+        try (Connection con = new DBConnection().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+            
             while (rs.next()) {
                 PistaDTO pista = new PistaDTO(
                     rs.getString("nombre"),
@@ -694,6 +692,7 @@ public class PistasDAO {
         }
         return pistas;
     }
+
     
     /**
      * Método para obtener todos los materiales almacenados en la base de datos.
@@ -793,6 +792,51 @@ public class PistasDAO {
             conexion.closeConnection();
         }
     }
+    
+    /**
+     * Obtiene el nombre de la pista asociada a un material dado.
+     *
+     * @param idMaterial El ID del material cuyo ID de pista asociado se desea obtener.
+     * @return El nombre de la pista asociada, o null si no hay pista asociada al material.
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     */
+    public String obtenerNombrePistaPorMaterial(int idMaterial) throws SQLException {
+        String sql = prop.getProperty("obtenerNombrePistaPorMaterial"); // Asegúrate de que esta consulta esté en tu archivo .properties
+        try (Connection con = new DBConnection().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMaterial);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("nombrePista"); // Devuelve el nombre de la pista asociada
+                }
+            }
+        }
+        return null; // Si no hay pista asociada, devuelve null
+    }
+
+    /**
+     * Obtiene el ID de la pista asociada a un material dado.
+     *
+     * @param idMaterial El ID del material cuyo ID de pista asociado se desea obtener.
+     * @return El ID de la pista asociada, o null si no hay pista asociada al material.
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     */
+    public Integer obtenerIdPistaPorMaterial(int idMaterial) throws SQLException {
+        String sql = prop.getProperty("obtenerIdPistaPorMaterial"); // Cargar la consulta desde el archivo properties
+        try (Connection con = new DBConnection().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMaterial);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("idPista"); // Devuelve el ID de la pista asociada
+                }
+            }
+        }
+        return null; // Si no hay pista asociada, retorna null
+    }
+
 
 
     /**
