@@ -6,9 +6,7 @@
 <html>
 <head>
     <title>Asociar Materiales a Pistas</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/asociarMateriales.css">
-    <script src="<%= request.getContextPath() %>/js/asociarMaterialAPistaValidation.js"></script>
-    
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/asociarMaterialAPista.css">
 </head>
 <body>
     <h1>Asociar Materiales a Pistas</h1>
@@ -20,67 +18,66 @@
 
     <!-- Mostrar mensajes de éxito o error -->
     <% if (request.getAttribute("mensaje") != null) { %>
-        <p id="mensajeExito" style="color: green;"><%= request.getAttribute("mensaje") %></p>
+        <p id="mensajeExito" class="success-message"><%= request.getAttribute("mensaje") %></p>
     <% } %>
     <% if (request.getAttribute("error") != null) { %>
-        <p id="mensajeError" style="color: red;"><%= request.getAttribute("error") %></p>
+        <p id="mensajeError" class="error-message"><%= request.getAttribute("error") %></p>
     <% } %>
 
     <!-- Tabla de materiales -->
-  <table border="1">
-    <thead>
-        <tr>
-            <th>ID Material</th>
-            <th>Tipo</th>
-            <th>Uso Exterior</th>
-            <th>Pista Actual</th>
-            <th>Asociar a Nueva Pista</th>
-            <th>Acción</th>
-        </tr>
-    </thead>
-    <tbody>
-    <% 
-        List<MaterialBean> materiales = (List<MaterialBean>) request.getAttribute("materiales");
-        List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
-        
-        if (materiales != null && !materiales.isEmpty()) {
-            for (MaterialBean material : materiales) {
-    %>
-        <tr>
-            <td><%= material.getId() %></td>
-            <td><%= material.getTipo() %></td>
-            <td><%= material.isUsoExterior() ? "Sí" : "No" %></td>
-            <td><%= material.getPista() %></td>
-            <td>
-                <form method="post" action="<%= request.getContextPath() %>/admin/asociarMaterialAPista">
-                    <input type="hidden" name="idMaterial" value="<%= material.getId() %>">
-						<select name="nombrePista" required>
-						    <option value="" disabled selected>Selecciona una pista</option>
-						    <% 
-						        for (PistaBean pista : pistas) { 
-						            String selected = (pista.getIdPista() == material.getIdPista()) ? "selected" : "";
-						    %>
-						    <option value="<%= pista.getNombrePista() %>" <%= selected %>>
-						        <%= pista.getNombrePista() %> (<%= pista.isExterior() ? "Exterior" : "Interior" %>)
-						    </option>
-						    <% } %>
-						</select>
-            </td>
-            <td>
-                <button type="submit">Asociar</button>
-                </form>
-            </td>
-        </tr>
-    <% 
+    <table>
+        <thead>
+            <tr>
+                <th>ID Material</th>
+                <th>Tipo</th>
+                <th>Uso Exterior</th>
+                <th>Asociar a Nueva Pista</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+        <%
+            List<MaterialBean> materiales = (List<MaterialBean>) request.getAttribute("materiales");
+            List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
+            
+            if (materiales != null && !materiales.isEmpty()) {
+                for (MaterialBean material : materiales) {
+        %>
+            <tr>
+                <td><%= material.getId() %></td>
+                <td><%= material.getTipo() %></td>
+                <td><%= material.isUsoExterior() ? "Sí" : "No" %></td>
+                <td>
+                    <form method="post" action="<%= request.getContextPath() %>/admin/asociarMaterialAPista" class="form-inline">
+                        <input type="hidden" name="idMaterial" value="<%= material.getId() %>">
+                        <select name="nombrePista" required class="form-select">
+                            <option value="" disabled selected>Selecciona una pista</option>
+                            <% 
+                                for (PistaBean pista : pistas) {
+                                    String seleccionada = (material.getIdPista() == pista.getIdPista()) ? "selected" : "";
+                            %>
+                            <option value="<%= pista.getNombrePista() %>" <%= seleccionada %>>
+                                <%= pista.getNombrePista() %> (<%= pista.isExterior() ? "Exterior" : "Interior" %>)
+                            </option>
+                            <% } %>
+                        </select>
+                </td>
+                <td>
+                        <button type="submit" class="btn-primary">Asociar</button>
+                    </form>
+                </td>
+            </tr>
+        <%
+                }
+            } else {
+        %>
+            <tr>
+                <td colspan="5">No hay materiales disponibles para asociar.</td>
+            </tr>
+        <%
             }
-        } else { 
-    %>
-        <tr>
-            <td colspan="6">No hay materiales disponibles para asociar.</td>
-        </tr>
-    <% } %>
-    </tbody>
-</table>
-
+        %>
+        </tbody>
+    </table>
 </body>
 </html>
