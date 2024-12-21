@@ -8,11 +8,13 @@ import es.uco.pw.business.pista.PistaDTO;
 import es.uco.pw.business.pista.TamanoPista;
 import es.uco.pw.data.common.DBConnection;
 import java.util.*;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 
 import java.io.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  * Clase que gestiona las pistas y materiales del sistema.
@@ -326,16 +328,17 @@ public class PistasDAO {
     }
 
     /**
-     * Método para buscar las pistas disponibles filtradas por tamaño, tipo (exterior/interior) y fecha.
+     * Método para buscar las pistas disponibles filtradas por tamaño, tipo (exterior/interior), fecha y duración.
      * Si tamano o exterior son null, no se aplica el filtro correspondiente.
      *
      * @param tamano El tamaño de la pista (MINIBASKET, ADULTOS, _3VS3) o null para "Cualquiera".
      * @param exterior Booleano que indica si la pista es exterior/interior, o null para "Cualquiera".
-     * @param fecha La fecha en la que se busca la disponibilidad (formato "yyyy-MM-dd").
+     * @param fechaHora La fecha y hora en la que se busca la disponibilidad.
+     * @param duracionMin La duración en minutos de la reserva (60, 90, 120).
      * @return Lista de pistas disponibles que coinciden con los filtros.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
-    public List<PistaDTO> buscarPistasPorTipoYFecha(TamanoPista tamano, Boolean exterior, String fecha) throws SQLException {
+    public List<PistaDTO> buscarPistasPorTipoYFecha(TamanoPista tamano, Boolean exterior, Date fechaHora, int duracionMin) throws SQLException {
         List<PistaDTO> pistas = new ArrayList<>();
         DBConnection conexion = new DBConnection();
         this.con = conexion.getConnection();
@@ -353,18 +356,20 @@ public class PistasDAO {
         }
 
         try (PreparedStatement ps = this.con.prepareStatement(sql)) {
-            // Parámetros para la consulta SQL
-            ps.setObject(1, tamano != null ? tamano.name() : null); // TamanoPista
+            // Establecer parámetros en la consulta
+            ps.setObject(1, tamano != null ? tamano.name() : null); // Tamaño de la pista
             ps.setObject(2, tamano != null ? tamano.name() : null); // Para el OR NULL
-            ps.setObject(3, exterior); // Exterior
+            ps.setObject(3, exterior); // Exterior/interior
             ps.setObject(4, exterior); // Para el OR NULL
-            ps.setString(5, fecha);    // Fecha
+            ps.setTimestamp(5, new java.sql.Timestamp(fechaHora.getTime())); // Fecha y hora de inicio
+            ps.setInt(6, duracionMin); // Duración en minutos
+            ps.setTimestamp(7, new java.sql.Timestamp(fechaHora.getTime())); // Fecha y hora de inicio (repetida)
 
-            // Ejecutar consulta
+            // Ejecutar la consulta y procesar el resultado
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     pistas.add(new PistaDTO(
-                    	rs.getInt("idPista"),  // Recupera el ID de la pista
+                        rs.getInt("idPista"),
                         rs.getString("nombre"),
                         rs.getBoolean("disponible"),
                         rs.getBoolean("exterior"),
@@ -373,9 +378,6 @@ public class PistasDAO {
                     ));
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al ejecutar la consulta de pistas por tipo y fecha.");
-            throw e;
         }
         return pistas;
     }
@@ -491,6 +493,86 @@ public class PistasDAO {
         pistasFiltradas.addAll(mapaPistas.values());
         return pistasFiltradas;
     }
+    
+    /**
+     * Método para listar pistas disponibles por tipo de reserva y una fecha y hora específicas.
+     *
+     * @param tipoReserva Tipo de reserva (infantil, familiar, adulto).
+     * @param fechaHora Fecha y hora en la que se busca la disponibilidad.
+     * @param duracionMin Duración de la reserva en minutos.
+     * @return Lista de pistas disponibles que cumplen con los filtros.
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     */
+    public List<PistaDTO> listarPistasDisponiblesPorTipoYFecha(String tipoReserva, Date fechaHora, int duracionMin) throws SQLException {
+        List<PistaDTO> pistas = new ArrayList<>();
+        DBConnection conexion = new DBConnection();
+        this.con = conexion.getConnection();
+
+        if (this.con == null) {
+            throw new SQLException("Error: No se pudo obtener la conexión a la base de datos.");
+        }
+        if (this.prop == null) {
+            throw new IllegalStateException("Error: Las propiedades 'prop' no están inicializadas.");
+        }
+
+        String sql = prop.getProperty("listarPistasDisponiblesPorTipoYFecha");
+        if (sql == null || sql.isEmpty()) {
+            throw new IllegalStateException("Error: La consulta SQL para 'listarPistasDisponiblesPorTipoYFecha' no está definida.");
+        }
+
+        try (PreparedStatement ps = this.con.prepareStatement(sql)) {
+            // Configurar el tipo de pista según el tipo de reserva
+            String tamanoFiltro1 = null;
+            String tamanoFiltro2 = null;
+            switch (tipoReserva.toLowerCase()) {
+                case "infantil":
+                    tamanoFiltro1 = "MINIBASKET";
+                    tamanoFiltro2 = "MINIBASKET"; // Para mantener coherencia
+                    break;
+                case "familiar":
+                    tamanoFiltro1 = "MINIBASKET";
+                    tamanoFiltro2 = "_3VS3";
+                    break;
+                case "adulto":
+                    tamanoFiltro1 = "ADULTOS";
+                    tamanoFiltro2 = "ADULTOS"; // Para mantener coherencia
+                    break;
+                default:
+                    throw new IllegalArgumentException("Tipo de reserva no válido: " + tipoReserva);
+            }
+
+            // Asignar parámetros a la consulta SQL
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String fechaHoraStr = sdf.format(fechaHora);
+
+            ps.setString(1, tamanoFiltro1); // Primer filtro por tamaño
+            ps.setString(2, tamanoFiltro2); // Segundo filtro por tamaño
+            ps.setString(3, fechaHoraStr); // Fecha y hora de inicio
+            ps.setString(4, fechaHoraStr); // Fecha y hora de inicio (para final)
+            ps.setInt(5, duracionMin); // Duración en minutos
+
+            // Ejecutar la consulta
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    pistas.add(new PistaDTO(
+                        rs.getInt("idPista"),
+                        rs.getString("nombre"),
+                        rs.getBoolean("disponible"),
+                        rs.getBoolean("exterior"),
+                        TamanoPista.valueOf(rs.getString("tamanoPista")),
+                        rs.getInt("maxJugadores")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar la consulta de pistas por tipo y fecha.");
+            throw e;
+        }
+        return pistas;
+    }
+
+
+
 
     /**
      * Método para listar pistas disponibles según el tipo de reserva.

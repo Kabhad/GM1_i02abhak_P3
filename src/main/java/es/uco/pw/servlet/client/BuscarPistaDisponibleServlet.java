@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +39,8 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
         try {
             String tamanoParam = request.getParameter("tamano");
             String exteriorParam = request.getParameter("exterior");
-            String fechaParam = request.getParameter("fecha");
+            String fechaHoraParam = request.getParameter("fechaHora");
+            String duracionParam = request.getParameter("duracionMin");
 
             // Convertir parámetros
             TamanoPista tamano = null;
@@ -50,14 +53,19 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
                 exterior = Boolean.parseBoolean(exteriorParam);
             }
 
-            String fecha = null;
-            if (fechaParam != null && !fechaParam.isEmpty()) {
-                fecha = fechaParam; // Fecha en formato yyyy-MM-dd
+            Date fechaHora = null;
+            if (fechaHoraParam != null && !fechaHoraParam.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                fechaHora = sdf.parse(fechaHoraParam);
+            }
+
+            int duracionMin = 0;
+            if (duracionParam != null && !duracionParam.isEmpty()) {
+                duracionMin = Integer.parseInt(duracionParam);
             }
 
             // Llamada al método del DAO
-            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasPorTipoYFecha(tamano, exterior, fecha);
-
+            List<PistaDTO> pistasDisponibles = pistasDAO.buscarPistasPorTipoYFecha(tamano, exterior, fechaHora, duracionMin);
 
             // Convertir a PistaBean para la vista
             List<PistaBean> pistaBeans = new ArrayList<>();
@@ -82,6 +90,7 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
             request.getRequestDispatcher("/include/buscarPistaError.jsp").forward(request, response);
         }
     }
+
 
 
 

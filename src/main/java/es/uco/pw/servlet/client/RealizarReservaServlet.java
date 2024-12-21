@@ -29,18 +29,34 @@ import java.util.*;
 public class RealizarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * GET: Carga las pistas disponibles filtradas según el tipo de reserva.
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tipoReserva = request.getParameter("tipoReserva");
+        String fechaHoraParam = request.getParameter("fechaHora"); // Fecha y hora seleccionadas
+        String duracionParam = request.getParameter("duracion"); // Duración seleccionada
         ServletContext context = getServletContext();
 
         try {
-            // Obtener pistas disponibles filtradas por tipo
+            // Validar y parsear la fecha
+            Date fechaHora = null;
+            if (fechaHoraParam != null && !fechaHoraParam.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                fechaHora = sdf.parse(fechaHoraParam);
+            }
+
+            // Validar y parsear la duración
+            int duracionMin = 0;
+            if (duracionParam != null && !duracionParam.isEmpty()) {
+                duracionMin = Integer.parseInt(duracionParam);
+            }
+
+            if (tipoReserva == null || fechaHora == null || duracionMin <= 0) {
+                throw new IllegalArgumentException("Faltan parámetros obligatorios para filtrar las pistas.");
+            }
+
+            // Obtener pistas disponibles filtradas por tipo, fecha y duración
             PistasDAO pistasDAO = new PistasDAO(context);
-            List<PistaDTO> listaPistasDTO = pistasDAO.listarPistasDisponibles(tipoReserva);
+            List<PistaDTO> listaPistasDTO = pistasDAO.listarPistasDisponiblesPorTipoYFecha(tipoReserva, fechaHora, duracionMin);
 
             // Generar HTML de opciones
             StringBuilder opcionesPistas = new StringBuilder();
@@ -57,14 +73,27 @@ public class RealizarReservaServlet extends HttpServlet {
             // Enviar las opciones preformateadas al JSP
             request.setAttribute("opcionesPistas", opcionesPistas.toString());
             request.setAttribute("tipoReserva", tipoReserva);
+            request.setAttribute("fechaHora", fechaHoraParam); // Mantener el valor seleccionado
+            request.setAttribute("duracion", duracionParam); // Mantener la duración seleccionada
             request.getRequestDispatcher("/mvc/view/client/realizarReserva.jsp").forward(request, response);
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Formato de fecha inválido.");
+            request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al cargar las pistas disponibles.");
             request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         }
     }
+
+
+
 
 
     /**

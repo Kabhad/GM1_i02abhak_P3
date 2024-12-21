@@ -1,51 +1,68 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const formulario = document.querySelector("form");
+function validarFormulario() {
     const numeroAdultos = document.getElementById("numeroAdultos");
     const numeroNinos = document.getElementById("numeroNinos");
     const tipoReserva = document.getElementById("tipoReserva");
+    const fechaHora = document.getElementById("fechaHora");
+    const duracion = document.getElementById("duracion");
+    const idPista = document.getElementById("idPista");
 
-    formulario.addEventListener("submit", function (event) {
-        let errores = [];
+    let errores = [];
 
-        // Validar número de adultos y niños según el tipo de reserva
-        if (tipoReserva.value === "adulto" && parseInt(numeroAdultos.value) <= 0) {
+    // Validar número de adultos y niños según el tipo de reserva
+    const adultos = parseInt(numeroAdultos.value) || 0;
+    const ninos = parseInt(numeroNinos.value) || 0;
+
+    if (tipoReserva.value === "adulto") {
+        if (adultos <= 0) {
             errores.push("Debe haber al menos un adulto en una reserva de tipo adulto.");
         }
-        if (tipoReserva.value === "infantil" && parseInt(numeroNinos.value) <= 0) {
+        if (ninos > 0) {
+            errores.push("No puede haber niños en una reserva de tipo adulto.");
+        }
+    }
+
+    if (tipoReserva.value === "infantil") {
+        if (ninos <= 0) {
             errores.push("Debe haber al menos un niño en una reserva de tipo infantil.");
         }
-        if (tipoReserva.value === "familiar" && parseInt(numeroAdultos.value) <= 0 && parseInt(numeroNinos.value) <= 0) {
-            errores.push("Debe haber al menos un adulto o un niño en una reserva de tipo familiar.");
+        if (adultos > 0) {
+            errores.push("No puede haber adultos en una reserva de tipo infantil.");
         }
+    }
 
-        // Validar fecha y hora
-        const fechaHora = document.getElementById("fechaHora").value;
-        if (!fechaHora) {
-            errores.push("Debes seleccionar una fecha y hora válida.");
-        } else {
-            const fechaSeleccionada = new Date(fechaHora);
-            const fechaActual = new Date();
-            if (fechaSeleccionada < fechaActual) {
-                errores.push("La fecha y hora seleccionadas no pueden ser anteriores a la actual.");
-            }
+    if (tipoReserva.value === "familiar") {
+        if (adultos <= 0 || ninos <= 0) {
+            errores.push("Debe haber al menos un adulto y un niño en una reserva de tipo familiar.");
         }
+    }
 
-        // Validar duración
-        const duracion = document.getElementById("duracion").value;
-        if (!["60", "90", "120"].includes(duracion)) {
-            errores.push("La duración seleccionada no es válida.");
+    // Validar fecha y hora
+    if (!fechaHora.value) {
+        errores.push("Debes seleccionar una fecha y hora válida.");
+    } else {
+        const fechaSeleccionada = new Date(fechaHora.value);
+        const fechaActual = new Date();
+        if (fechaSeleccionada <= fechaActual) {
+            errores.push("La fecha y hora seleccionadas deben ser futuras.");
         }
+    }
 
-        // Validar selección de pista
-        const idPista = document.getElementById("idPista").value;
-        if (!idPista) {
-            errores.push("Debes seleccionar una pista válida.");
-        }
+    // Validar duración
+    const duracionesValidas = ["60", "90", "120"];
+    if (!duracionesValidas.includes(duracion.value)) {
+        errores.push("La duración seleccionada no es válida.");
+    }
 
-        // Mostrar errores si existen
-        if (errores.length > 0) {
-            event.preventDefault();
-            alert("Errores encontrados:\n" + errores.join("\n"));
-        }
-    });
-});
+    // Validar selección de pista
+    if (!idPista.value) {
+        errores.push("Debes seleccionar una pista válida.");
+    }
+
+    // Mostrar errores si existen
+    if (errores.length > 0) {
+        alert("Errores encontrados:\n" + errores.join("\n"));
+        return false; // Cancelar el envío del formulario
+    }
+
+    return true; // Permitir el envío del formulario
+}

@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Consulta de Reservas</title>
-    <script src="../js/validarConsultaReserva.js"></script>
+    <script src="../js/consultarReservasValidation.js"></script>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/consultarReservas.css">
 </head>
 <body>

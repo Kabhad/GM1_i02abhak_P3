@@ -10,3 +10,4 @@
 # Carpeta de salida de compilación
 bin/
 target/
+.classpath

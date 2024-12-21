@@ -142,6 +142,7 @@ tr:nth-child(even) {
     opacity: 0.8;
 }
 
+<<<<<<< Updated upstream
 /* Estilo para el botón secundario (Volver al Menú Principal) */
 .btn-secondary {
     display: inline-block;
@@ -155,6 +156,38 @@ tr:nth-child(even) {
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
+=======
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #004494;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+>>>>>>> Stashed changes
 }
 
 /* Efecto hover */
