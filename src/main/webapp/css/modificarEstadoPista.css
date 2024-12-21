@@ -1,0 +1,70 @@
+/* Estilo general para la página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Alineación del título al centro */
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* Contenedor del botón, alineado a la izquierda */
+.button-container {
+    padding: 20px;
+    text-align: left; /* Alinea el botón a la izquierda */
+}
+
+/* Estilo para el botón */
+.btn-secondary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center; /* Centra el texto dentro de las celdas */
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+/* Estilo de los mensajes */
+#mensajeExito {
+    color: green;
+    font-weight: bold;
+}
+
+#mensajeError {
+    color: red;
+    font-weight: bold;
+}

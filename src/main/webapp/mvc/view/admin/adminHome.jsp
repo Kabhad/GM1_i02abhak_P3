@@ -18,6 +18,7 @@
 <a href="../../view/modifyUser.jsp">Modificar datos</a>
 <a href="<%= request.getContextPath() %>/admin/asociarMaterialAPista">Asociar Material A Pista</a>
 <a href="<%= request.getContextPath() %>/admin/modificarEstadoMaterial">Modificar Estado Material</a>
+<a href="<%= request.getContextPath() %>/admin/modificarEstadoPista">Modificar Estado Pista</a>
 <a href="../admin/darAltaMaterial.jsp" class="btn-secondary">Dar de Alta Material</a>
 <a href="../admin/darAltaPista.jsp" class="btn-secondary">Dar de Alta Pista</a>
 <a href="<%= request.getContextPath() %>/admin/eliminarReserva">Eliminar reservas</a>
