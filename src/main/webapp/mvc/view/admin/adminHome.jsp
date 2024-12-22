@@ -1,5 +1,22 @@
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.List" %>
+<%
+    CustomerBean customer = (CustomerBean) session.getAttribute("customer");
+    if (customer == null) {
+        response.sendRedirect("../view/login.jsp");
+        return;
+    }
+
+    LocalDate fechaActual = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    String fechaActualFormateada = fechaActual.format(formatter);
+    
+    // Obtener datos del cliente
+    String correo = customer.getCorreo();
+    String fechaInscripcion = customer.getFechaInscripcion(); // Suponiendo que es un String
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head> 
@@ -20,7 +37,27 @@
 		<!-- Contenido principal -->
 		<div class="main-content">
 			<h2>Panel de Administración</h2>
+			<h2>¡Bienvenido, <%= customer.getNombre() %>!</h2>
+			<!-- Contenedor de información -->
+		    <div class="user-info">
+		        <div class="user-info-card">
+		            <div class="user-info-row">
+		                <span>Correo:</span>
+		                <span><%= correo %></span>
+		            </div>
+		            <div class="user-info-row">
+		                <span>Fecha actual:</span>
+		                <span><%= fechaActualFormateada %></span>
+		            </div>
+		            <div class="user-info-row">
+		                <span>Fecha de inscripción:</span>
+		                <span><%= fechaInscripcion != null ? fechaInscripcion : "No disponible" %></span>
+		            </div>
+		        </div>
+		    </div>
 			<h3>Lista de Clientes</h3>	
+			
+
 
 			<!-- Tabla para mostrar clientes -->
 			<div class="lista-clientes">

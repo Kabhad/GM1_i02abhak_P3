@@ -34,7 +34,7 @@
 
         <!-- Contenido principal -->
         <div class="main-content">
-            <h2>Bienvenido, <%= customer.getNombre() %>!</h2>
+            <h2>¡Bienvenido, <%= customer.getNombre() %>!</h2>
 
 		    <!-- Contenedor de información -->
 		    <div class="user-info">

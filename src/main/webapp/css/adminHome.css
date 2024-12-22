@@ -38,12 +38,31 @@ h3 {
     font-size: 1.5rem;
     color: #555;
 }
+/* Información del usuario */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #005ba9; /* Azul medio */
+}
+
+.user-info p {
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.user-info span {
+    font-weight: bold;
+}
 
 /* Caja de lista de clientes */
 .lista-clientes {
     margin: 20px auto; /* Centra la caja horizontalmente */
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: #e5e5e5;
     border: 1px solid #ddd;
     border-radius: 8px;
     max-height: 300px; /* Define la altura máxima de la caja */
