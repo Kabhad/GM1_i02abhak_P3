@@ -66,7 +66,7 @@ public class JugadoresDAO {
             if (rs.next()) {
                 boolean cuentaActiva = rs.getInt("cuentaActiva") == 1;
                 if (cuentaActiva) {
-                    return "Error: El correo ya está registrado y en uso.";
+                    return "Error: El correo ya esta registrado y en uso.";
                 } else {
                     // Reactivar cuenta existente
                     PreparedStatement psReactivar = con.prepareStatement(prop.getProperty("reactivarCuenta"));
@@ -75,7 +75,7 @@ public class JugadoresDAO {
                     psReactivar.setNull(3, java.sql.Types.DATE); // Fecha de inscripción como NULL
                     psReactivar.setString(4, nuevoJugador.getCorreoElectronico());
                     psReactivar.executeUpdate();
-                    return "Cuenta reactivada y datos actualizados con éxito.";
+                    return "Cuenta reactivada y datos actualizados con exito.";
                 }
             } else {
                 // Registrar un nuevo jugador
@@ -87,7 +87,7 @@ public class JugadoresDAO {
                 psAlta.setInt(5, nuevoJugador.isCuentaActiva() ? 1 : 0);
                 psAlta.setString(6, nuevoJugador.getContrasena()); // ADICIÓN: Contraseña
                 psAlta.executeUpdate();
-                return "Jugador registrado con éxito.";
+                return "Jugador registrado con exito.";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -174,8 +174,6 @@ public class JugadoresDAO {
                 jugador.setTipoUsuario(rs.getString("tipoUsuario"));
                 jugador.setNumeroReservasCompletadas(rs.getInt("numeroReservasCompletadas"));
                 return jugador;
-            } else {
-                System.out.println("No se encontró un jugador con las credenciales proporcionadas.");
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Mostrar el error en la consola

@@ -23,6 +23,7 @@ public class AccessControlFilter implements Filter {
 	        path.startsWith(contextPath + "/include/") || 
 	        path.startsWith(contextPath + "/css/") || 
 	        path.startsWith(contextPath + "/img/") || 
+            path.startsWith(contextPath + "/js/") || // Agregada carpeta js
 	        path.startsWith(contextPath + "/mvc/view/login.jsp") || 
 	        path.startsWith(contextPath + "/mvc/view/register.jsp") || 
 	        path.startsWith(contextPath + "/mvc/controller/LogoutController.jsp") || 

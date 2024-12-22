@@ -5,6 +5,7 @@
     <title>Realizar Reserva</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
 	<script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js"></script>
+
 </head>
 <body>
     <h1>Realizar una Nueva Reserva</h1>

@@ -15,7 +15,7 @@
     try {
         fechaNacimiento = sdf.parse(fechaNacimientoStr);
     } catch (Exception e) {
-        response.sendRedirect("../include/registerError.jsp?error=Fecha inválida.");
+        response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=Fecha inválida.");
         return;
     }
 
@@ -45,12 +45,12 @@
 
     String mensaje = jugadoresDAO.altaJugador(nuevoJugador);
 
-    if (mensaje.contains("éxito")) {
+    if (mensaje.contains("exito")) {
         request.setAttribute("successMessage", "Registrado con éxito. Por favor, inicia sesión.");
-        request.getRequestDispatcher("../view/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/mvc/view/login.jsp").forward(request, response);
     } else {
         request.setAttribute("errorMessage", mensaje);
-        request.getRequestDispatcher("../include/registerError.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/include/registerError.jsp?error=" + mensaje);
     }
 
 %>

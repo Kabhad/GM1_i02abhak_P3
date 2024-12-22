@@ -75,5 +75,18 @@ function actualizarPistas() {
     if (tipoReserva && fechaHora && duracion) {
         document.getElementById("filtroFormulario").submit();
     }
+
+    // Validar selección de pista
+    if (!idPista.value) {
+        errores.push("Debes seleccionar una pista válida.");
+    }
+
+    // Mostrar errores si existen
+    if (errores.length > 0) {
+        alert("Errores encontrados:\n" + errores.join("\n"));
+        return false; // Cancelar el envío del formulario
+    }
+
+    return true; // Permitir el envío del formulario
 }
 

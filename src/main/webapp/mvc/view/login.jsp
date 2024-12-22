@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../../css/login.css">
-    <script src="../js/loginValidation.js" defer></script>
+	<script src="<%= request.getContextPath() %>/js/loginValidation.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -21,7 +21,7 @@
         <% } else if (successMessage != null) { %>
             <p class="success"><%= successMessage %></p> <!-- Mensaje de éxito -->
         <% } %>
-        <form action="../controller/LoginController.jsp" method="post" onsubmit="return validateLoginForm()">
+        <form action="../controller/LoginController.jsp" method="post" onsubmit="return validateLogin()">
             <div class="form-group">
                 <label for="correo">Correo Electrónico:</label>
                 <input type="email" id="correo" name="correo" required>
@@ -34,7 +34,7 @@
                 <button type="submit">Iniciar Sesión</button>
             </div>
         </form>
-        <p>¿No tienes una cuenta? <a href="register.jsp">Regístrate aquí</a>.</p>
+		<p>¿No tienes una cuenta? <a href="<%= request.getContextPath() %>/mvc/view/register.jsp">Regístrate aquí</a>.</p>
     </div>
 </body>
 </html>

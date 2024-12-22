@@ -11,6 +11,11 @@
     LocalDate fechaActual = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     String fechaActualFormateada = fechaActual.format(formatter);
+    
+    // Obtener datos del cliente
+    String correo = customer.getCorreo();
+    String fechaInscripcion = customer.getFechaInscripcion(); // Suponiendo que es un String
+    String proximaReserva = customer.getFechaProximaReserva(); // Suponiendo que es un String
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,19 +41,19 @@
 		        <div class="user-info-card">
 		            <div class="user-info-row">
 		                <span>Correo:</span>
-		                <span>amartinez@example.com</span>
+		                <span><%= correo %></span>
 		            </div>
 		            <div class="user-info-row">
 		                <span>Fecha actual:</span>
-		                <span>22/12/2024</span>
+		                <span><%= fechaActualFormateada %></span>
 		            </div>
 		            <div class="user-info-row">
 		                <span>Fecha de inscripción:</span>
-		                <span>2024-10-12</span>
+		                <span><%= fechaInscripcion != null ? fechaInscripcion : "No disponible" %></span>
 		            </div>
 		            <div class="user-info-row">
 		                <span>Próxima reserva:</span>
-		                <span>2024-12-24 19:00:00</span>
+		                <span><%= proximaReserva != null ? proximaReserva : "Sin reservas futuras" %></span>
 		            </div>
 		        </div>
 		    </div>
