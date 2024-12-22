@@ -14,6 +14,6 @@
     </div>
     <br>
     <a href="${pageContext.request.contextPath}/mvc/view/admin/darAltaPista.jsp" class="btn-secondary">Dar de Alta una Nueva Pista</a>
-    <a href="${pageContext.request.contextPath}/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+    <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>
