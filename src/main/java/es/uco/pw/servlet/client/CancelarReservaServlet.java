@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Calendar;
 
-@WebServlet(name = "CancelarReservaServlet", urlPatterns = "/client/cancelarReserva")
 public class CancelarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

@@ -26,7 +26,6 @@ import java.util.List;
 /**
  * Servlet para realizar reservas utilizando bonos.
  */
-@WebServlet(name = "RealizarReservasBonoServlet", urlPatterns = {"/client/realizarReservaBono"})
 public class RealizarReservaBonoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

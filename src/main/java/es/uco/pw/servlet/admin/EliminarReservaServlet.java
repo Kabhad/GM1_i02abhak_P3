@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet(name = "EliminarReservaServlet", urlPatterns = "/admin/eliminarReserva")
+
 public class EliminarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

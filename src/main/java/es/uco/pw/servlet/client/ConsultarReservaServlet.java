@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet(name = "ConsultarReservaServlet", urlPatterns = "/client/consultarReserva")
 public class ConsultarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

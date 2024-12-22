@@ -6,11 +6,10 @@ import es.uco.pw.business.jugador.JugadorDTO;
 import es.uco.pw.data.dao.PistasDAO;
 import es.uco.pw.data.dao.ReservasDAO;
 import es.uco.pw.display.javabean.CustomerBean;
-import es.uco.pw.display.javabean.PistaBean;
 import es.uco.pw.display.javabean.ReservaBean;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +24,6 @@ import java.util.*;
 /**
  * Servlet para gestionar la realización de reservas.
  */
-@WebServlet(name = "RealizarReservaServlet", urlPatterns = "/client/realizarReserva")
 public class RealizarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -176,24 +174,5 @@ public class RealizarReservaServlet extends HttpServlet {
             request.setAttribute("error", "Error al realizar la reserva.");
             request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         }
-    }
-
-    /**
-     * Convierte una lista de PistaDTO a PistaBean.
-     */
-    private List<PistaBean> convertirDTOaBean(List<PistaDTO> listaPistasDTO) {
-        List<PistaBean> listaPistasBean = new ArrayList<>();
-        for (PistaDTO pistaDTO : listaPistasDTO) {
-            PistaBean pistaBean = new PistaBean(
-                    pistaDTO.getIdPista(),
-                    pistaDTO.getNombrePista(),
-                    pistaDTO.isDisponible(),
-                    pistaDTO.isExterior(),
-                    pistaDTO.getPista(),
-                    pistaDTO.getMax_jugadores()
-            );
-            listaPistasBean.add(pistaBean);
-        }
-        return listaPistasBean;
     }
 }

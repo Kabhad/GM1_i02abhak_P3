@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ModificarEstadoPistaServlet", urlPatterns = {"/admin/modificarEstadoPista"})
 public class ModificarEstadoPistaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

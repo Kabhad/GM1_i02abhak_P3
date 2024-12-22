@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ListarMaterialesServlet", urlPatterns = "/admin/listarMateriales")
 public class ListarMaterialesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

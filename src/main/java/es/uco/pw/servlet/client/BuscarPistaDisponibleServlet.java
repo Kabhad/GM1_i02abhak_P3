@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Servlet para buscar pistas disponibles en el sistema.
  */
-@WebServlet(name = "BuscarPistaDisponibleServlet", urlPatterns = "/client/buscarPistaDisponible")
 public class BuscarPistaDisponibleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

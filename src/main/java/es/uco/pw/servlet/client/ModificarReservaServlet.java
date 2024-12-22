@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@WebServlet(name = "ModificarReservaServlet", urlPatterns = "/client/modificarReserva")
 public class ModificarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "AsociarMaterialAPistaServlet", urlPatterns = "/admin/asociarMaterialAPista")
 public class AsociarMaterialAPistaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

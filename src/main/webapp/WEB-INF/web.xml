@@ -8,6 +8,7 @@
 	<!-- Nombre para la aplicación -->
 	<display-name>GM1_i02abhak_P3</display-name>
 
+	<!-- Configuración de parámetros de entorno -->
 	<env-entry>
 		<env-entry-name>url</env-entry-name>
 		<env-entry-type>java.lang.String</env-entry-type>
@@ -27,49 +28,175 @@
 		<param-name>sqlproperties</param-name>
 		<param-value>/WEB-INF/sql.properties</param-value>
 	</context-param>
-	
+
+	<!-- Filtros -->
 	<filter>
-    <filter-name>EncodingFilter</filter-name>
-    <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-    <init-param>
-        <param-name>encoding</param-name>
-        <param-value>UTF-8</param-value>
-    </init-param>
-    <init-param>
-        <param-name>ignore</param-name>
-        <param-value>false</param-value>
-    </init-param>
-	</filter>
-	
-	<filter-mapping>
-	    <filter-name>EncodingFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	
-	<filter>
-    <filter-name>AccessControlFilter</filter-name>
-    <filter-class>es.uco.pw.servlet.filters.AccessControlFilter</filter-class>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>false</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
-	    <filter-name>AccessControlFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+	<filter>
+		<filter-name>AccessControlFilter</filter-name>
+		<filter-class>es.uco.pw.servlet.filters.AccessControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessControlFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Servlets -->
+	<!-- Admin Servlets -->
 	<servlet>
-    <servlet-name>ConsultarReservaServlet</servlet-name>
-    <servlet-class>es.uco.pw.servlet.client.ConsultarReservaServlet</servlet-class>
+		<servlet-name>AsociarMaterialAPistaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.AsociarMaterialAPistaServlet</servlet-class>
 	</servlet>
-	
 	<servlet-mapping>
-	    <servlet-name>ConsultarReservaServlet</servlet-name>
-	    <url-pattern>/client/consultarReserva</url-pattern>
+		<servlet-name>AsociarMaterialAPistaServlet</servlet-name>
+		<url-pattern>/admin/asociarMaterialAPista</url-pattern>
 	</servlet-mapping>
-	
-		
+
+	<servlet>
+		<servlet-name>DarAltaMaterialServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.DarAltaMaterialServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DarAltaMaterialServlet</servlet-name>
+		<url-pattern>/admin/darAltaMaterial</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DarAltaPistaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.DarAltaPistaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DarAltaPistaServlet</servlet-name>
+		<url-pattern>/admin/darAltaPista</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>EliminarReservaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.EliminarReservaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EliminarReservaServlet</servlet-name>
+		<url-pattern>/admin/eliminarReserva</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ListarJugadoresServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.ListarJugadoresServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListarJugadoresServlet</servlet-name>
+		<url-pattern>/admin/listarJugadores</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ListarMaterialesServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.ListarMaterialesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListarMaterialesServlet</servlet-name>
+		<url-pattern>/admin/listarMateriales</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ListarPistasServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.ListarPistasServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListarPistasServlet</servlet-name>
+		<url-pattern>/admin/listarPistas</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ModificarEstadoMaterialServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.ModificarEstadoMaterialServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ModificarEstadoMaterialServlet</servlet-name>
+		<url-pattern>/admin/modificarEstadoMaterial</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ModificarEstadoPistaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.admin.ModificarEstadoPistaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ModificarEstadoPistaServlet</servlet-name>
+		<url-pattern>/admin/modificarEstadoPista</url-pattern>
+	</servlet-mapping>
+
+	<!-- Client Servlets -->
+	<servlet>
+		<servlet-name>BuscarPistaDisponibleServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.BuscarPistaDisponibleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BuscarPistaDisponibleServlet</servlet-name>
+		<url-pattern>/client/buscarPistaDisponible</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CancelarReservaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.CancelarReservaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CancelarReservaServlet</servlet-name>
+		<url-pattern>/client/cancelarReserva</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ConsultarReservaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.ConsultarReservaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConsultarReservaServlet</servlet-name>
+		<url-pattern>/client/consultarReserva</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ModificarReservaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.ModificarReservaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ModificarReservaServlet</servlet-name>
+		<url-pattern>/client/modificarReserva</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>RealizarReservaBonoServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.RealizarReservaBonoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RealizarReservaBonoServlet</servlet-name>
+		<url-pattern>/client/realizarReservaBono</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>RealizarReservaServlet</servlet-name>
+		<servlet-class>es.uco.pw.servlet.client.RealizarReservaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RealizarReservaServlet</servlet-name>
+		<url-pattern>/client/realizarReserva</url-pattern>
+	</servlet-mapping>
 
 	<!-- Archivo de bienvenida -->
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
 </web-app>
