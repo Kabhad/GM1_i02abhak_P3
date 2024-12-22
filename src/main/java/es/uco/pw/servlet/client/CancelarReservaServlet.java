@@ -17,11 +17,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Calendar;
 
+/**
+ * Servlet para gestionar la cancelación de reservas de los usuarios.
+ */
 public class CancelarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * GET: Muestra reservas del usuario logueado con más de 24 horas de antelación.
+     * Procesa las solicitudes GET para mostrar las reservas del usuario logueado que
+     * cumplen con el requisito de más de 24 horas de antelación.
+     *
+     * @param request  Objeto HttpServletRequest que contiene la solicitud del cliente.
+     * @param response Objeto HttpServletResponse que contiene la respuesta del servidor.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error en el flujo de entrada/salida.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,7 +71,13 @@ public class CancelarReservaServlet extends HttpServlet {
     }
 
     /**
-     * POST: Elimina la reserva seleccionada y recarga la lista.
+     * Procesa las solicitudes POST para cancelar una reserva seleccionada por el usuario.
+     * Después de cancelar, recarga la lista de reservas disponibles para cancelar.
+     *
+     * @param request  Objeto HttpServletRequest que contiene la solicitud del cliente.
+     * @param response Objeto HttpServletResponse que contiene la respuesta del servidor.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error en el flujo de entrada/salida.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -12,11 +12,29 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Servlet para listar jugadores con reservas.
+ *
+ * <p>Este servlet permite a los administradores visualizar una lista de jugadores
+ * que tienen reservas registradas en el sistema. Se asegura de que solo usuarios
+ * con rol de administrador puedan acceder a esta funcionalidad.</p>
+ */
 public class ListarJugadoresServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    
+
+    /**
+     * Maneja las solicitudes HTTP GET para listar los jugadores con reservas.
+     *
+     * <p>Verifica que el usuario autenticado sea un administrador antes de obtener
+     * los jugadores con reservas de la base de datos. La lista resultante se convierte
+     * en una lista de objetos {@link CustomerBean} y se envía a la vista correspondiente.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);

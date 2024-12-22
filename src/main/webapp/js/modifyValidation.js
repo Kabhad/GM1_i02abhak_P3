@@ -1,3 +1,19 @@
+/**
+ * Función para validar el formulario de modificación de datos del usuario.
+ *
+ * Reglas de validación:
+ * 1. Todos los campos deben estar completos.
+ *    - Si algún campo está vacío, muestra un mensaje de alerta y retorna `false`.
+ * 2. Validación del campo "nombre":
+ *    - Solo se permiten letras (incluyendo acentos y diéresis), la ñ y espacios.
+ *    - Si no cumple, muestra un mensaje de alerta y retorna `false`.
+ * 3. Validación del campo "contraseña":
+ *    - Debe tener al menos 6 caracteres.
+ *    - Debe incluir al menos una letra mayúscula, una minúscula, un número y un carácter especial.
+ *    - Si no cumple, muestra un mensaje de alerta y retorna `false`.
+ *
+ * @returns {boolean} `true` si todas las validaciones se pasan, `false` de lo contrario.
+ */
 function validateModifyForm() {
     const nombre = document.getElementById("nombre").value.trim();
     const contrasena = document.getElementById("contrasena").value.trim();

@@ -1,6 +1,18 @@
 <%@ page import="es.uco.pw.data.dao.JugadoresDAO" %>
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%
+	/**
+	 * Este script procesa la modificación de los datos de un usuario.
+	 * 
+	 * Pasos del flujo:
+	 * 1. Comprueba si el usuario está autenticado. Si no, redirige al inicio de sesión.
+	 * 2. Obtiene los datos enviados desde el formulario (nuevo nombre y nueva contraseña).
+	 * 3. Usa el DAO de jugadores para actualizar la información en la base de datos.
+	 * 4. Si la operación es exitosa:
+	 *    - Actualiza los datos del `CustomerBean` en la sesión.
+	 *    - Redirige al menú de administrador o cliente según el tipo de usuario.
+	 * 5. Si hay un error, redirige a una página de error con el mensaje correspondiente.
+	 */
     // Obtener el CustomerBean de la sesión
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
     if (customer == null) {

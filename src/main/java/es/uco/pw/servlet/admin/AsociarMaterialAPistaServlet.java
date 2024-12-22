@@ -14,9 +14,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet para gestionar la asociación de materiales a pistas deportivas.
+ *
+ * <p>Este servlet maneja solicitudes HTTP GET y POST para cargar información sobre materiales y pistas disponibles,
+ * y para procesar la asociación de materiales a pistas. Utiliza el DAO de pistas para interactuar con la base de datos
+ * y beans para representar los datos procesados en las vistas.</p>
+ *
+ * <p>El método GET carga los datos necesarios para mostrar en la interfaz, mientras que el método POST procesa la 
+ * asociación de materiales a pistas y recarga la vista con el resultado de la operación.</p>
+ */
 public class AsociarMaterialAPistaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Maneja solicitudes HTTP GET para cargar información de materiales y pistas disponibles.
+     *
+     * <p>Carga la lista de materiales y pistas disponibles para asociar y envía estos datos como atributos
+     * de la solicitud a la vista correspondiente. Si ocurre un error, muestra un mensaje en la vista.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -52,7 +73,17 @@ public class AsociarMaterialAPistaServlet extends HttpServlet {
 
 
 
-
+    /**
+     * Maneja solicitudes HTTP POST para asociar materiales a pistas.
+     *
+     * <p>Procesa los parámetros recibidos de la solicitud, realiza la asociación de materiales a pistas
+     * a través del DAO de pistas, y recarga la vista con un mensaje de éxito o error según el resultado.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {

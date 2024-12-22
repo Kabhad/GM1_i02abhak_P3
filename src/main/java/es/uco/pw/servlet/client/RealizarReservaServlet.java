@@ -23,10 +23,25 @@ import java.util.*;
 
 /**
  * Servlet para gestionar la realización de reservas.
+ *
+ * <p>Este servlet permite a los usuarios visualizar pistas disponibles para reservas
+ * según sus criterios seleccionados y confirmar la reserva, almacenándola en la base de datos.</p>
  */
 public class RealizarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Maneja solicitudes HTTP GET para obtener pistas disponibles según criterios.
+     *
+     * <p>Este método permite a los usuarios filtrar pistas disponibles según el tipo de reserva,
+     * la fecha y hora seleccionadas, y la duración especificada. Genera opciones de pistas para
+     * la selección en el formulario de reserva.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tipoReserva = request.getParameter("tipoReserva");
@@ -95,7 +110,15 @@ public class RealizarReservaServlet extends HttpServlet {
 
 
     /**
-     * POST: Realiza la reserva y la almacena en la base de datos.
+     * Maneja solicitudes HTTP POST para realizar una reserva.
+     *
+     * <p>El método valida los datos del formulario, crea una reserva en la base de datos
+     * y redirige al usuario a una página de confirmación con los detalles de la reserva realizada.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

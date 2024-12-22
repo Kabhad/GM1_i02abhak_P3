@@ -11,10 +11,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+/**
+ * Servlet para gestionar el alta de nuevas pistas deportivas.
+ *
+ * <p>Este servlet maneja solicitudes HTTP POST para procesar los datos enviados desde un formulario,
+ * crear una nueva pista y guardarla en la base de datos a través del DAO de pistas.</p>
+ *
+ * <p>En caso de éxito, redirige al listado de pistas con un mensaje de confirmación.
+ * Si ocurre un error, muestra un mensaje de error en la vista correspondiente.</p>
+ */
 public class DarAltaPistaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Maneja solicitudes HTTP POST para dar de alta una nueva pista deportiva.
+     *
+     * <p>Recupera los datos del formulario, crea un {@code PistaBean}, y llama al DAO para
+     * guardar la pista en la base de datos. Gestiona errores y redirige según el resultado.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {

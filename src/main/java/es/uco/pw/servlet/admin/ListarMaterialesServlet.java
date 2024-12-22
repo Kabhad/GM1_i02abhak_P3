@@ -13,9 +13,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servlet para listar los materiales disponibles en el sistema.
+ *
+ * <p>Este servlet permite a los administradores obtener y visualizar una lista de materiales
+ * disponibles en el sistema. Los datos se obtienen desde la base de datos a través del DAO
+ * y se convierten en objetos {@link MaterialBean} para su uso en la vista.</p>
+ */
 public class ListarMaterialesServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Maneja las solicitudes HTTP GET para listar los materiales.
+     *
+     * <p>Obtiene todos los materiales disponibles utilizando el DAO y los transforma
+     * en una lista de objetos {@link MaterialBean}, que se envían a la vista para su
+     * visualización.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -36,6 +55,17 @@ public class ListarMaterialesServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Maneja las solicitudes HTTP POST para listar los materiales.
+     *
+     * <p>Redirige las solicitudes POST a la lógica de manejo de solicitudes GET,
+     * permitiendo que ambos métodos realicen la misma funcionalidad.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);

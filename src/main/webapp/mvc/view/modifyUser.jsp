@@ -1,6 +1,11 @@
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
+
+	/**
+	 * Este script verifica si hay un usuario autenticado en la sesión.
+	 * Si no hay un usuario autenticado, redirige a la página de inicio de sesión.
+	 */
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
     if (customer == null) {
         response.sendRedirect("../view/login.jsp");

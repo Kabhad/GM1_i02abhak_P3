@@ -77,6 +77,12 @@ public class ReservaFamiliar extends ReservaDTO {
         this.numeroNinos = numeroNinos;
     }
 
+    /**
+     * Genera una representación en forma de cadena de la reserva familiar,
+     * incluyendo el tipo de reserva y el número de adultos y niños.
+     *
+     * @return Una cadena con la información detallada de la reserva familiar.
+     */
     @Override
     public String toString() {
         return "  Tipo de Reserva: Familiar\n" +

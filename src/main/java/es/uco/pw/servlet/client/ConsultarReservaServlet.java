@@ -22,9 +22,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Servlet para consultar reservas de un usuario dentro de un rango de fechas.
+ *
+ * <p>Este servlet permite a los usuarios consultar sus reservas en un rango de fechas
+ * especificado. Las reservas se clasifican en finalizadas y futuras, y se envían a la vista
+ * para su visualización.</p>
+ */
 public class ConsultarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Maneja las solicitudes HTTP POST para consultar reservas.
+     *
+     * <p>El método valida que el usuario esté autenticado y las fechas proporcionadas
+     * sean válidas. Luego consulta las reservas desde la base de datos y las clasifica
+     * en finalizadas y futuras antes de enviarlas a la vista.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();

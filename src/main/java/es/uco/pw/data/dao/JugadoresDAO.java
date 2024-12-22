@@ -137,11 +137,17 @@ public class JugadoresDAO {
     }
 
     /**
-     * Autentica un jugador usando su correo y contraseña.
+     * Autentica a un jugador utilizando su correo electrónico y contraseña.
      *
-     * @param correo Correo del jugador.
-     * @param contrasena Contraseña del jugador.
-     * @return JugadorDTO si las credenciales son correctas, null en caso contrario.
+     * Este método verifica las credenciales del jugador contra la base de datos.
+     * Si las credenciales son válidas, retorna un objeto `JugadorDTO` con los datos del jugador.
+     * En caso de credenciales incorrectas o error, retorna null.
+     *
+     * @param correo Correo electrónico registrado del jugador.
+     * @param contrasena Contraseña correspondiente al correo del jugador.
+     * @return Un objeto `JugadorDTO` con los datos del jugador si las credenciales son correctas;
+     *         null si las credenciales son incorrectas o si ocurre algún error.
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
     public JugadorDTO autenticarJugador(String correo, String contrasena) {
         DBConnection connection = new DBConnection();

@@ -14,12 +14,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Servlet para gestionar la eliminación de reservas.
+ *
+ * <p>Este servlet permite a los administradores visualizar y eliminar reservas futuras.
+ * Ofrece dos operaciones principales:</p>
+ * <ul>
+ *     <li><strong>GET:</strong> Muestra todas las reservas futuras disponibles para ser eliminadas.</li>
+ *     <li><strong>POST:</strong> Elimina una reserva seleccionada y recarga la lista de reservas futuras.</li>
+ * </ul>
+ */
 public class EliminarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * GET: Muestra todas las reservas futuras existentes.
+     * Maneja las solicitudes HTTP GET para mostrar todas las reservas futuras.
+     *
+     * <p>Obtiene las reservas futuras de la base de datos, las transforma en objetos {@link ReservaBean}
+     * para facilitar su representación en la vista, y las envía a la página de eliminación de reservas.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,7 +52,15 @@ public class EliminarReservaServlet extends HttpServlet {
     }
 
     /**
-     * POST: Elimina la reserva seleccionada y recarga la lista de reservas futuras.
+     * Maneja las solicitudes HTTP POST para eliminar una reserva seleccionada.
+     *
+     * <p>Recibe el ID de la reserva desde el formulario, intenta eliminarla de la base de datos
+     * y recarga la lista de reservas futuras para reflejar los cambios.</p>
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP a enviar.
+     * @throws ServletException Si ocurre un error durante la ejecución del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,7 +88,11 @@ public class EliminarReservaServlet extends HttpServlet {
     }
 
     /**
-     * Empaqueta una lista de ReservaDTO en ReservaBean, clasificando los detalles específicos.
+     * Transforma una lista de objetos {@link ReservaDTO} en una lista de {@link ReservaBean},
+     * clasificando y empaquetando detalles específicos según el tipo de reserva.
+     *
+     * @param reservasDTO La lista de reservas obtenidas de la base de datos.
+     * @return Una lista de {@link ReservaBean} con los detalles transformados y listos para la vista.
      */
     private List<ReservaBean> empaquetarReservasFuturas(List<ReservaDTO> reservasDTO) {
         List<ReservaBean> reservasFuturas = new ArrayList<>();

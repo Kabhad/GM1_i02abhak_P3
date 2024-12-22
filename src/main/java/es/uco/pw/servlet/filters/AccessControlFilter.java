@@ -8,9 +8,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Filtro de control de acceso para gestionar permisos de usuarios en la aplicación.
+ * 
+ * <p>Este filtro se aplica a todas las solicitudes y verifica si el usuario tiene
+ * los permisos necesarios para acceder a las distintas secciones de la aplicación.</p>
+ */
 @WebFilter("/*") // Intercepta todas las solicitudes
 public class AccessControlFilter implements Filter {
 
+    /**
+     * Filtra las solicitudes y valida los permisos de acceso según el rol del usuario.
+     *
+     * @param request  La solicitud HTTP del cliente.
+     * @param response La respuesta HTTP del servidor.
+     * @param chain    La cadena de filtros a ejecutar.
+     * @throws IOException      Si ocurre un error en la entrada/salida.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	    HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -94,11 +109,20 @@ public class AccessControlFilter implements Filter {
 	}
 
 
+    /**
+     * Método llamado cuando se destruye el filtro.
+     */
     @Override
     public void destroy() {
         // Método opcional
     }
 
+    /**
+     * Inicializa el filtro.
+     *
+     * @param arg0 Configuración del filtro.
+     * @throws ServletException Si ocurre un error en la inicialización.
+     */
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         // Método opcional

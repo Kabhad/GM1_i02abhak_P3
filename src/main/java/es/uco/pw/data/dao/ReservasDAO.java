@@ -30,7 +30,11 @@ public class ReservasDAO {
 
 
 	/**
-	 * Constructor que carga las propiedades SQL desde el archivo `sql.properties`.
+	 * Constructor que inicializa el DAO de Reservas cargando las propiedades SQL desde el archivo `sql.properties`.
+	 * 
+	 * @param application El contexto del servlet que proporciona acceso a los parámetros y archivos de configuración de la aplicación web.
+	 * @throws FileNotFoundException Si el archivo `sql.properties` no se encuentra en la ruta especificada en el parámetro de contexto.
+	 * @throws IOException Si ocurre un error al leer el archivo `sql.properties`.
 	 */
 	public ReservasDAO(ServletContext application) {
 	    prop = new Properties();
@@ -574,7 +578,8 @@ public class ReservasDAO {
     }
 
     /**
-     * Modifica una reserva existente.
+     * Modifica una reserva existente en el sistema, permitiendo cambiar datos como la pista, 
+     * fecha, duración, número de jugadores y tipo de reserva.
      *
      * @param jugadorDTO El jugador asociado a la reserva que se va a modificar.
      * @param pistaOriginal La pista original en la que se realizó la reserva.
@@ -584,8 +589,7 @@ public class ReservasDAO {
      * @param nuevaDuracionMinutos La nueva duración de la reserva, en minutos.
      * @param numeroAdultos El nuevo número de adultos en la reserva.
      * @param numeroNinos El nuevo número de niños en la reserva.
-     * @param bono El bono a utilizar en la nueva reserva, si aplica.
-     * @param numeroSesion El número de la sesión del bono, si aplica.
+     * @param application El contexto de la aplicación para operaciones adicionales, como actualizar la inscripción del jugador.
      * @throws IllegalArgumentException Si no se encuentra la reserva, si no se puede modificar, si la pista no es válida o si los parámetros son inválidos.
      * @throws IllegalStateException Si ocurre un error al actualizar la base de datos.
      */
@@ -682,12 +686,15 @@ public class ReservasDAO {
 
 
     /**
-     * Cancela una reserva existente.
+     * Cancela una reserva existente, eliminándola del sistema. Si la reserva está asociada a un bono,
+     * decrementa las sesiones restantes del bono correspondiente.
      *
      * @param jugadorDTO El jugador que cancela la reserva.
      * @param pistaDTO La pista de la reserva a cancelar.
      * @param fechaHora La fecha y hora de la reserva a cancelar.
-     * @throws IllegalArgumentException Si la cuenta del jugador no está activa, si no se encuentra la reserva, o si no se puede cancelar la reserva.
+     * @param application El contexto de la aplicación, necesario para operaciones adicionales.
+     * @throws IllegalArgumentException Si la cuenta del jugador no está activa, si no se encuentra la reserva, 
+     *                                  o si no se puede cancelar la reserva.
      */
     public void cancelarReserva(JugadorDTO jugadorDTO, PistaDTO pistaDTO, Date fechaHora, ServletContext application) {
         if (!jugadorDTO.isCuentaActiva()) {
@@ -717,9 +724,13 @@ public class ReservasDAO {
     }
 
     /**
-     * Consulta las reservas futuras.
+     * Consulta las reservas futuras almacenadas en la base de datos.
      *
-     * @return Una lista de reservas futuras.
+     * <p>Este método obtiene todas las reservas cuya fecha y hora están en el futuro. 
+     * Además, identifica el tipo de reserva (familiar, adulto o infantil) y 
+     * construye objetos de tipo {@link ReservaDTO} adecuados.</p>
+     *
+     * @return Una lista de objetos {@link ReservaDTO} representando las reservas futuras.
      */
     public List<ReservaDTO> consultarReservasFuturas() {
         List<ReservaDTO> reservasFuturas = new ArrayList<>();
@@ -819,12 +830,16 @@ public class ReservasDAO {
     
     
     /**
-     * Consulta las reservas de un usuario dentro de un rango de fechas utilizando su correo electrónico.
+     * Consulta las reservas asociadas a un usuario dentro de un rango de fechas, utilizando su correo electrónico.
      *
-     * @param correoUsuario El correo electrónico del usuario.
-     * @param fechaInicio La fecha de inicio del rango.
-     * @param fechaFin La fecha de fin del rango.
-     * @return Una lista de reservas asociadas al usuario dentro del rango de fechas.
+     * <p>Este método obtiene todas las reservas realizadas por un usuario cuyo correo coincida con el proporcionado, 
+     * y cuya fecha esté dentro del rango especificado. Además, identifica el tipo de reserva (familiar, adulto o infantil)
+     * para construir los objetos {@link ReservaDTO} correspondientes.</p>
+     *
+     * @param correoUsuario El correo electrónico del usuario cuyas reservas se desean consultar.
+     * @param fechaInicio La fecha de inicio del rango (inclusive).
+     * @param fechaFin La fecha de fin del rango (inclusive).
+     * @return Una lista de objetos {@link ReservaDTO} representando las reservas dentro del rango especificado.
      */
     public List<ReservaDTO> consultarReservasPorCorreoYFechas(String correoUsuario, Date fechaInicio, Date fechaFin) {
         List<ReservaDTO> reservasPorFecha = new ArrayList<>();
@@ -944,12 +959,16 @@ public class ReservasDAO {
 
 
     /**
-     * Consulta las reservas para un día específico y una pista específica.
+     * Consulta las reservas realizadas en una pista específica dentro de un rango de fechas.
      *
-     * @param fechaInicio Fecha inicio para consultar reservas.
-     * @param fechaFin Fecha fin para consultar reservas..
-     * @param idPistaConsulta El id de la pista para consultar las reservas.
-     * @return Una lista de reservas para el día y la pista especificados.
+     * <p>Este método permite obtener todas las reservas asociadas a una pista específica y cuyas fechas
+     * están dentro del rango especificado. Además, identifica el tipo de reserva (familiar, adulto o infantil)
+     * y construye objetos {@link ReservaDTO} correspondientes.</p>
+     *
+     * @param fechaInicio La fecha de inicio del rango para consultar reservas (inclusive).
+     * @param fechaFin La fecha de fin del rango para consultar reservas (inclusive).
+     * @param idPistaConsulta El ID de la pista para consultar las reservas.
+     * @return Una lista de objetos {@link ReservaDTO} representando las reservas realizadas dentro del rango y para la pista especificada.
      */
 
     public List<ReservaDTO> consultarReservasPorRangosDeFechaYPista(Date fechaInicio, Date fechaFin, int idPistaConsulta) {
@@ -1070,10 +1089,14 @@ public class ReservasDAO {
 
     
     /**
-     * Consulta las reservas de un usuario utilizando su correo electrónico.
+     * Consulta las reservas asociadas a un usuario utilizando su correo electrónico.
      *
-     * @param correoUsuario El correo electrónico del usuario.
-     * @return Una lista de reservas asociadas al usuario.
+     * <p>Este método obtiene todas las reservas realizadas por un usuario cuyo correo coincida con el proporcionado.
+     * Además, identifica el tipo de reserva (familiar, adulto o infantil) para construir los objetos {@link ReservaDTO}
+     * correspondientes.</p>
+     *
+     * @param correoUsuario El correo electrónico del usuario cuyas reservas se desean consultar.
+     * @return Una lista de objetos {@link ReservaDTO} representando las reservas asociadas al usuario.
      */
     public List<ReservaDTO> consultarReservasPorCorreo(String correoUsuario) {
         List<ReservaDTO> reservasPorCorreo = new ArrayList<>();
@@ -1170,11 +1193,15 @@ public class ReservasDAO {
 
 
     /**
-     * Obtiene una reserva completa usando el patrón Factory.
+     * Obtiene una reserva completa por su ID, incluyendo su tipo específico (Infantil, Familiar o Adulto).
      *
-     * @param idReserva El ID de la reserva.
-     * @return La instancia completa de ReservaDTO según el tipo (Infantil, Familiar o Adulto),
-     *         o null si no se encuentra la reserva.
+     * <p>Este método utiliza el patrón Factory para construir el objeto {@link ReservaDTO} correspondiente 
+     * al tipo de reserva identificado (Infantil, Familiar o Adulto). Si la reserva está asociada a un bono, 
+     * también se incorpora dicha información.</p>
+     *
+     * @param idReserva El ID de la reserva a buscar.
+     * @return La instancia completa de {@link ReservaDTO} según el tipo de reserva,
+     *         o {@code null} si no se encuentra la reserva.
      */
     public ReservaDTO obtenerReservaCompleta(int idReserva) {
         String sqlBaseReserva = prop.getProperty("buscarReservaBase");
@@ -1269,13 +1296,16 @@ public class ReservasDAO {
     }
 
     /**
-     * Encuentra una reserva completa en función del idJugador, idPista y fechaHora.
+     * Encuentra una reserva completa en función del ID del jugador, ID de la pista y la fecha y hora de la reserva.
      *
-     * @param idJugador El ID del jugador.
-     * @param idPista El ID de la pista.
+     * <p>Este método construye un objeto {@link ReservaDTO} correspondiente al tipo de reserva identificado
+     * (Infantil, Familiar o Adulto). Si la reserva está asociada a un bono, también se incluye dicha información.</p>
+     *
+     * @param idJugador El ID del jugador asociado a la reserva.
+     * @param idPista El ID de la pista asociada a la reserva.
      * @param fechaHora La fecha y hora de la reserva.
-     * @return La instancia completa de ReservaDTO según el tipo (Infantil, Familiar o Adulto),
-     *         o null si no se encuentra la reserva.
+     * @return La instancia completa de {@link ReservaDTO} según el tipo de reserva,
+     *         o {@code null} si no se encuentra la reserva.
      */
     public ReservaDTO encontrarReserva(int idJugador, int idPista, Date fechaHora) {
         ReservaDTO reservaDTO = null;
@@ -1373,11 +1403,14 @@ public class ReservasDAO {
     }
 
     /**
-     * Verifica si la pista cumple las condiciones para el tipo de reserva.
+     * Verifica si una pista cumple las condiciones para un tipo específico de reserva.
+     *
+     * <p>Este método evalúa el tamaño de la pista en función del tipo de reserva 
+     * solicitado (infantil, familiar o adulto).</p>
      *
      * @param pistaDTO La pista a verificar.
-     * @param tipoReserva El tipo de reserva a verificar.
-     * @return true si la pista cumple las condiciones; false en caso contrario.
+     * @param tipoReserva El tipo de reserva a verificar ("infantil", "familiar" o "adulto").
+     * @return {@code true} si la pista cumple las condiciones para el tipo de reserva; {@code false} en caso contrario.
      */
     private boolean cumpleCondicionesTipoReserva(PistaDTO pistaDTO, String tipoReserva) {
         switch (tipoReserva.toLowerCase()) {
@@ -1413,10 +1446,16 @@ public class ReservasDAO {
     }
     
     /**
-     * Valida que la fecha y hora de la reserva sea válida.
-     * 
-     * @param fechaHora La fecha y hora de la reserva.
-     * @throws IllegalArgumentException Si la fecha y hora no es válida.
+     * Valida que la fecha y hora de una reserva sea válida según las reglas del sistema.
+     *
+     * <p>Las validaciones incluyen:</p>
+     * <ul>
+     *   <li>La reserva debe hacerse con al menos 6 horas de antelación.</li>
+     *   <li>El horario permitido es entre las 9:00 y las 20:30.</li>
+     * </ul>
+     *
+     * @param fechaHora La fecha y hora de la reserva a validar.
+     * @throws IllegalArgumentException Si la fecha y hora no cumplen con las restricciones establecidas.
      */
     private void validarFechaHora(Date fechaHora) {
         Date ahora = new Date();
@@ -1475,10 +1514,15 @@ public class ReservasDAO {
     }
 
     /**
-     * Lista las pistas disponibles para un tipo de reserva específico.
+     * Lista las pistas disponibles para un tipo específico de reserva.
      *
-     * @param tipoReserva El tipo de reserva (infantil, familiar, adulto).
-     * @return Una lista de pistas disponibles para el tipo de reserva dado.
+     * <p>Este método utiliza el DAO de pistas para consultar las pistas disponibles
+     * según el tipo de reserva proporcionado (infantil, familiar o adulto).</p>
+     *
+     * @param tipoReserva El tipo de reserva a consultar (infantil, familiar, adulto).
+     * @param application El contexto de la aplicación para cargar el archivo de propiedades SQL.
+     * @return Una lista de objetos {@code PistaDTO} que representan las pistas disponibles
+     *         para el tipo de reserva dado, o una lista vacía si ocurre un error.
      */
     public List<PistaDTO> listarPistasDisponibles(String tipoReserva, ServletContext application) {
         PistasDAO pistasDAO = new PistasDAO(application); // Instanciación de PistasDAO
@@ -1576,9 +1620,13 @@ public class ReservasDAO {
     /**
      * Obtiene un bono asociado a un jugador por su ID.
      *
+     * <p>Este método consulta la base de datos para recuperar un bono válido asociado al jugador.
+     * Valida que el bono no esté caducado y calcula las sesiones restantes.</p>
+     *
      * @param idJugador El ID del jugador.
-     * @return El bono asociado, o null si no se encuentra.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     * @return Un objeto {@code Bono} asociado al jugador, o {@code null} si no se encuentra
+     *         o si el bono no es válido (caducado o sin sesiones restantes).
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL o al establecer la conexión.
      */
     public Bono obtenerBonoPorJugador(int idJugador) throws SQLException {
         Bono bono = null;
@@ -1627,9 +1675,14 @@ public class ReservasDAO {
     /**
      * Obtiene una reserva por su ID.
      *
+     * <p>Este método consulta la base de datos para obtener los detalles de una reserva
+     * específica según su ID. Si la reserva existe, se utiliza el método {@code encontrarReserva}
+     * para obtener la reserva completa según su tipo (infantil, familiar o adulto).</p>
+     *
      * @param idReserva El ID de la reserva a buscar.
-     * @return La instancia de ReservaDTO encontrada, o null si no existe.
-     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL.
+     * @return Una instancia de {@code ReservaDTO} que representa la reserva encontrada,
+     *         o {@code null} si no existe.
+     * @throws SQLException Si ocurre un error al ejecutar la consulta SQL o al establecer la conexión.
      */
     public ReservaDTO obtenerReservaPorId(int idReserva) throws SQLException {
         ReservaDTO reservaDTO = null;
@@ -1667,9 +1720,15 @@ public class ReservasDAO {
     /**
      * Obtiene una reserva asociada a un bono y un usuario.
      *
-     * @param idUsuario El ID del usuario.
-     * @param bono El bono asociado.
-     * @return La reserva encontrada, o null si no existe.
+     * <p>Este método consulta la base de datos para obtener los detalles de una reserva 
+     * específica asociada a un bono y a un usuario. Si la reserva existe, se determina su 
+     * tipo (infantil, familiar o adulto) utilizando la información de la base de datos.</p>
+     *
+     * @param idUsuario El ID del usuario asociado a la reserva.
+     * @param bono El bono asociado utilizado para la reserva.
+     * @return Una instancia de {@code ReservaDTO} que representa la reserva encontrada, 
+     *         o {@code null} si no se encuentra la reserva.
+     * @throws IllegalStateException Si la consulta SQL necesaria no está definida en el archivo de propiedades.
      */
     public ReservaDTO obtenerReservaPorIdBono(int idUsuario, Bono bono) {
         ReservaDTO reservaDTO = null;

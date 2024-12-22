@@ -62,10 +62,6 @@ public class ReservaBean implements Serializable {
      * Método calculado: Devuelve el tipo de reserva basado en los valores de adultos y niños.
      * @return String con el tipo de reserva: "Infantil", "Adulto" o "Familiar".
      */
-    /**
-     * Método calculado: Devuelve el tipo de reserva basado en los valores de adultos y niños.
-     * @return String con el tipo de reserva: "Infantil", "Adulto" o "Familiar".
-     */
     public String getTipoReserva() {
         if ((numeroAdultos != null && numeroAdultos > 0) && (numeroNinos == null || numeroNinos == 0)) {
             return "Adulto";

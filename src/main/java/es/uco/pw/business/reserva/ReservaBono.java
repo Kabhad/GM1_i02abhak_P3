@@ -37,7 +37,13 @@ public class ReservaBono extends ReservaDTO {
         this.numeroSesion = numeroSesion;
         this.setDescuento(0.05f); // Descuento del 5% para todas las reservas de bono
     }
-
+    
+    /**
+     * Genera una representación en forma de cadena de la reserva de bono,
+     * incluyendo detalles comunes de la reserva y propiedades específicas del bono.
+     *
+     * @return Una cadena con la información detallada de la reserva de bono.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Reserva de Bono:\n");

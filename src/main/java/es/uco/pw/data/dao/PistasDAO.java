@@ -164,15 +164,30 @@ public class PistasDAO {
     }
 
     /**
-     * Método para asociar un material a una pista disponible.
-     * 
-     *  @param nombrePista El nombre de la pista a la que se quiere asociar el material.
- * 	 *  @param idMaterial  El ID del material a asociar.
- * 	 *  @return {@code true} si la asociación se realizó con éxito; {@code false} en caso contrario.
- *   *  @throws SQLException Si ocurre un error al interactuar con la base de datos.
- *   *  @throws ElementoNoEncontradoException Si la pista o el material no se encuentran en la base de datos.
- *   *  @throws AsociacionMaterialException Si la pista no está disponible, el material no está en buen estado, 
- *   *          el material ya está reservado, o si no se cumplen las condiciones para la asociación.
+     * Asocia un material a una pista específica, verificando previamente que ambos existan
+     * y que cumplan las condiciones necesarias para la asociación.
+     *
+     * <p>Este método realiza las siguientes validaciones antes de completar la asociación:
+     * <ul>
+     *   <li>Verifica que la pista exista, esté disponible y sea compatible con el uso exterior del material.</li>
+     *   <li>Verifica que el material exista, esté en buen estado y no esté ya reservado.</li>
+     *   <li>Comprueba que no se exceda el límite permitido para cada tipo de material asociado a la pista.</li>
+     * </ul>
+     * Si se cumplen todas las condiciones, el material se asocia a la pista y su estado se actualiza.
+     *
+     * @param nombrePista El nombre de la pista a la que se desea asociar el material.
+     * @param idMaterial  El identificador único del material a asociar.
+     * @return {@code true} si la asociación se realiza con éxito; {@code false} en caso contrario.
+     *
+     * @throws SQLException                 Si ocurre un error al interactuar con la base de datos.
+     * @throws ElementoNoEncontradoException Si no se encuentra la pista o el material en la base de datos.
+     * @throws AsociacionMaterialException   Si no se cumplen las condiciones para asociar el material, tales como:
+     *                                       <ul>
+     *                                         <li>La pista no está disponible.</li>
+     *                                         <li>El material está en mal estado o reservado.</li>
+     *                                         <li>El material no es apto para exteriores y la pista es exterior.</li>
+     *                                         <li>Se excede el límite de materiales permitidos por tipo.</li>
+     *                                       </ul>
      */
     public boolean asociarMaterialAPista(String nombrePista, int idMaterial) throws SQLException, ElementoNoEncontradoException, AsociacionMaterialException {
         DBConnection conexion = new DBConnection();
@@ -279,10 +294,16 @@ public class PistasDAO {
 
 
     /**
-     * Método auxiliar para buscar una pista por su nombre.
-     * 
+     * Busca una pista en la base de datos por su nombre.
+     *
+     * <p>Este método realiza una consulta a la base de datos para obtener los datos
+     * de la pista que coincida con el nombre proporcionado. Si encuentra una pista, 
+     * crea y devuelve una instancia de {@code PistaDTO}. Si no encuentra ninguna pista
+     * o ocurre un error durante la consulta, devuelve {@code null}.
+     *
      * @param nombrePista Nombre de la pista a buscar.
-     * @return La pista correspondiente al nombre dado, o null si no se encuentra.
+     * @return Una instancia de {@code PistaDTO} que representa la pista encontrada,
+     *         o {@code null} si no se encuentra ninguna pista con el nombre dado.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
     public PistaDTO buscarPistaPorNombre(String nombrePista) throws SQLException {
@@ -305,12 +326,19 @@ public class PistasDAO {
     }
 
     /**
-     * Método auxiliar para buscar un material por su ID.
-     * 
+     * Busca un material en la base de datos por su ID.
+     *
+     * <p>Este método realiza una consulta a la base de datos para obtener los datos
+     * del material que coincida con el ID proporcionado. Si encuentra un material, 
+     * crea y devuelve una instancia de {@code MaterialDTO}. Si no encuentra ningún material 
+     * o ocurre un error durante la consulta, devuelve {@code null}.
+     *
      * @param idMaterial ID del material a buscar.
-     * @return El material correspondiente al ID dado, o null si no se encuentra.
+     * @return Una instancia de {@code MaterialDTO} que representa el material encontrado,
+     *         o {@code null} si no se encuentra ningún material con el ID dado.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
+
     private MaterialDTO buscarMaterialPorId(int idMaterial) throws SQLException {
         DBConnection conexion = new DBConnection();
         con = (Connection) conexion.getConnection();
@@ -386,9 +414,14 @@ public class PistasDAO {
 
 
     /**
-     * Método para listar todas las pistas no disponibles.
+     * Lista todas las pistas que actualmente no están disponibles, incluyendo información
+     * sobre los materiales asociados a cada pista.
      * 
-     * @return Lista de pistas no disponibles.
+     * <p>Este método consulta la base de datos para obtener una lista de pistas no disponibles. Si una pista
+     * tiene materiales asociados, estos también se incluyen en la información retornada.
+     * 
+     * @return Una lista de {@code PistaDTO} que representa las pistas no disponibles. Cada pista puede contener
+     *         una lista de materiales asociados, si corresponde. Si no hay pistas no disponibles, se devuelve una lista vacía.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
     public List<PistaDTO> listarPistasNoDisponibles() throws SQLException {
@@ -435,11 +468,14 @@ public class PistasDAO {
     }
 
     /**
-     * Método para buscar pistas disponibles según el número de jugadores y tipo de pista.
+     * Busca pistas disponibles que cumplen con los criterios especificados de número de jugadores y tipo de pista.
      * 
-     * @param numJugadores Número de jugadores que se busca.
-     * @param tipoPista    Tipo de pista que se busca.
-     * @return Lista de pistas disponibles que cumplen con los criterios dados.
+     * <p>Además de las pistas disponibles, este método también incluye los materiales asociados a cada pista.
+     * 
+     * @param numJugadores Número de jugadores para los que se busca una pista disponible.
+     * @param tipoPista    Tipo de pista requerido (MINIBASKET, ADULTOS, _3VS3).
+     * @return Una lista de {@code PistaDTO} que representa las pistas disponibles. Cada pista puede contener
+     *         una lista de materiales asociados, si corresponde. Si no se encuentran pistas disponibles, se devuelve una lista vacía.
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
      */
     public List<PistaDTO> buscarPistasDisponibles(int numJugadores, TamanoPista tipoPista) throws SQLException {
@@ -796,10 +832,15 @@ public class PistasDAO {
     }
     
     /**
-     * Obtiene una lista de materiales junto con los detalles de las pistas asociadas (si las hay).
+     * Obtiene una lista de materiales con los detalles de las pistas asociadas (si las hay).
      *
-     * @return Lista de MaterialDTO y un mapa que relaciona idMaterial con PistaDTO.
+     * <p>Este método devuelve una lista de objetos {@code MaterialBean}, donde cada material puede tener
+     * información sobre la pista a la que está asociado. Si un material no está asociado a ninguna pista,
+     * se indica con un ID de pista igual a 0 y el nombre "Sin asignar".
+     *
+     * @return Lista de objetos {@code MaterialBean} que representan los materiales y sus asociaciones con pistas (si las hay).
      * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     * @throws IllegalStateException Si la consulta SQL para obtener los materiales no está definida.
      */
     public List<MaterialBean> obtenerMaterialesConPistas() throws SQLException {
         List<MaterialBean> materiales = new ArrayList<>();
