@@ -1,0 +1,124 @@
+/* Estilos generales para el cuerpo y contenedor principal */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Contenedor principal */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos principales */
+h2, h3 {
+    text-align: center; /* Centra los títulos */
+    width: 100%; /* Asegura que el texto ocupe todo el ancho disponible */
+    margin: 0; /* Elimina márgenes innecesarios */
+    padding: 10px 0; /* Añade un pequeño espacio arriba y abajo del título */
+}
+
+/* Título principal */
+h2 {
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Subtítulo */
+h3 {
+    font-size: 1.5rem;
+    color: #555;
+}
+
+/* Caja de lista de clientes */
+.lista-clientes {
+    margin: 20px auto; /* Centra la caja horizontalmente */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 300px; /* Define la altura máxima de la caja */
+    overflow-y: auto; /* Permite hacer scroll si la lista es muy larga */
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap; /* Permite que el texto con saltos de línea se vea correctamente */
+    width: 90%; /* Ajusta el ancho de la caja a un 90% del contenedor */
+    max-width: 725px; /* Establece un límite máximo para el ancho de la caja */
+}
+
+/* Botones de navegación */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra los botones */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Estilo para cada botón */
+.button-container a {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    width: 200px; /* Ajusta el tamaño de los botones */
+    text-align: center; /* Centra el texto dentro del botón */
+}
+
+.button-container a:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el botón de Cerrar sesión (solo imagen) */
+#btnCerrarSesion {
+    display: inline-block;  /* Hace que solo aparezca la imagen como botón */
+    padding: 0;             /* Elimina cualquier padding del enlace */
+    border: none;           /* Elimina cualquier borde */
+    background: transparent;/* Elimina el fondo */
+    cursor: pointer;        /* Cambia el cursor al pasar sobre la imagen */
+    position: absolute;     /* Posiciona el botón en la esquina superior derecha */
+    top: 10px;
+    right: 10px;            /* Ajusta la distancia desde la esquina */
+}
+
+/* Estilo para la imagen dentro del botón */
+#btnCerrarSesion img {
+    width: 50px;  /* Aumenta el tamaño de la imagen */
+    height: 50px; /* Aumenta el tamaño de la imagen */
+    object-fit: contain;  /* Asegura que la imagen se vea bien y no se deforme */
+}
+
+/* Efecto hover: cuando el usuario pasa el ratón sobre la imagen */
+#btnCerrarSesion:hover img {
+    opacity: 0.8;  /* Reduce ligeramente la opacidad de la imagen cuando se pasa el ratón */
+}
+
+
+
+/* Estilo del footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Enlaces del footer */
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
