@@ -1,12 +1,16 @@
 package es.uco.pw.data.dao;
 
 import javax.servlet.ServletContext;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.io.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 import es.uco.pw.data.common.DBConnection;
+import es.uco.pw.display.javabean.CustomerBean;
 import es.uco.pw.business.jugador.JugadorDTO;
 
 
@@ -467,4 +471,48 @@ public class JugadoresDAO {
             }
         }
     }
+    
+    /**
+     * Obtiene la lista de clientes activos en el sistema junto con sus reservas completadas.
+     *
+     * Este método realiza una consulta a la base de datos para recuperar los jugadores activos
+     * junto con la cantidad de reservas que han completado. La información se utiliza para
+     * crear una lista de objetos {@link CustomerBean}.
+     *
+     * @return Una lista de {@link CustomerBean} que contiene el nombre del cliente, la fecha
+     *         de inscripción y el número de reservas completadas. Si no hay clientes, la lista
+     *         estará vacía.
+     */
+    public List<CustomerBean> obtenerListaDeClientes() {
+        List<CustomerBean> clientes = new ArrayList<>();
+        DBConnection connection = new DBConnection();
+        con = (Connection) connection.getConnection();
+
+        try {
+            // Consulta SQL para listar jugadores activos y sus reservas completadas
+            String query = prop.getProperty("listarJugadoresConReservas"); // Asegúrate de que esta propiedad esté en sql.properties
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                CustomerBean cliente = new CustomerBean();
+                cliente.setNombre(rs.getString("nombreApellidos"));
+                cliente.setFechaInscripcion(rs.getString("fechaInscripcion"));
+                cliente.setReservasCompletadas(rs.getInt("numeroReservasCompletadas"));
+                clientes.add(cliente);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return clientes;
+    }
+
+    
 }
