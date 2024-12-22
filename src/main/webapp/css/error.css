@@ -1,0 +1,105 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fbe9e7; /* Color de fondo suave */
+    color: #d32f2f; /* Rojo para los textos principales */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Contenedor principal */
+.error-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Título principal */
+h1, h2 {
+    color: #d32f2f; /* Rojo oscuro */
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Mensaje de error */
+.error-container p {
+    color: #333; /* Texto neutral */
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+/* Mensaje de advertencia */
+.error-container p strong {
+    color: #d32f2f; /* Resaltar errores */
+    font-weight: bold;
+}
+
+/* Botones */
+a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px;
+    color: #ffffff; /* Texto blanco */
+    background-color: #d32f2f; /* Fondo rojo */
+    transition: background-color 0.3s ease-in-out;
+}
+
+a:hover {
+    background-color: #b71c1c; /* Rojo más oscuro */
+}
+
+/* Estilo alternativo para botones secundarios */
+a.btn-secondary {
+    background-color: #757575; /* Gris */
+}
+
+a.btn-secondary:hover {
+    background-color: #616161; /* Gris más oscuro */
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    padding: 10px;
+    background-color: #d32f2f;
+    color: #ffffff;
+    text-align: center;
+}
+
+footer a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .error-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    h1, h2 {
+        font-size: 1.5rem;
+    }
+
+    a {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}

@@ -36,7 +36,7 @@
 
         // Redirigir según el tipo de usuario
         if ("ADMINISTRADOR".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
-            response.sendRedirect("../view/admin/adminHome.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/listarJugadores");
         } else if ("CLIENTE".equalsIgnoreCase(customer.getTipoUsuario())) { // Comparar ignorando mayúsculas
             response.sendRedirect("../view/client/clientHome.jsp");
         } else {

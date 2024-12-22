@@ -7,28 +7,68 @@
         response.sendRedirect("../view/login.jsp");
         return;
     }
-    
+
     LocalDate fechaActual = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     String fechaActualFormateada = fechaActual.format(formatter);
 %>
-<h1>Bienvenido, <%= customer.getNombre() %>!</h1>
-<p>Correo: <%= customer.getCorreo() %></p>
-<p>Fecha actual: <%= fechaActualFormateada %></p>
-<p>Fecha de inscripción: <%= customer.getFechaInscripcion() %></p>
-<p>Próxima reserva: <%= customer.getFechaProximaReserva() %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio del Cliente</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/clientHome.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Botón de cerrar sesión -->
+        <a href="../../controller/LogoutController.jsp" id="btnCerrarSesion">
+            <img src="<%= request.getContextPath() %>/images/logout.png" alt="Cerrar sesión" class="logout-icon">
+        </a>
 
-<nav>
-    <ul>
-        <li><a href="../../controller/LogoutController.jsp">Cerrar sesión</a></li>
-        <li><a href="../../view/modifyUser.jsp">Modificar datos</a></li>
-        <li><a href="../client/consultarReservas.jsp">Consultar reservas</a></li>
-        <li><a href="../../view/client/realizarReserva.jsp">Realizar reserva</a></li>
-        <li><a href="<%= request.getContextPath() %>/client/realizarReservaBono">Realizar reserva con bono</a></li>
-        <li><a href="../client/buscarPistaDisponible.jsp" class="btn">Buscar Pistas Disponibles</a></li>
-		<li><a href="<%= request.getContextPath() %>/client/modificarReserva?filtrarReservas=true">Modificar reserva</a></li>
-        <li><a href="<%= request.getContextPath() %>/client/cancelarReserva">Cancelar reserva</a></li>
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <h2>Bienvenido, <%= customer.getNombre() %>!</h2>
 
-        
-    </ul>
-</nav>
+		    <!-- Contenedor de información -->
+		    <div class="user-info">
+		        <div class="user-info-card">
+		            <div class="user-info-row">
+		                <span>Correo:</span>
+		                <span>amartinez@example.com</span>
+		            </div>
+		            <div class="user-info-row">
+		                <span>Fecha actual:</span>
+		                <span>22/12/2024</span>
+		            </div>
+		            <div class="user-info-row">
+		                <span>Fecha de inscripción:</span>
+		                <span>2024-10-12</span>
+		            </div>
+		            <div class="user-info-row">
+		                <span>Próxima reserva:</span>
+		                <span>2024-12-24 19:00:00</span>
+		            </div>
+		        </div>
+		    </div>
+            <!-- Botones de navegación -->
+            <div class="button-container">
+                <a href="../../view/modifyUser.jsp">Modificar datos</a>
+                <a href="../client/consultarReservas.jsp">Consultar reservas</a>
+                <a href="../../view/client/realizarReserva.jsp">Realizar reserva</a>
+                <a href="<%= request.getContextPath() %>/client/realizarReservaBono">Realizar reserva con bono</a>
+                <a href="../client/buscarPistaDisponible.jsp">Buscar pistas disponibles</a>
+                <a href="<%= request.getContextPath() %>/client/modificarReserva?filtrarReservas=true">Modificar reserva</a>
+                <a href="<%= request.getContextPath() %>/client/cancelarReserva">Cancelar reserva</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 Gestión de Pistas de Basket. Todos los derechos reservados.
+    </footer>
+</body>
+</html>
+

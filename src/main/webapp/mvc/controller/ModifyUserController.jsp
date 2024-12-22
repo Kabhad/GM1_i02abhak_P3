@@ -29,7 +29,7 @@
 
         // Verificar el tipo de usuario para redirigir
         if ("administrador".equalsIgnoreCase(customer.getTipoUsuario())) {
-            response.sendRedirect("../view/admin/adminHome.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/listarJugadores");
         } else {
             response.sendRedirect("../view/client/clientHome.jsp");
         }

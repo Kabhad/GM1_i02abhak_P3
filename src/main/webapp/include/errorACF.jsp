@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error de Acceso</title>
-    <link rel="stylesheet" href="<%= pageContext.getServletContext().getContextPath() %>/css/styles.css">
+    <link rel="stylesheet" href="<%= pageContext.getServletContext().getContextPath() %>/css/error.css">
 </head>
 <body>
     <h1>Error de Acceso</h1>

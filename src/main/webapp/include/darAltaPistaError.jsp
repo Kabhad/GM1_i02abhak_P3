@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Error al Listar Pistas</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listarPistasError.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 </head>
 <body>
     <h1>Error al Listar las Pistas</h1>

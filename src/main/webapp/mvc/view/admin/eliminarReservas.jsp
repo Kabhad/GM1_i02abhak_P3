@@ -14,7 +14,7 @@
     
     <!-- Botón Volver a Admin Home -->
 	<div class="button-container">
-	    <a href="<%= request.getContextPath() %>/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
 	</div>
 
     <!-- Mensajes de éxito o error (ahora con IDs para ser detectados por el JS) -->

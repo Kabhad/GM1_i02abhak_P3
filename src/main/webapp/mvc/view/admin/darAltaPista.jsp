@@ -43,7 +43,7 @@
     
             <!-- Botones de navegación -->
     <div class="button-container">
-        <a href="../admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
     </div>
     
 </body>

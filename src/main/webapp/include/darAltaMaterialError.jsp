@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Error al crear el material</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listarPistasError.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/errorcss">
 </head>
 <body>
     <h1>Error al crear el material</h1>

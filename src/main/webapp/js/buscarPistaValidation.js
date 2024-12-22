@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Obtener valores de los campos
         const tamano = document.getElementById("tamano").value;
         const exterior = document.getElementById("exterior").value;
-        const fecha = document.getElementById("fecha").value;
+        const fechaHora = document.getElementById("fechaHora").value; // Cambiado a "fechaHora" para que coincida con el input
 
         // Validar los valores
         let errors = [];
@@ -20,17 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
             errors.push("La opción de exterior no es válida.");
         }
 
-        // Validar fecha
-        if (fecha) {
-            const fechaSeleccionada = new Date(fecha); // Fecha seleccionada
-            const fechaActual = new Date(); // Fecha actual
-            fechaActual.setHours(0, 0, 0, 0); // Ignorar hora para comparar solo la fecha
+        // Validar fecha y hora
+        if (fechaHora) {
+            const fechaHoraSeleccionada = new Date(fechaHora); // Fecha y hora seleccionada
+            const fechaHoraActual = new Date(); // Fecha y hora actual
 
-            if (fechaSeleccionada < fechaActual) {
-                errors.push("La fecha no puede ser anterior a la fecha actual.");
+            if (fechaHoraSeleccionada < fechaHoraActual) {
+                errors.push("La fecha y hora no pueden ser anteriores a la fecha y hora actual.");
             }
         } else {
-            errors.push("La fecha es obligatoria.");
+            errors.push("La fecha y hora son obligatorias.");
         }
 
         // Mostrar errores si los hay

@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Error de Login</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 </head>
 <body>
     <h1>Error al iniciar sesión</h1>

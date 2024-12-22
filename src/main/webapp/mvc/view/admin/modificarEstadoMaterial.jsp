@@ -12,7 +12,7 @@
     
         <!-- Botón para volver al menú principal -->
     <div class="button-container">
-        <a href="<%= request.getContextPath() %>/mvc/view/admin/adminHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
+        <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
     </div>
 
     <!-- Mostrar mensajes de éxito o error -->

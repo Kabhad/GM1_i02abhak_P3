@@ -27,9 +27,10 @@
             
             <div class="button-container">
                 <button type="submit">Guardar Cambios</button>
-                <button type="button" class="volver" onclick="window.location.href='<%= customer.getTipoUsuario().equalsIgnoreCase("administrador") ? "../view/admin/adminHome.jsp" : "../view/client/clientHome.jsp" %>';">
-                    Volver
-                </button>
+				<button type="button" class="volver" onclick="window.location.href='<%= customer.getTipoUsuario().equalsIgnoreCase("administrador") ? request.getContextPath() + "/admin/listarJugadores" : "../view/client/clientHome.jsp" %>'; ">
+				    Volver al Menú
+				</button>
+
             </div>
         </form>
     </div>

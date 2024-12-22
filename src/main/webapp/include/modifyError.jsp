@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Error al modificar datos</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 </head>
 <body>
     <h2 style="color: red;">Error al modificar datos</h2>

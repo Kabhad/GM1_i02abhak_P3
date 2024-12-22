@@ -7,6 +7,8 @@ import java.io.Serializable;
  * Encapsula los datos más relevantes del usuario para mantener su información en la sesión.
  */
 public class CustomerBean implements Serializable {
+	
+	
 
     // Serializable ID, útil para la serialización en servidores distribuidos.
     private static final long serialVersionUID = 1L;
@@ -25,6 +27,9 @@ public class CustomerBean implements Serializable {
 
     /** Fecha de la próxima reserva, si aplica */
     private String fechaProximaReserva;
+    
+    private int reservasCompletadas; // Número de reservas completadas
+
 
     /**
      * Constructor por defecto, necesario para que sea un JavaBean.
@@ -47,6 +52,26 @@ public class CustomerBean implements Serializable {
         this.tipoUsuario = tipoUsuario;
         this.fechaInscripcion = fechaInscripcion;
         this.fechaProximaReserva = fechaProximaReserva;
+    }
+    
+
+    /**
+     * Constructor con parámetros para inicializar todos los campos, incluidas las reservas completadas.
+     *
+     * @param nombre              Nombre completo del usuario.
+     * @param correo              Correo electrónico del usuario.
+     * @param tipoUsuario         Tipo de usuario (administrador o cliente).
+     * @param fechaInscripcion    Fecha de inscripción en el sistema.
+     * @param fechaProximaReserva Fecha de la próxima reserva.
+     * @param reservasCompletadas Número de reservas completadas.
+     */
+    public CustomerBean(String nombre, String correo, String tipoUsuario, String fechaInscripcion, String fechaProximaReserva, int reservasCompletadas) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.tipoUsuario = tipoUsuario;
+        this.fechaInscripcion = fechaInscripcion;
+        this.fechaProximaReserva = fechaProximaReserva;
+        this.reservasCompletadas = reservasCompletadas;
     }
 
     // Métodos getter y setter para encapsular el acceso a los atributos.
@@ -140,6 +165,15 @@ public class CustomerBean implements Serializable {
     public void setFechaProximaReserva(String fechaProximaReserva) {
         this.fechaProximaReserva = fechaProximaReserva;
     }
+    
+    public int getReservasCompletadas() {
+        return reservasCompletadas;
+    }
+
+    public void setReservasCompletadas(int reservasCompletadas) {
+        this.reservasCompletadas = reservasCompletadas;
+    }
+
 
     /**
      * Proporciona una representación en texto de este objeto.
