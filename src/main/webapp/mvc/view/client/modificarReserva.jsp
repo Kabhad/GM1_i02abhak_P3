@@ -12,8 +12,10 @@
 <body>
     <h2>Modificar Reserva</h2>
     
+    <div class="button-container">
     <a href="<%= request.getContextPath() %>/client/modificarReserva?filtrarReservas=true" class="btn-secondary">Volver al listado de reservas</a>
-
+    </div>
+    
     <!-- Mostrar mensajes de éxito o error -->
     <% if (request.getAttribute("mensaje") != null) { %>
         <p style="color: green;"><%= request.getAttribute("mensaje") %></p>
@@ -61,25 +63,29 @@
                value="<%= request.getAttribute("duracion") %>">
 
         <!-- Pistas disponibles -->
-		<%
-		    boolean esReservaBono = request.getAttribute("esReservaBono") != null && (boolean) request.getAttribute("esReservaBono");
-		    List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistasDisponibles");
-		%>
-		
-		<% if (!esReservaBono && pistas != null && !pistas.isEmpty()) { %>
-		    <label for="idPistaNueva">Nueva Pista:</label><br>
-		    <select id="idPistaNueva" name="idPistaNueva" required>
-		        <% for (PistaBean pista : pistas) { %>
-		            <option value="<%= pista.getIdPista() %>">
-		                <%= pista.getNombrePista() %> (<%= pista.isExterior() ? "Exterior" : "Interior" %>)
-		            </option>
-		        <% } %>
-		    </select><br><br>
-		<% } else if (esReservaBono) { %>
-		    <p style="color: red;">No se puede cambiar la pista para reservas de bono.</p>
-		<% } else { %>
-		    <p style="color: red;">No hay pistas disponibles para los criterios seleccionados.</p>
-		<% } %>
+        <%
+            boolean esReservaBono = request.getAttribute("esReservaBono") != null && (boolean) request.getAttribute("esReservaBono");
+            List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistasDisponibles");
+        %>
+        
+        <% if (!esReservaBono && pistas != null && !pistas.isEmpty()) { %>
+            <!-- Campo de selección de nueva pista -->
+            <label for="idPistaNueva">Nueva Pista:</label><br>
+            <select id="idPistaNueva" name="idPistaNueva" required>
+                <% for (PistaBean pista : pistas) { %>
+                    <option value="<%= pista.getIdPista() %>">
+                        <%= pista.getNombrePista() %> (<%= pista.isExterior() ? "Exterior" : "Interior" %>)
+                    </option>
+                <% } %>
+            </select><br><br>
+        <% } else if (esReservaBono) { %>
+            <!-- Mensaje para reservas de bono -->
+            <p style="color: red;">La reserva de bono no permite cambiar de pista. Se mantendrá la pista original.</p>
+            <p><strong>Pista Original:</strong> ID: <%= request.getAttribute("idPistaOriginal") %></p>
+        <% } else { %>
+            <p style="color: red;">No hay pistas disponibles para los criterios seleccionados.</p>
+        <% } %>
+
 
 
 

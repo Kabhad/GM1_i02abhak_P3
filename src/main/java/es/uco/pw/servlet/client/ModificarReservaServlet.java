@@ -32,7 +32,6 @@ public class ModificarReservaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String filtrarReservas = request.getParameter("filtrarReservas");
-        String filtrarPistas = request.getParameter("filtrarPistas");
         String idReserva = request.getParameter("idReserva");
 
         try {
@@ -167,13 +166,6 @@ public class ModificarReservaServlet extends HttpServlet {
             PistasDAO pistasDAO = new PistasDAO(getServletContext());
             List<PistaDTO> listaPistasDTO = pistasDAO.listarPistasDisponiblesPorTipoYFecha(tipoReserva, fechaHora, duracionMin);
 
-            // Depurar: Imprimir pistas disponibles en la consola
-            System.out.println("Pistas disponibles para tipoReserva=" + tipoReserva + ":");
-            for (PistaDTO pista : listaPistasDTO) {
-                System.out.println("ID: " + pista.getIdPista() + ", Nombre: " + pista.getNombrePista() +
-                        ", Tipo: " + pista.getPista() + ", Disponible: " + pista.isDisponible());
-            }
-
             // Convertir `PistaDTO` a `PistaBean` y enviarlas al JSP
             List<PistaBean> pistasDisponibles = new ArrayList<>();
             for (PistaDTO pista : listaPistasDTO) {
@@ -202,7 +194,6 @@ public class ModificarReservaServlet extends HttpServlet {
 
 
 
-    
     private void gestionarRedireccionFormulario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idReservaParam = request.getParameter("idReserva");
 
@@ -238,7 +229,7 @@ public class ModificarReservaServlet extends HttpServlet {
                 boolean esReservaBono = reserva instanceof ReservaBono;
                 request.setAttribute("esReservaBono", esReservaBono);
 
-                // Filtrar pistas disponibles solo si NO es una reserva de bono
+                // Filtrar pistas disponibles si NO es una reserva de bono
                 if (!esReservaBono) {
                     List<PistaDTO> pistasDisponibles = pistasDAO.listarPistasDisponiblesPorTipoYFecha(
                         "adulto", // Cambiar según el tipo necesario
@@ -253,6 +244,16 @@ public class ModificarReservaServlet extends HttpServlet {
                         pista.setExterior(pistaDTO.isExterior());
                         pistas.add(pista);
                     }
+                    request.setAttribute("pistasDisponibles", pistas);
+                } else {
+                    // Si es una reserva de bono, usar la pista original sin filtrar
+                    List<PistaBean> pistas = new ArrayList<>();
+                    PistaBean pistaOriginal = new PistaBean();
+                    pistaOriginal.setIdPista(reserva.getIdPista());
+                    pistaOriginal.setNombrePista("Pista Actual (no modificable)");
+                    pistaOriginal.setExterior(false); // Información básica
+                    pistas.add(pistaOriginal);
+
                     request.setAttribute("pistasDisponibles", pistas);
                 }
 
@@ -269,12 +270,12 @@ public class ModificarReservaServlet extends HttpServlet {
         }
     }
 
+
     
     private void gestionarModificacionReserva(HttpServletRequest request, HttpServletResponse response, CustomerBean customer) throws ServletException, IOException {
         try {
             // Obtener datos del formulario
             int idReserva = Integer.parseInt(request.getParameter("idReserva"));
-            int idPistaNueva = Integer.parseInt(request.getParameter("idPistaNueva"));
             Date nuevaFechaHora = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(request.getParameter("nuevaFechaHora"));
             int nuevaDuracion = Integer.parseInt(request.getParameter("nuevaDuracion"));
             int nuevosAdultos = Integer.parseInt(request.getParameter("nuevosAdultos"));
@@ -284,8 +285,23 @@ public class ModificarReservaServlet extends HttpServlet {
             JugadorDTO jugador = reservasDAO.buscarJugadorPorCorreo(customer.getCorreo(), getServletContext());
             ReservaDTO reservaOriginal = reservasDAO.obtenerReservaPorId(idReserva);
             PistaDTO pistaOriginal = reservasDAO.buscarPistaPorId(reservaOriginal.getIdPista(), getServletContext());
-            PistaDTO pistaNueva = reservasDAO.buscarPistaPorId(idPistaNueva, getServletContext());
 
+            PistaDTO pistaNueva = null; // Inicializar variable para pista nueva
+
+            // Comprobar si la reserva es de bono
+            if (reservaOriginal instanceof ReservaBono) {
+                // Para reservas de bono, usar siempre la pista original
+                pistaNueva = pistaOriginal;
+            } else {
+                // Obtener pista nueva del formulario si no es una reserva de bono
+                String idPistaNuevaParam = request.getParameter("idPistaNueva");
+                if (idPistaNuevaParam == null || idPistaNuevaParam.isEmpty()) {
+                    throw new IllegalArgumentException("No se ha proporcionado una pista nueva válida.");
+                }
+                pistaNueva = reservasDAO.buscarPistaPorId(Integer.parseInt(idPistaNuevaParam), getServletContext());
+            }
+
+            // Modificar la reserva
             reservasDAO.modificarReserva(
                 jugador,
                 pistaOriginal,
@@ -298,6 +314,7 @@ public class ModificarReservaServlet extends HttpServlet {
                 getServletContext()
             );
 
+            // Redirigir con éxito
             request.setAttribute("mensaje", "Reserva modificada exitosamente.");
             response.sendRedirect(request.getContextPath() + "/client/modificarReserva?filtrarReservas=true");
         } catch (Exception e) {
@@ -305,6 +322,7 @@ public class ModificarReservaServlet extends HttpServlet {
             request.getRequestDispatcher("/include/modificarReservaError.jsp").forward(request, response);
         }
     }
+
 
 
 
