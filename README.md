@@ -2,6 +2,7 @@
 Instrucciones de acceso:
 Es posible acceder a la webapp a través del siguiente en-
 lace: http://localhost:8080/GM1_i02abhak_P3/.
+
 Para probar la aplicación, se han creado los siguientes
 usuarios con credenciales predefinidas:
 Administrador:
