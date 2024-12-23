@@ -34,16 +34,17 @@ public class AccessControlFilter implements Filter {
 	    String contextPath = httpRequest.getContextPath(); // Contexto de la aplicación
 
 	    // Rutas públicas que no requieren autenticación
-	    if (path.startsWith(contextPath + "/index.jsp") || 
-	        path.startsWith(contextPath + "/include/") || 
-	        path.startsWith(contextPath + "/css/") || 
-	        path.startsWith(contextPath + "/img/") || 
-            path.startsWith(contextPath + "/js/") || // Agregada carpeta js
-	        path.startsWith(contextPath + "/mvc/view/login.jsp") || 
-	        path.startsWith(contextPath + "/mvc/view/register.jsp") || 
-	        path.startsWith(contextPath + "/mvc/controller/LogoutController.jsp") || 
-	        path.startsWith(contextPath + "/mvc/controller/LoginController.jsp") ||
-	        path.startsWith(contextPath + "/mvc/controller/RegisterController.jsp")) 
+	    if (path.equals(contextPath + "/") || // Permitir acceso a la URL base
+	    	    path.startsWith(contextPath + "/index.jsp") || 
+	    	    path.startsWith(contextPath + "/include/") || 
+	    	    path.startsWith(contextPath + "/css/") || 
+	    	    path.startsWith(contextPath + "/img/") || 
+	    	    path.startsWith(contextPath + "/js/") || // Agregada carpeta js
+	    	    path.startsWith(contextPath + "/mvc/view/login.jsp") || 
+	    	    path.startsWith(contextPath + "/mvc/view/register.jsp") || 
+	    	    path.startsWith(contextPath + "/mvc/controller/LogoutController.jsp") || 
+	    	    path.startsWith(contextPath + "/mvc/controller/LoginController.jsp") ||
+	    	    path.startsWith(contextPath + "/mvc/controller/RegisterController.jsp")) 
 	    {
 	        chain.doFilter(request, response); // Continuar sin verificar permisos
 	        return;
