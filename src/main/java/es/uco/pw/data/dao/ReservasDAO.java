@@ -527,7 +527,8 @@ public class ReservasDAO {
         }
 
         // Validación de fecha y hora
-        validarFechaHora(fechaHora);
+        validarFechaHora(fechaHora); //Validacion de fecha y hora correctos
+        validarMaximoJugadores(pistaDTO, numeroAdultos, numeroNinos); //Validacion de maximo de jugadores correctos
 
         // Obtener bono asociado o crear uno nuevo si no existe
         Bono bono = obtenerBonoPorJugador(jugadorDTO.getIdJugador());
