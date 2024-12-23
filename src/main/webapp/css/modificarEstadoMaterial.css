@@ -18,3 +18,21 @@ th {
 form {
     margin: 0;
 }
+
+/* Botón Guardar con estilo */
+.btn-primary {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    width: 100%; /* Ajustar tamaño al contenedor */
+}
+
+.btn-primary:hover {
+    background-color: #218838; /* Verde oscuro */
+}

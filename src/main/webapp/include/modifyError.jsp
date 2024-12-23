@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<% response.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html lang="es">
 <html>
@@ -10,7 +8,9 @@
 </head>
 <body>
     <h2 style="color: red;">Error al modificar datos</h2>
+    <!-- Mostrar el mensaje de error proporcionado -->
     <p><%= request.getParameter("message") %></p>
+    <!-- Botón para volver al formulario de modificación -->
     <a href="../mvc/view/modifyUser.jsp">Volver a intentar</a>
 </body>
 </html>

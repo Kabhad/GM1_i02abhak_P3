@@ -5,6 +5,8 @@
     <!-- Vincula las hojas de estilos para esta página -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReservaBono.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
+    <!-- Enlace al script de validación -->
+    <script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js"></script>
     <script>
         /**
          * Función para actualizar las pistas disponibles en función del tipo de reserva,

@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +8,11 @@
 </head>
 <body>
     <h1>Error de Acceso</h1>
+
+    <!-- Mostrar el mensaje de error proporcionado -->
     <p>${error}</p>
+
+    <!-- Botón para volver al inicio -->
     <a href="<%= pageContext.getServletContext().getContextPath() %>/index.jsp">Volver al inicio</a>
 </body>
 </html>

@@ -6,11 +6,14 @@
 <html>
 <head>
     <title>Asociar Materiales a Pistas</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/asociarMaterialAPista.css">
+    <!-- Enlace al script de validación -->
+    <script src="<%= request.getContextPath() %>/js/asociarMaterialAPistaValidation.js" defer></script>
 </head>
 <body>
     <h1>Asociar Materiales a Pistas</h1>
-    
+
     <!-- Botón para volver al menú principal -->
     <div class="button-container">
         <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
@@ -24,7 +27,7 @@
         <p id="mensajeError" class="error-message"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <!-- Tabla de materiales -->
+    <!-- Tabla de materiales para asociar a pistas -->
     <table>
         <thead>
             <tr>
@@ -37,9 +40,10 @@
         </thead>
         <tbody>
         <%
+            // Obtener las listas de materiales y pistas desde la solicitud
             List<MaterialBean> materiales = (List<MaterialBean>) request.getAttribute("materiales");
             List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
-            
+
             if (materiales != null && !materiales.isEmpty()) {
                 for (MaterialBean material : materiales) {
         %>
@@ -48,6 +52,7 @@
                 <td><%= material.getTipo() %></td>
                 <td><%= material.isUsoExterior() ? "Sí" : "No" %></td>
                 <td>
+                    <!-- Formulario para asociar material a una pista -->
                     <form method="post" action="<%= request.getContextPath() %>/admin/asociarMaterialAPista" class="form-inline">
                         <input type="hidden" name="idMaterial" value="<%= material.getId() %>">
                         <select name="nombrePista" required class="form-select">
@@ -71,6 +76,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay materiales disponibles -->
             <tr>
                 <td colspan="5">No hay materiales disponibles para asociar.</td>
             </tr>

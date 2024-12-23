@@ -7,7 +7,9 @@
 <html>
 <head>
     <title>Modificar Reserva</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modificarReservas.css">
+    <!-- Enlace al script de validación -->
     <script src="${pageContext.request.contextPath}/js/modificarReservaValidation.js"></script>
 </head>
 <body>
@@ -21,13 +23,14 @@
         <p style="color: red;"><%= request.getAttribute("error") %></p>
     <% } %>
 
+    <!-- Tabla para listar las reservas modificables -->
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Fecha</th>
                 <th>Duración</th>
-                <th>Pista</th>
+                <th>IDPista</th>
                 <th>Precio</th>
                 <th>Descuento (%)</th>
                 <th>Detalles</th>
@@ -36,10 +39,14 @@
         </thead>
         <tbody>
         <% 
+            // Obtener la lista de reservas modificables
             List<ReservaBean> reservasModificables = (List<ReservaBean>) request.getAttribute("reservasModificables");
+
+            // Comprobar si existen reservas modificables
             if (reservasModificables != null && !reservasModificables.isEmpty()) {
                 for (ReservaBean reserva : reservasModificables) {
         %>
+            <!-- Mostrar cada reserva -->
             <tr>
                 <td><%= reserva.getIdReserva() %></td>
                 <td><%= reserva.getFechaHora() %></td>
@@ -61,18 +68,19 @@
                     <% } %>
                 </td>
 					<td>
+					    <!-- Botón para redirigir al formulario de modificación -->
 					    <form method="post" action="${pageContext.request.contextPath}/client/modificarReserva">
 					        <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
 					        <input type="hidden" name="redirigirFormulario" value="true">
 					        <button type="submit">Modificar</button>
 					    </form>
 					</td>
-
             </tr>
         <% 
                 }
             } else {
         %>
+            <!-- Mensaje si no hay reservas disponibles -->
             <tr>
                 <td colspan="8" class="no-reservas">No hay reservas disponibles para modificar.</td>
             </tr>

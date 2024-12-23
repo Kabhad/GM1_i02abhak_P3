@@ -3,13 +3,15 @@
 <html>
 <head>
     <title>Dar De Alta Nuevo Material</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/darAltaMaterial.css">
+    <!-- Enlace al script de validación -->
     <script src="<%= request.getContextPath() %>/js/darAltaMaterialValidation.js" defer></script>
 </head>
 <body>
     <h1>Dar de Alta un Nuevo Material</h1>
 
-    <!-- Formulario para crear material -->
+    <!-- Formulario para registrar un nuevo material -->
     <form action="<%= request.getContextPath() %>/admin/darAltaMaterial" method="post">
         <label for="idMaterial">ID del Material:</label>
         <input type="number" id="idMaterial" name="idMaterial" required><br><br>
@@ -37,7 +39,7 @@
         <button type="submit">Crear Material</button>
     </form>
     
-        <!-- Botones de navegación -->
+    <!-- Botón para volver al menú principal -->
     <div class="button-container">
         <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
     </div>

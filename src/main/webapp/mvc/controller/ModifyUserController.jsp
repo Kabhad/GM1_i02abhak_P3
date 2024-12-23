@@ -1,52 +1,41 @@
 <%@ page import="es.uco.pw.data.dao.JugadoresDAO" %>
 <%@ page import="es.uco.pw.display.javabean.CustomerBean" %>
 <%
-	/**
-	 * Este script procesa la modificación de los datos de un usuario.
-	 * 
-	 * Pasos del flujo:
-	 * 1. Comprueba si el usuario está autenticado. Si no, redirige al inicio de sesión.
-	 * 2. Obtiene los datos enviados desde el formulario (nuevo nombre y nueva contraseña).
-	 * 3. Usa el DAO de jugadores para actualizar la información en la base de datos.
-	 * 4. Si la operación es exitosa:
-	 *    - Actualiza los datos del `CustomerBean` en la sesión.
-	 *    - Redirige al menú de administrador o cliente según el tipo de usuario.
-	 * 5. Si hay un error, redirige a una página de error con el mensaje correspondiente.
-	 */
-    // Obtener el CustomerBean de la sesión
+    // Recuperar el CustomerBean de la sesión para identificar al usuario autenticado
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
     if (customer == null) {
+        // Redirigir al login si no hay usuario autenticado
         response.sendRedirect("../view/login.jsp");
         return;
     }
 
-    // Obtener los parámetros del formulario
+    // Obtener los datos enviados desde el formulario (nombre y contraseña)
     String nuevoNombre = request.getParameter("nombre");
     String nuevaContrasena = request.getParameter("contrasena");
 
-    // Instanciar el DAO de jugadores
+    // Instanciar el DAO de jugadores para actualizar los datos en la base de datos
     JugadoresDAO jugadoresDAO = new JugadoresDAO(application);
 
-    // Modificar el jugador en la base de datos
+    // Intentar modificar el usuario en la base de datos
     String mensaje = jugadoresDAO.modificarJugador(
         customer.getCorreo(),
         nuevoNombre,
         nuevaContrasena
     );
 
-    // Actualizar los datos del CustomerBean
     if (mensaje.contains("éxito")) {
+        // Actualizar los datos del CustomerBean en la sesión
         customer.setNombre(nuevoNombre);
         session.setAttribute("customer", customer);
 
-        // Verificar el tipo de usuario para redirigir
+        // Redirigir al panel correspondiente según el tipo de usuario
         if ("administrador".equalsIgnoreCase(customer.getTipoUsuario())) {
             response.sendRedirect(request.getContextPath() + "/admin/listarJugadores");
         } else {
             response.sendRedirect("../view/client/clientHome.jsp");
         }
     } else {
-        // Redirigir a una página de error en caso de fallo
+        // Redirigir a una página de error si falla la modificación
         response.sendRedirect("../../include/modifyError.jsp?message=" + mensaje);
     }
 %>

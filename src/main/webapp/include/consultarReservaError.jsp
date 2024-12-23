@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +6,13 @@
 </head>
 <body>
     <h1>Error</h1>
-    <p>Se ha producido un error durante la ejecuciÃ³n de la operaciÃ³n.</p>
+
+    <!-- Mostrar el mensaje de error proporcionado -->
+    <p>Se ha producido un error durante la ejecución de la operación.</p>
     <p>${requestScope.error}</p>
     
-    <a href="../mvc/view/client/consultarReservas.jsp" class="btn-secondary">Hacer Otra BÃºsqueda</a>
-    <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al MenÃº Principal</a>
+    <!-- Botones para realizar otra búsqueda o volver al menú principal -->
+    <a href="../mvc/view/client/consultarReservas.jsp" class="btn-secondary">Hacer Otra Búsqueda</a>
+    <a href="../mvc/view/client/clientHome.jsp" class="btn-secondary">Volver al Menú Principal</a>
 </body>
 </html>

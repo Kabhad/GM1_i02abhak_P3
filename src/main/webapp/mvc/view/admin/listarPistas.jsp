@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/listarPistas.css">
     <title>Listado de Pistas</title>
 </head>
@@ -13,11 +14,11 @@
 
 <h2>Listado de Pistas</h2>
 
-<!-- Botón de Volver al Menú Principal -->
+<!-- Botones para navegar entre opciones -->
 <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
 <a href="../mvc/view/admin/darAltaPista.jsp" class="btn-secondary">Dar de Alta otra Pista</a>
 
-<!-- Inicia la tabla para mostrar las pistas -->
+<!-- Tabla para mostrar las pistas registradas -->
 <table>
     <thead>
         <tr>
@@ -30,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Inicia el ciclo for para iterar sobre la lista de pistas -->
+        <!-- Recorre y muestra las pistas en filas -->
         <%
             List<PistaBean> pistas = (List<PistaBean>) request.getAttribute("pistas");
             if (pistas != null && !pistas.isEmpty()) {
@@ -48,6 +49,7 @@
                 }
             } else {
         %>
+            <!-- Muestra un mensaje si no hay pistas -->
             <tr>
                 <td colspan="6">No hay pistas disponibles.</td>
             </tr>
@@ -56,7 +58,6 @@
         %>
     </tbody>
 </table>
-
 
 </body>
 </html>

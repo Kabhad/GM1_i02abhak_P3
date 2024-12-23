@@ -22,11 +22,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Servlet para gestionar la funcionalidad de modificación de reservas.
+ * Permite listar reservas modificables, filtrar pistas disponibles según criterios,
+ * y actualizar una reserva existente con nuevos datos.
+ */
 public class ModificarReservaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * GET: Redirige a la funcionalidad correspondiente.
+     * Método doGet para manejar solicitudes GET.
+     * Redirige a la funcionalidad correspondiente según los parámetros proporcionados.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +61,13 @@ public class ModificarReservaServlet extends HttpServlet {
 
 
     /**
-     * Filtra las reservas disponibles para modificar.
+     * Lista las reservas disponibles para modificar según el cliente autenticado.
+     * Se consideran reservas modificables aquellas con más de 24 horas de antelación.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     private void listarReservasModificables(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -111,7 +128,12 @@ public class ModificarReservaServlet extends HttpServlet {
     }
 
     /**
-     * Filtra las pistas disponibles según el tipo de la reserva seleccionada, fecha y duración.
+     * Filtra las pistas disponibles según el tipo de reserva, la fecha y duración seleccionadas.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
      */
     private void filtrarPistasDisponibles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idReservaParam = request.getParameter("idReserva");
@@ -175,12 +197,6 @@ public class ModificarReservaServlet extends HttpServlet {
                 pistasDisponibles.add(pistaBean);
             }
 
-            // Pasar atributos al JSP
-            request.setAttribute("pistasDisponibles", pistasDisponibles);
-            request.setAttribute("idReserva", idReservaParam);
-            request.setAttribute("fechaHora", fechaHoraParam);
-            request.setAttribute("duracion", duracionParam);
-
             // Redirigir al JSP
             request.getRequestDispatcher("/mvc/view/client/modificarReserva.jsp").forward(request, response);
 
@@ -192,7 +208,15 @@ public class ModificarReservaServlet extends HttpServlet {
     }
 
 
-
+    /**
+     * Gestiona la redirección al formulario de modificación de reservas.
+     * Prepara los datos necesarios para cargar el formulario, incluyendo la reserva original y las pistas disponibles.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     private void gestionarRedireccionFormulario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idReservaParam = request.getParameter("idReserva");
 
@@ -270,7 +294,16 @@ public class ModificarReservaServlet extends HttpServlet {
     }
 
 
-    
+    /**
+     * Gestiona la modificación de una reserva existente.
+     * Valida los datos enviados, actualiza la reserva y redirige con un mensaje de éxito o error.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @param customer Cliente autenticado que realiza la modificación.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     private void gestionarModificacionReserva(HttpServletRequest request, HttpServletResponse response, CustomerBean customer) throws ServletException, IOException {
         try {
             // Obtener datos del formulario
@@ -324,7 +357,15 @@ public class ModificarReservaServlet extends HttpServlet {
 
 
 
-
+    /**
+     * Método doPost para manejar solicitudes POST.
+     * Redirige a la funcionalidad correspondiente según los parámetros proporcionados.
+     * 
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @throws ServletException Si ocurre un error en el procesamiento del servlet.
+     * @throws IOException      Si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();

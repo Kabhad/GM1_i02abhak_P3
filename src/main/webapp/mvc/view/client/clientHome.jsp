@@ -2,32 +2,36 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%
+    // Obtener el cliente actual de la sesión.
     CustomerBean customer = (CustomerBean) session.getAttribute("customer");
     if (customer == null) {
         response.sendRedirect("../view/login.jsp");
         return;
     }
 
+    // Obtener la fecha actual formateada.
     LocalDate fechaActual = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     String fechaActualFormateada = fechaActual.format(formatter);
     
-    // Obtener datos del cliente
+    // Obtener los datos del cliente.
     String correo = customer.getCorreo();
-    String fechaInscripcion = customer.getFechaInscripcion(); // Suponiendo que es un String
-    String proximaReserva = customer.getFechaProximaReserva(); // Suponiendo que es un String
+    String fechaInscripcion = customer.getFechaInscripcion(); // Fecha de inscripción del cliente.
+    String proximaReserva = customer.getFechaProximaReserva(); // Fecha de la próxima reserva.
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Configuración básica -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio del Cliente</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/clientHome.css">
 </head>
 <body>
     <div class="container">
-        <!-- Botón de cerrar sesión -->
+        <!-- Botón para cerrar sesión -->
         <a href="../../controller/LogoutController.jsp" id="btnCerrarSesion">
             <img src="<%= request.getContextPath() %>/images/logout.png" alt="Cerrar sesión" class="logout-icon">
         </a>
@@ -36,7 +40,7 @@
         <div class="main-content">
             <h2>¡Bienvenido, <%= customer.getNombre() %>!</h2>
 
-		    <!-- Contenedor de información -->
+		    <!-- Contenedor con la información del cliente -->
 		    <div class="user-info">
 		        <div class="user-info-card">
 		            <div class="user-info-row">
@@ -57,7 +61,7 @@
 		            </div>
 		        </div>
 		    </div>
-            <!-- Botones de navegación -->
+            <!-- Botones de navegación para las distintas acciones -->
             <div class="button-container">
                 <a href="../../view/modifyUser.jsp">Modificar datos</a>
                 <a href="../client/consultarReservas.jsp">Consultar reservas</a>
@@ -70,10 +74,9 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Pie de página -->
     <footer>
         &copy; 2024 Gestión de Pistas de Basket. Todos los derechos reservados.
     </footer>
 </body>
 </html>
-

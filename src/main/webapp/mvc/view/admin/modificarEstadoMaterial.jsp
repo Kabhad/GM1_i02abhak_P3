@@ -5,12 +5,15 @@
 <html>
 <head>
     <title>Modificar Estado de Materiales</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/listarMateriales.css">
+    <!-- Enlace al script de validación -->
+    <script src="<%= request.getContextPath() %>/js/modificarEstadoMaterialValidation.js" defer></script>
 </head>
 <body>
     <h1>Modificar Estado de Materiales</h1>
     
-        <!-- Botón para volver al menú principal -->
+    <!-- Botón para volver al menú principal -->
     <div class="button-container">
         <a href="<%= request.getContextPath() %>/admin/listarJugadores" class="btn-secondary">Volver al Menú Principal</a>
     </div>
@@ -23,7 +26,7 @@
         <p id="mensajeError" style="color: red;"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <!-- Tabla de materiales -->
+    <!-- Tabla para mostrar los materiales disponibles -->
     <table border="1">
         <thead>
             <tr>
@@ -36,7 +39,7 @@
         </thead>
         <tbody>
         <%
-            // Obtener la lista de materiales desde el request
+            // Recuperar la lista de materiales desde el request
             List<MaterialBean> materiales = (List<MaterialBean>) request.getAttribute("materiales");
             if (materiales != null && !materiales.isEmpty()) {
                 for (MaterialBean material : materiales) {
@@ -47,7 +50,7 @@
                 <td><%= material.isUsoExterior() ? "Sí" : "No" %></td>
                 <td><%= material.getEstado() %></td>
                 <td>
-                    <!-- Formulario para cambiar el estado -->
+                    <!-- Formulario para actualizar el estado del material -->
                     <form method="post" action="<%= request.getContextPath() %>/admin/modificarEstadoMaterial">
                         <input type="hidden" name="idMaterial" value="<%= material.getId() %>">
                         <select name="nuevoEstado" required>
@@ -55,7 +58,7 @@
                             <option value="RESERVADO" <%= "RESERVADO".equals(material.getEstado()) ? "selected" : "" %>>Reservado</option>
                             <option value="MAL_ESTADO" <%= "MAL_ESTADO".equals(material.getEstado()) ? "selected" : "" %>>Mal Estado</option>
                         </select>
-                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
                     </form>
                 </td>
             </tr>
@@ -63,6 +66,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay materiales registrados -->
             <tr>
                 <td colspan="5">No hay materiales registrados.</td>
             </tr>

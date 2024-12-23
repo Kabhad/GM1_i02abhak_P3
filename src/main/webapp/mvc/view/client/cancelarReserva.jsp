@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Cancelar Reservas</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/cancelarReserva.css">
     <!-- Enlace al script de validación -->
     <script src="<%= request.getContextPath() %>/js/cancelarReservaValidation.js" defer></script>
@@ -12,14 +13,14 @@
 <body>
     <h1>Cancelar Reservas Futuras</h1>
     
+    <!-- Botón para volver al inicio -->
     <div class="button-container">
 	    <form action="<%= request.getContextPath() %>/mvc/view/client/clientHome.jsp" method="get">
 	        <button type="submit">Volver a Inicio</button>
 	    </form>
 	</div>
 
-
-    <!-- Mensajes -->
+    <!-- Mostrar mensajes de éxito o error -->
     <% if (request.getAttribute("mensaje") != null) { %>
         <p style="color: green;"><%= request.getAttribute("mensaje") %></p>
     <% } %>
@@ -27,7 +28,7 @@
         <p style="color: red;"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <!-- Tabla de reservas -->
+    <!-- Tabla para mostrar las reservas -->
     <table border="1">
         <tr>
             <th>ID Reserva</th>
@@ -49,7 +50,7 @@
                 <td><%= reserva.getIdPista() %></td>
                 <td><%= reserva.getPrecio() %></td>
                 <td>
-                    <!-- Botón de cancelar -->
+                    <!-- Botón para cancelar la reserva -->
                     <form method="post" action="<%= request.getContextPath() %>/client/cancelarReserva">
                         <input type="hidden" name="idReserva" value="<%= reserva.getIdReserva() %>">
                         <button type="button" class="btn-cancelar-reserva">
@@ -62,6 +63,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay reservas disponibles -->
             <tr>
                 <td colspan="6">No tienes reservas futuras con más de 24 horas de margen.</td>
             </tr>
@@ -70,7 +72,7 @@
         %>
     </table>
 
-    <!-- Modal de Confirmación -->
+    <!-- Modal para confirmar la cancelación -->
     <div id="modalConfirmacion">
         <div id="modalContent">
             <h3>¿Estás seguro de que deseas cancelar esta reserva?</h3>

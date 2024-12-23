@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,19 +8,19 @@
 <body>
     <h1>Error al Cancelar Reserva</h1>
 
-    <!-- Mostrar mensaje de error -->
+    <!-- Mostrar el mensaje de error si está presente -->
     <c:if test="${not empty error}">
         <p style="color: red; font-weight: bold;">${error}</p>
     </c:if>
 
-    <!-- Mensaje si no se proporciona un mensaje de error -->
+    <!-- Mostrar un mensaje genérico si no se proporciona un mensaje de error -->
     <c:if test="${empty error}">
-        <p>OcurriÃ³ un error al intentar cancelar la reserva. Por favor, intÃ©ntalo de nuevo mÃ¡s tarde.</p>
+        <p>Ocurrió un error al intentar cancelar la reserva. Por favor, inténtalo de nuevo más tarde.</p>
     </c:if>
 
-    <!-- BotÃ³n para regresar -->
+    <!-- Botón para regresar al menú principal -->
     <div style="margin-top: 20px;">
-        <a href="${pageContext.request.contextPath}/mvc/view/client/clientHome.jsp">Volver al MenÃº Principal</a>
+        <a href="${pageContext.request.contextPath}/mvc/view/client/clientHome.jsp">Volver al Menú Principal</a>
     </div>
 </body>
 </html>

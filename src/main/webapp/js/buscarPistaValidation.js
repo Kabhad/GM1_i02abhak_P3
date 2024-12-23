@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Obtener valores de los campos
         const tamano = document.getElementById("tamano").value;
         const exterior = document.getElementById("exterior").value;
-        const fechaHora = document.getElementById("fechaHora").value; // Cambiado a "fechaHora" para que coincida con el input
+        const fechaHora = document.getElementById("fechaHora").value;
 
         // Validar los valores
         let errors = [];
@@ -27,6 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (fechaHoraSeleccionada < fechaHoraActual) {
                 errors.push("La fecha y hora no pueden ser anteriores a la fecha y hora actual.");
+            }
+
+            // Validar que la hora esté entre 9:00 y 21:00
+            const horaSeleccionada = fechaHoraSeleccionada.getHours();
+            const minutoSeleccionado = fechaHoraSeleccionada.getMinutes();
+
+            if (horaSeleccionada < 9 || (horaSeleccionada > 21 || (horaSeleccionada === 21 && minutoSeleccionado > 0))) {
+                errors.push("La hora debe estar entre las 9:00 y las 21:00.");
             }
         } else {
             errors.push("La fecha y hora son obligatorias.");

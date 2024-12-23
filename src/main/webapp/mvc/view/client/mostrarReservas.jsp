@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>Reservas Finalizadas y Futuras</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mostrarReservas.css">
 </head>
 <body>
@@ -21,10 +22,12 @@
             <th>Detalles</th>
         </tr>
         <%
+            // Obtener la lista de reservas finalizadas
             List<ReservaBean> reservasFinalizadas = (List<ReservaBean>) request.getAttribute("reservasFinalizadas");
             if (reservasFinalizadas != null && !reservasFinalizadas.isEmpty()) {
                 for (ReservaBean reserva : reservasFinalizadas) {
         %>
+            <!-- Mostrar cada reserva finalizada -->
             <tr>
                 <td><%= reserva.getIdReserva() %></td>
                 <td><%= reserva.getFechaHora() %></td>
@@ -50,6 +53,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay reservas finalizadas -->
             <tr>
                 <td colspan="7" class="no-reservas">No hay reservas finalizadas en este rango de fechas.</td>
             </tr>
@@ -70,10 +74,12 @@
             <th>Detalles</th>
         </tr>
         <%
+            // Obtener la lista de reservas futuras
             List<ReservaBean> reservasFuturas = (List<ReservaBean>) request.getAttribute("reservasFuturas");
             if (reservasFuturas != null && !reservasFuturas.isEmpty()) {
                 for (ReservaBean reserva : reservasFuturas) {
         %>
+            <!-- Mostrar cada reserva futura -->
             <tr>
                 <td><%= reserva.getIdReserva() %></td>
                 <td><%= reserva.getFechaHora() %></td>
@@ -99,6 +105,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay reservas futuras -->
             <tr>
                 <td colspan="7" class="no-reservas">No hay reservas futuras en este rango de fechas.</td>
             </tr>

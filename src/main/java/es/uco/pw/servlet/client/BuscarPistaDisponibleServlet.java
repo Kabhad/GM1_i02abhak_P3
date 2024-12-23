@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,22 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
             String fechaHoraParam = request.getParameter("fechaHora");
             String duracionParam = request.getParameter("duracionMin");
 
-            // Convertir parámetros
+            // Validar y convertir la fecha y hora
+            Date fechaHora = null;
+            if (fechaHoraParam != null && !fechaHoraParam.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                fechaHora = sdf.parse(fechaHoraParam);
+
+                // Validar si la hora está dentro del rango permitido (9:00 - 21:00)
+                int hora = fechaHora.getHours();
+                if (hora < 9 || hora >= 21) {
+                    request.setAttribute("error", "La hora seleccionada debe estar entre las 9:00 y las 21:00.");
+                    request.getRequestDispatcher("/mvc/view/client/buscarPistaDisponible.jsp").forward(request, response);
+                    return; // Detener ejecución
+                }
+            }
+
+            // Convertir otros parámetros
             TamanoPista tamano = null;
             if (tamanoParam != null && !tamanoParam.isEmpty()) {
                 tamano = TamanoPista.valueOf(tamanoParam.toUpperCase());
@@ -50,12 +66,6 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
             Boolean exterior = null;
             if (exteriorParam != null && !exteriorParam.isEmpty()) {
                 exterior = Boolean.parseBoolean(exteriorParam);
-            }
-
-            Date fechaHora = null;
-            if (fechaHoraParam != null && !fechaHoraParam.isEmpty()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-                fechaHora = sdf.parse(fechaHoraParam);
             }
 
             int duracionMin = 0;
@@ -79,7 +89,7 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
                 ));
             }
 
-            // Enviar a la vista
+            // Enviar resultados a la vista
             request.setAttribute("pistasDisponibles", pistaBeans);
             request.getRequestDispatcher("/mvc/view/client/mostrarPistaDisponible.jsp").forward(request, response);
 
@@ -91,8 +101,21 @@ public class BuscarPistaDisponibleServlet extends HttpServlet {
     }
 
 
+    /**
+     * Valida si la fecha y hora de la reserva está dentro del horario permitido (9:00 a 21:00).
+     *
+     * @param fechaHora La fecha y hora a validar.
+     * @return true si la hora está permitida, false en caso contrario.
+     */
+    private boolean esHorarioPermitido(Date fechaHora) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaHora);
+        int hora = cal.get(Calendar.HOUR_OF_DAY);
+        int minuto = cal.get(Calendar.MINUTE);
 
-
+        // El horario permitido es de 9:00 a 21:00
+        return (hora >= 9 && (hora < 21 || (hora == 21 && minuto == 0)));
+    }
 
     /**
      * Método doPost redirige a doGet.

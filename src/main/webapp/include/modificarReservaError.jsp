@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +7,18 @@
 <body>
     <div class="error-container">
         <h1>Error al Modificar la Reserva</h1>
+        <!-- Mostrar el mensaje de error si está disponible -->
         <% if (request.getAttribute("error") != null) { %>
             <p style="color: red;"><%= request.getAttribute("error") %></p>
         <% } else { %>
-            <p style="color: red;">Ha ocurrido un error inesperado. Por favor, intÃ©ntalo de nuevo mÃ¡s tarde.</p>
+            <!-- Mensaje genérico en caso de error inesperado -->
+            <p style="color: red;">Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo más tarde.</p>
         <% } %>
 
+        <!-- Botones para volver al listado de reservas o al menú principal -->
         <div class="action-buttons">
             <a href="<%= request.getContextPath() %>/client/modificarReserva?filtrarReservas=true" class="btn-secondary">Volver al listado de reservas</a>
-            <a href="<%= request.getContextPath() %>/mvc/view/client/clientHome.jsp" class="btn-primary">Volver al MenÃº Principal</a>
+            <a href="<%= request.getContextPath() %>/mvc/view/client/clientHome.jsp" class="btn-primary">Volver al Menú Principal</a>
         </div>
     </div>
 </body>

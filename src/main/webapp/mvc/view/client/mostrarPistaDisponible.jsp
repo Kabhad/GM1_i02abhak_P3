@@ -4,18 +4,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mostrarPistaDisponible.css">
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mostrarPistaDisponible.css">
     <title>Pistas Disponibles</title>
 </head>
 <body>
     <h1>Pistas Disponibles</h1>
 
     <%
-        // Recuperar la lista de pistas desde el atributo de la solicitud
+        // Obtener la lista de pistas disponibles de la solicitud
         List<PistaBean> pistasDisponibles = (List<PistaBean>) request.getAttribute("pistasDisponibles");
 
+        // Comprobar si hay pistas disponibles
         if (pistasDisponibles != null && !pistasDisponibles.isEmpty()) {
     %>
+        <!-- Tabla para mostrar las pistas disponibles -->
         <table border="1">
             <thead>
                 <tr>
@@ -29,6 +32,7 @@
             </thead>
             <tbody>
                 <%
+                    // Recorrer la lista de pistas y mostrarlas en la tabla
                     for (PistaBean pista : pistasDisponibles) {
                 %>
                     <tr>
@@ -47,11 +51,11 @@
     <%
         } else {
     %>
+        <!-- Mensaje si no hay pistas disponibles -->
         <p>No hay pistas disponibles en este momento.</p>
     <%
         }
     %>
-    
     
     <!-- Botones de navegación -->
     <div class="button-container">

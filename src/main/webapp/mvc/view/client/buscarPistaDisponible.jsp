@@ -4,13 +4,24 @@
 <html>
 <head>
     <title>Buscar Pistas Disponibles</title>
+    <!-- Enlace al script para validar el formulario -->
+    <script src="<%= request.getContextPath() %>/js/buscarPistaValidation.js" defer></script>
+    <!-- Enlace al archivo de estilos -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/buscarPistaDisponible.css">
-    <script src="${pageContext.request.contextPath}/js/buscarPistaValidation.js" defer></script>
 </head>
 <body>
     <h1>Buscar Pistas Disponibles</h1>
+    
+    <!-- Mostrar un mensaje de error si existe -->
+    <c:if test="${not empty error}">
+        <div class="error-message">
+            <p style="color: red;">${error}</p>
+        </div>
+    </c:if>
+    
+    <!-- Formulario para buscar pistas -->
     <form id="buscarPistasForm" action="${pageContext.request.contextPath}/client/buscarPistaDisponible" method="GET">
-        <!-- Tamaño de la pista -->
+        <!-- Selección del tamaño de la pista -->
         <label for="tamano">Tamaño de la pista:</label>
         <select name="tamano" id="tamano">
             <option value="">Cualquiera</option>
@@ -20,7 +31,7 @@
         </select>
         <br><br>
         
-        <!-- ¿Exterior? -->
+        <!-- Selección de si la pista es exterior -->
         <label for="exterior">¿Exterior?</label>
         <select name="exterior" id="exterior">
             <option value="">Cualquiera</option>
@@ -29,12 +40,12 @@
         </select>
         <br><br>
         
-        <!-- Fecha y hora de búsqueda -->
+        <!-- Campo para seleccionar la fecha y hora de búsqueda -->
         <label for="fechaHora">Fecha y Hora de búsqueda:</label>
         <input type="datetime-local" name="fechaHora" id="fechaHora" required>
         <br><br>
         
-        <!-- Duración -->
+        <!-- Selección de la duración -->
         <label for="duracionMin">Duración (minutos):</label>
         <select id="duracionMin" name="duracionMin" required>
             <option value="60">60 minutos (1 hora)</option>
@@ -43,13 +54,13 @@
         </select>
         <br><br>
         
-        <!-- Botón de envío -->
+        <!-- Botón para enviar el formulario -->
         <button type="submit">Buscar Pistas</button>
     </form>
     
-    <!-- Botón para volver al menú principal -->
+    <!-- Enlace para volver al menú principal -->
     <div class="button-container">
-        <a href="../client/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
+        <a href="<%= request.getContextPath() %>/mvc/view/client/clientHome.jsp" class="nav-button">Volver al Menú Principal</a>
     </div>
 </body>
 </html>

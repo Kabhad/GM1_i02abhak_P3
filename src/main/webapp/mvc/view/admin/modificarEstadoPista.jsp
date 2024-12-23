@@ -5,7 +5,10 @@
 <html>
 <head>
     <title>Modificar Estado de Pistas</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/modificarEstadoPista.css">
+    <!-- Enlace al script de validación -->
+    <script src="<%= request.getContextPath() %>/js/modificarEstadoPistaValidation.js" defer></script>
 </head>
 <body>
     <h1>Modificar Estado de Pistas</h1>
@@ -23,7 +26,7 @@
         <p id="mensajeError" style="color: red;"><%= request.getAttribute("error") %></p>
     <% } %>
 
-    <!-- Tabla de pistas -->
+    <!-- Tabla para listar las pistas registradas -->
     <table border="1">
         <thead>
             <tr>
@@ -45,14 +48,14 @@
                 <td><%= pista.getPista().name().replace("_", "").toLowerCase() %></td>
                 <td><%= pista.isDisponible() ? "Disponible" : "No Disponible" %></td>
                 <td>
-                    <!-- Formulario para cambiar el estado -->
+                    <!-- Formulario para actualizar el estado de la pista -->
                     <form method="post" action="<%= request.getContextPath() %>/admin/modificarEstadoPista">
                         <input type="hidden" name="idPista" value="<%= pista.getIdPista() %>">
                         <select name="nuevoEstado" required>
                             <option value="true" <%= pista.isDisponible() ? "selected" : "" %>>Disponible</option>
                             <option value="false" <%= !pista.isDisponible() ? "selected" : "" %>>No Disponible</option>
                         </select>
-                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button type="submit" class="btn-primary">Guardar</button>
                     </form>
                 </td>
             </tr>
@@ -60,6 +63,7 @@
                 }
             } else {
         %>
+            <!-- Mensaje si no hay pistas registradas -->
             <tr>
                 <td colspan="4">No hay pistas registradas.</td>
             </tr>

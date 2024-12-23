@@ -3,26 +3,30 @@
 <html>
 <head>
     <title>Realizar Reserva</title>
+    <!-- Enlace al archivo CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/realizarReserva.css">
-	<script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js"></script>
-
+    <!-- Enlace al script de validación -->
+    <script src="${pageContext.request.contextPath}/js/realizarReservaValidation.js"></script>
 </head>
 <body>
     <h1>Realizar una Nueva Reserva</h1>
 
     <!-- Formulario para filtrar las pistas -->
-	<form id="filtroFormulario" action="${pageContext.request.contextPath}/client/realizarReserva" method="get">
-	    <label for="tipoReserva">Tipo de Reserva:</label><br>
-	    <select id="tipoReserva" name="tipoReserva" onchange="actualizarPistas()" required>
-	        <option value="" disabled ${empty param.tipoReserva ? 'selected' : ''}>Selecciona un tipo</option>
-	        <option value="adulto" ${param.tipoReserva == 'adulto' ? 'selected' : ''}>Adulto</option>
-	        <option value="infantil" ${param.tipoReserva == 'infantil' ? 'selected' : ''}>Infantil</option>
-	        <option value="familiar" ${param.tipoReserva == 'familiar' ? 'selected' : ''}>Familiar</option>
-	    </select><br><br>
+    <form id="filtroFormulario" action="${pageContext.request.contextPath}/client/realizarReserva" method="get">
+        <!-- Selección del tipo de reserva -->
+        <label for="tipoReserva">Tipo de Reserva:</label><br>
+        <select id="tipoReserva" name="tipoReserva" onchange="actualizarPistas()" required>
+            <option value="" disabled ${empty param.tipoReserva ? 'selected' : ''}>Selecciona un tipo</option>
+            <option value="adulto" ${param.tipoReserva == 'adulto' ? 'selected' : ''}>Adulto</option>
+            <option value="infantil" ${param.tipoReserva == 'infantil' ? 'selected' : ''}>Infantil</option>
+            <option value="familiar" ${param.tipoReserva == 'familiar' ? 'selected' : ''}>Familiar</option>
+        </select><br><br>
 
+        <!-- Selección de fecha y hora -->
         <label for="fechaHoraFiltro">Fecha y Hora:</label><br>
         <input type="datetime-local" id="fechaHoraFiltro" name="fechaHora" value="${param.fechaHora}" onchange="actualizarPistas()" required><br><br>
 
+        <!-- Selección de duración -->
         <label for="duracionFiltro">Duración:</label><br>
         <select id="duracionFiltro" name="duracion" onchange="actualizarPistas()" required>
             <option value="60" ${param.duracion == '60' ? 'selected' : ''}>1 Hora</option>
