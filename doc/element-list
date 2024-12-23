@@ -1,0 +1,10 @@
+es.uco.pw.business.jugador
+es.uco.pw.business.material
+es.uco.pw.business.pista
+es.uco.pw.business.reserva
+es.uco.pw.data.common
+es.uco.pw.data.dao
+es.uco.pw.display.javabean
+es.uco.pw.servlet.admin
+es.uco.pw.servlet.client
+es.uco.pw.servlet.filters
