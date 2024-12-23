@@ -474,12 +474,17 @@ public class ReservasDAO {
             throw new IllegalArgumentException("La cuenta del jugador no está activa.");
         }
 
-        // Validaciones comunes
         validarFechaHora(fechaHora);
         validarMaximoJugadores(pistaDTO, numeroAdultos, numeroNinos);
+
+        // Verificar conflictos de reserva
+        if (verificarConflictoReserva(pistaDTO.getIdPista(), fechaHora, duracionMinutos)) {
+            throw new IllegalArgumentException("La pista ya está reservada en el rango de tiempo seleccionado.");
+        }
+
         String tipoReserva = determinarTipoReserva(numeroAdultos, numeroNinos);
 
-        // Validaciones exclusivas y creación de la reserva
+        // Resto de la lógica para crear la reserva
         float descuentoAntiguedad = (jugadorDTO.calcularAntiguedad() > 2) ? 0.1f : 0.0f;
 
         ReservaFactory reservaFactory = new ReservaIndividualFactory();
@@ -507,6 +512,32 @@ public class ReservasDAO {
         return insertarReserva(reservaDTO);
     }
 
+    
+    public boolean verificarConflictoReserva(int idPista, Date fechaHora, int duracionMinutos) {
+        String sql = prop.getProperty("verificarConflictoReserva");
+        boolean existeConflicto = false;
+
+        try (Connection con = new DBConnection().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idPista);
+            ps.setTimestamp(2, new java.sql.Timestamp(fechaHora.getTime())); // Inicio de la nueva reserva
+            ps.setTimestamp(3, new java.sql.Timestamp(fechaHora.getTime())); // Inicio de la nueva reserva
+            ps.setInt(4, duracionMinutos); // Duración de la nueva reserva
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    existeConflicto = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return existeConflicto;
+    }
+
+
+
     /**
      * Realiza una reserva utilizando un bono para un jugador.
      *
@@ -529,7 +560,12 @@ public class ReservasDAO {
         // Validación de fecha y hora
         validarFechaHora(fechaHora); //Validacion de fecha y hora correctos
         validarMaximoJugadores(pistaDTO, numeroAdultos, numeroNinos); //Validacion de maximo de jugadores correctos
-
+        
+     // Verificar conflictos de reserva
+        if (verificarConflictoReserva(pistaDTO.getIdPista(), fechaHora, duracionMinutos)) {
+            throw new IllegalArgumentException("La pista ya está reservada en el rango de tiempo seleccionado.");
+        }
+        
         // Obtener bono asociado o crear uno nuevo si no existe
         Bono bono = obtenerBonoPorJugador(jugadorDTO.getIdJugador());
         if (bono == null || bono.estaCaducado() || bono.getSesionesRestantes() <= 0) {
@@ -616,6 +652,11 @@ public class ReservasDAO {
 
         // Validar máximo de jugadores
         validarMaximoJugadores(nuevaPista, numeroAdultos, numeroNinos);
+        
+     // Verificar conflictos de reserva
+        if (verificarConflictoReserva(nuevaPista.getIdPista(), nuevaFechaHora, nuevaDuracionMinutos)) {
+            throw new IllegalArgumentException("La pista ya está reservada en el rango de tiempo seleccionado.");
+        }
 
         // Determinar el tipo de reserva
         String nuevoTipoReserva = determinarTipoReserva(numeroAdultos, numeroNinos);
