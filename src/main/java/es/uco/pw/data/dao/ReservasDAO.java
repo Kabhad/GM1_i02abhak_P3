@@ -458,17 +458,19 @@ public class ReservasDAO {
     }
 
     /**
-     * Realiza una reserva individual para un jugador.
+     * Realiza una reserva individual para un jugador, validando los parámetros y verificando la disponibilidad de la pista.
      * 
-     * @param jugadorDTO El jugador que realiza la reserva.
-     * @param fechaHora La fecha y hora de la reserva.
-     * @param duracionMinutos La duración de la reserva en minutos.
-     * @param pistaDTO La pista a reservar.
-     * @param numeroAdultos El número de adultos incluidos en la reserva.
-     * @param numeroNinos El número de niños incluidos en la reserva.
+     * @param jugadorDTO El jugador que realiza la reserva. Debe tener una cuenta activa.
+     * @param fechaHora La fecha y hora de la reserva. Debe ser futura y no puede estar en conflicto con reservas existentes.
+     * @param duracionMinutos La duración de la reserva en minutos. Debe ser un valor positivo y permitido por las reglas del sistema.
+     * @param pistaDTO La pista a reservar. Debe estar disponible para el horario y cumplir con los requisitos del tipo de reserva.
+     * @param numeroAdultos El número de adultos incluidos en la reserva. Debe ser coherente con el tipo de reserva.
+     * @param numeroNinos El número de niños incluidos en la reserva. Debe ser coherente con el tipo de reserva.
+     * @param application El contexto de la aplicación para actualizar información relacionada con el jugador, si es necesario.
      * @return El ID de la reserva creada.
      * @throws IllegalArgumentException Si la cuenta del jugador no está activa, si los parámetros son inválidos, o si la pista no cumple las condiciones para el tipo de reserva.
      */
+
     public int hacerReservaIndividual(JugadorDTO jugadorDTO, Date fechaHora, int duracionMinutos, PistaDTO pistaDTO, int numeroAdultos, int numeroNinos, ServletContext application) {
         if (!jugadorDTO.isCuentaActiva()) {
             throw new IllegalArgumentException("La cuenta del jugador no está activa.");
@@ -513,6 +515,14 @@ public class ReservasDAO {
     }
 
     
+    /**
+     * Verifica si existe un conflicto con una reserva existente para una pista específica en el rango de tiempo proporcionado.
+     *
+     * @param idPista El ID de la pista que se desea verificar.
+     * @param fechaHora La fecha y hora de inicio de la nueva reserva.
+     * @param duracionMinutos La duración de la nueva reserva en minutos.
+     * @return {@code true} si existe un conflicto de reserva con el horario proporcionado; {@code false} en caso contrario.
+     */
     public boolean verificarConflictoReserva(int idPista, Date fechaHora, int duracionMinutos) {
         String sql = prop.getProperty("verificarConflictoReserva");
         boolean existeConflicto = false;
