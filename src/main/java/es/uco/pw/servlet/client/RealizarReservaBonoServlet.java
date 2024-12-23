@@ -11,7 +11,6 @@ import es.uco.pw.business.reserva.ReservaDTO;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +23,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Servlet para realizar reservas utilizando bonos.
+ * Servlet encargado de gestionar las reservas realizadas utilizando bonos.
  */
 public class RealizarReservaBonoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Método que maneja las solicitudes GET al servlet.
+     * Se encarga de verificar el estado del bono y mostrar las pistas disponibles para reservar.
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP enviada.
+     * @throws ServletException Si ocurre un error en el servlet.
+     * @throws IOException      Si ocurre un error de E/S.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -44,14 +52,12 @@ public class RealizarReservaBonoServlet extends HttpServlet {
         PistasDAO pistasDAO = new PistasDAO(getServletContext());
 
         try {
-            // Obtener el ID del jugador desde el CustomerBean
             String correo = customer.getCorreo();
             JugadorDTO jugador = reservasDAO.buscarJugadorPorCorreo(correo, getServletContext());
             if (jugador == null) {
                 throw new IllegalArgumentException("No se encontró un jugador asociado al correo: " + correo);
             }
 
-            // Comprobar si el usuario tiene un bono válido
             int idJugador = jugador.getIdJugador();
             Bono bono = reservasDAO.obtenerBonoPorJugador(idJugador);
 
@@ -61,7 +67,6 @@ public class RealizarReservaBonoServlet extends HttpServlet {
                 return;
             }
 
-            // Manejar el filtrado de pistas si se pasan parámetros
             String tipoReserva = request.getParameter("tipoReserva");
             String fechaHoraParam = request.getParameter("fechaHora");
             String duracionParam = request.getParameter("duracion");
@@ -71,7 +76,6 @@ public class RealizarReservaBonoServlet extends HttpServlet {
                 Date fechaHora = sdf.parse(fechaHoraParam);
                 int duracionMinutos = Integer.parseInt(duracionParam);
 
-                // Obtener las pistas disponibles por tipo, fecha y duración
                 List<PistaDTO> pistas = pistasDAO.listarPistasDisponiblesPorTipoYFecha(tipoReserva, fechaHora, duracionMinutos);
                 StringBuilder opcionesPistas = new StringBuilder();
                 for (PistaDTO pista : pistas) {
@@ -83,7 +87,6 @@ public class RealizarReservaBonoServlet extends HttpServlet {
                 request.setAttribute("opcionesPistas", opcionesPistas.toString());
             }
 
-            // Atributos del bono y redirección
             request.setAttribute("idBono", bono.getIdBono());
             request.setAttribute("sesionesRestantes", bono.getSesionesRestantes());
             request.setAttribute("fechaCaducidad", bono.getFechaCaducidad());
@@ -101,55 +104,61 @@ public class RealizarReservaBonoServlet extends HttpServlet {
         }
     }
 
-
-
+    /**
+     * Método que gestiona la creación de un bono nuevo.
+     *
+     * @param request   La solicitud HTTP.
+     * @param response  La respuesta HTTP.
+     * @param customer  El cliente que realiza la solicitud.
+     * @throws ServletException Si ocurre un error en el servlet.
+     * @throws IOException      Si ocurre un error de E/S.
+     */
     private void gestionarCreacionBono(HttpServletRequest request, HttpServletResponse response, CustomerBean customer) throws ServletException, IOException {
         ReservasDAO reservasDAO = new ReservasDAO(getServletContext());
 
         try {
-            // Obtener el ID del jugador
             JugadorDTO jugadorDTO = reservasDAO.buscarJugadorPorCorreo(customer.getCorreo(), getServletContext());
             if (jugadorDTO == null) {
                 throw new IllegalArgumentException("Jugador no encontrado.");
             }
 
-            // Crear un nuevo bono
             Bono nuevoBono = reservasDAO.crearNuevoBono(jugadorDTO.getIdJugador());
             if (nuevoBono != null) {
-                // Actualizar los atributos para la vista de realizar reserva
                 request.setAttribute("mensaje", "Bono creado con éxito. Ahora puedes realizar tu reserva.");
                 request.setAttribute("idBono", nuevoBono.getIdBono());
                 request.setAttribute("sesionesRestantes", nuevoBono.getSesionesRestantes());
                 request.setAttribute("fechaCaducidad", nuevoBono.getFechaCaducidad());
                 request.setAttribute("tieneBono", true);
-
-                // Redirigir directamente a la vista de realizar reserva
                 request.getRequestDispatcher("/mvc/view/client/realizarReservaBono.jsp").forward(request, response);
                 return;
             } else {
-                // Mensaje en caso de fallo al crear el bono
                 request.setAttribute("mensaje", "No se pudo crear el bono. Inténtalo de nuevo.");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Error al crear el bono: " + e.getMessage());
         }
 
-        // Si ocurre un error o no se crea el bono, redirigir de nuevo a crearBono.jsp
         request.getRequestDispatcher("/mvc/view/client/crearBono.jsp").forward(request, response);
     }
 
+    /**
+     * Método que maneja la lógica de realizar una reserva utilizando un bono.
+     *
+     * @param request   La solicitud HTTP.
+     * @param response  La respuesta HTTP.
+     * @param customer  El cliente que realiza la reserva.
+     * @throws ServletException Si ocurre un error en el servlet.
+     * @throws IOException      Si ocurre un error de E/S.
+     */
     private void gestionarReserva(HttpServletRequest request, HttpServletResponse response, CustomerBean customer) throws ServletException, IOException {
         try {
-            // Captura de parámetros desde el formulario
             String fechaHoraParam = request.getParameter("fechaHora");
             String duracionParam = request.getParameter("duracion");
             String idPistaParam = request.getParameter("idPista");
             String numeroAdultosParam = request.getParameter("numeroAdultos");
             String numeroNinosParam = request.getParameter("numeroNinos");
 
-            // Parsear y validar los parámetros
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             Date fechaHora = sdf.parse(fechaHoraParam);
 
@@ -158,7 +167,6 @@ public class RealizarReservaBonoServlet extends HttpServlet {
             int numeroAdultos = Integer.parseInt(numeroAdultosParam);
             int numeroNinos = Integer.parseInt(numeroNinosParam);
 
-            // Obtener los objetos necesarios
             ServletContext context = getServletContext();
             ReservasDAO reservasDAO = new ReservasDAO(context);
             PistasDAO pistasDAO = new PistasDAO(context);
@@ -173,36 +181,27 @@ public class RealizarReservaBonoServlet extends HttpServlet {
                 throw new IllegalArgumentException("Pista no encontrada o no disponible.");
             }
 
-            // Realizar la reserva utilizando el bono
             boolean reservaExitosa = reservasDAO.hacerReservaBono(jugadorDTO, fechaHora, duracionMinutos, pistaDTO, numeroAdultos, numeroNinos);
 
             if (reservaExitosa) {
-                // Obtener información del bono actualizado
                 Bono bonoActualizado = reservasDAO.obtenerBonoPorJugador(jugadorDTO.getIdJugador());
 
-                // Obtener la reserva asociada al bono y usuario
-                ReservaDTO reservaDTO = reservasDAO.obtenerReservaPorIdBono(jugadorDTO.getIdJugador(), bonoActualizado);
-
-                if (reservaDTO == null) {
-                    throw new IllegalStateException("No se pudo recuperar la reserva asociada al bono.");
-                }
-
-                // Preparar el ReservaBean
                 ReservaBean reservaBean = new ReservaBean();
-                reservaBean.setIdReserva(reservaDTO.getIdReserva());
-                reservaBean.setFechaHora(reservaDTO.getFechaHora());
-                reservaBean.setDuracionMinutos(reservaDTO.getDuracionMinutos());
-                reservaBean.setIdPista(reservaDTO.getIdPista());
+                reservaBean.setFechaHora(fechaHora);
+                reservaBean.setDuracionMinutos(duracionMinutos);
+                reservaBean.setIdPista(idPista);
                 reservaBean.setNumeroAdultos(numeroAdultos);
                 reservaBean.setNumeroNinos(numeroNinos);
-                reservaBean.setPrecio(reservaDTO.getPrecio());
-                reservaBean.setDescuento(reservaDTO.getDescuento());
+                reservaBean.setPrecio(ReservaDTO.calcularPrecio(duracionMinutos, 0));
 
-                // Incluir información del bono en el bean
-                reservaBean.setIdBono(bonoActualizado.getIdBono());
-                reservaBean.setNumeroSesion(5 - bonoActualizado.getSesionesRestantes());
+                if (bonoActualizado != null) {
+                    reservaBean.setIdBono(bonoActualizado.getIdBono());
+                    reservaBean.setNumeroSesion(5 - bonoActualizado.getSesionesRestantes());
+                } else {
+                    reservaBean.setIdBono(null);
+                    reservaBean.setNumeroSesion(5);
+                }
 
-                // Pasar el bean a la vista
                 request.setAttribute("reserva", reservaBean);
                 request.getRequestDispatcher("/mvc/view/client/resultadoReserva.jsp").forward(request, response);
             } else {
@@ -210,27 +209,34 @@ public class RealizarReservaBonoServlet extends HttpServlet {
             }
 
         } catch (ParseException e) {
+            System.out.println("Error de formato de fecha: " + e.getMessage());
             request.setAttribute("error", "Formato de fecha inválido.");
             request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         } catch (IllegalArgumentException e) {
+            System.out.println("Error de validación: " + e.getMessage());
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         } catch (Exception e) {
+            System.out.println("Error inesperado: " + e.getMessage());
             e.printStackTrace();
-            request.setAttribute("error", "Error al realizar la reserva.");
+            request.setAttribute("error", "Error inesperado al realizar la reserva: " + e.getMessage());
             request.getRequestDispatcher("/include/realizarReservaError.jsp").forward(request, response);
         }
     }
 
-
-
-
+    /**
+     * Método que maneja las solicitudes POST al servlet.
+     *
+     * @param request  La solicitud HTTP recibida.
+     * @param response La respuesta HTTP enviada.
+     * @throws ServletException Si ocurre un error en el servlet.
+     * @throws IOException      Si ocurre un error de E/S.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerBean customer = (CustomerBean) session.getAttribute("customer");
 
-        // Verificar si es una solicitud para crear un bono
         String crearBonoParam = request.getParameter("crearBono");
 
         if (crearBonoParam != null && crearBonoParam.equals("true")) {
@@ -239,7 +245,4 @@ public class RealizarReservaBonoServlet extends HttpServlet {
             gestionarReserva(request, response, customer);
         }
     }
-
-
-
 }
