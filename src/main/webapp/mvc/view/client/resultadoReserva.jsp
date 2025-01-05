@@ -28,19 +28,33 @@
             <p><strong>Precio:</strong> <%= String.format("%.2f", reserva.getPrecio()) %> €</p> <!-- Muestra el precio total de la reserva -->
             <p><strong>Descuento Aplicado:</strong> <%= (int)(reserva.getDescuento() * 100) %> %</p> <!-- Muestra el descuento aplicado como porcentaje -->
 
-			<% 
-            // Verifica si la reserva tiene un bono asociado
-            if (reserva.getIdBono() != null) { 
-            %>
-                <!-- Sección específica para mostrar detalles del bono asociado -->
-                <h3>Información del Bono Asociado</h3>
-				<p><strong>ID del Bono:</strong> <%= reserva.getIdBono() %></p> <!-- Muestra el ID del bono -->
-                <p><strong>Sesión Utilizada:</strong> <%= reserva.getNumeroSesion() %></p> <!-- Muestra la sesión del bono utilizada -->
-            <% } else { %>
-            <!-- Mensaje alternativo si el bono ha sido completamente utilizado -->
-                <h3>Bono Completamente Utilizado</h3>
-                <p>El bono ha sido completamente utilizado con esta reserva.</p>
-            <% } %>
+		<% 
+		    // Verifica si la reserva tiene un bono asociado
+		    if (reserva.getIdBono() != null) { 
+		        // Verifica si el bono tiene sesiones disponibles
+		        if (reserva.getNumeroSesion() != null && reserva.getNumeroSesion() > 0) { 
+		%>
+		            <!-- Sección específica para mostrar detalles del bono asociado -->
+		            <h3>Información del Bono Asociado</h3>
+		            <p><strong>ID del Bono:</strong> <%= reserva.getIdBono() %></p> <!-- Muestra el ID del bono -->
+		            <p><strong>Sesión Utilizada:</strong> <%= reserva.getNumeroSesion() %></p> <!-- Muestra la sesión del bono utilizada -->
+		<% 
+		        } else { 
+		%>
+		            <!-- Mensaje alternativo si el bono ha sido completamente utilizado -->
+		            <h3>Bono Completamente Utilizado</h3>
+		            <p>El bono ha sido completamente utilizado con esta reserva.</p>
+		<% 
+		        } 
+		    } else { 
+		%>
+		        <!-- Mensaje para reservas sin bono -->
+		        <h3>Reserva sin Bono</h3>
+		        <p>Esta reserva no está asociada a ningún bono.</p>
+		<% 
+		    } 
+		%>
+
         </div>
     <%
         } else { 
