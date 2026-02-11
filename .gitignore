@@ -1,13 +1,18 @@
-# Ignorar configuración específica de Eclipse
+# Eclipse IDE
 .classpath
 .project
 .settings/
 
-# Archivos temporales
+# Build / generated files
+build/
+bin/
+target/
+*.war
+
+# Temporary files
 *.log
 *.tmp
 
-# Carpeta de salida de compilación
-bin/
-target/
-.classpath
+# OS files
+.DS_Store
+Thumbs.db
